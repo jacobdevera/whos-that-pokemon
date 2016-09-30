@@ -1,0 +1,24 @@
+Script started on Thu Sep 29 22:14:07 2016
+
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth$ pwd
+/home/kefkiroth/Downloads/info343-code/challenges-kefkiroth
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth$ cd character
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth/charac
+ter$ pwd
+/home/kefkiroth/Downloads/info343-code/challenges-kefkiroth/character
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth/charac
+ter$ echo $PATH
+/usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth/charac
+ter$ mkdir img
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth/charac
+ter$ cp ../.gitignore img
+(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth/charac
+ter$ cat img/.gitignore
+.DS_Store
+node_modules
+.vscode(trusty)kefkiroth@localhost:~/Downloads/info343-code/challenges-kefkiroth/charac
+ter$ exit
+exit
+
+Script done on Thu Sep 29 22:16:25 2016
