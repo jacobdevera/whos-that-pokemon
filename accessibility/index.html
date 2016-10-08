@@ -64,10 +64,12 @@
 
 <p>We used an advanced web proxy to enable our study and quantitatively measured both the presence and observed effectiveness of components thought to impact web accessibility. Most proxy systems can only record <abbr title="Hypertext Transfer Protocol">HTTP</abbr> requests and cannot easily discern user actions performed on web pages. We used an enhanced version of UsaProxy to record participants' browsing. UsaProxy can record actions that are impossible to record with a traditional proxy, such key presses, clicks on arbitrary page elements (including within-page anchor links), and the use of the "back" button to return to a page that was previously viewed. Recording user actions has traditionally required study participants to install specialized browser plugins, but UsaProxy is able to record most user actions by using Javascript code that is injected into pages that are viewed. Because it uses Javascript to parse the viewed web pages, it can also record dynamic page changes, interaction with dynamic content and <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> requests, which are an increasingly important accessibility concern. A proxy approach enables transparent setup by participants and allows them to use their own equipment with its existing configuration.</p>
 
-<p>Prior work has sought a better understanding of the web user experience. The importance of measuring accessibility <i>in situ</i> from the user perspective is illustrated by the relative popularity of web sites visited by web users in our study, as shown in Figure 1. The distribution is Zipf-like, which results in three sites (google.com, myspace.com and msn.com) accounting for approximately 20% of the pages viewed by the participants in our study. The google.com domain alone accounted for almost twice as many page views as the 630 domains that were viewed five or less times during our study. The accessibility of popular sites more strongly affects users than do sites on the long tail of popularity. While our study is not a replacement for laboratory studies that use common tasks, it offers an important view of accessibility that better matches the experiences of real users.</p>
+<p id="domain-pop">Prior work has sought a better understanding of the web user experience. The importance of measuring accessibility <i>in situ</i> from the user perspective is illustrated by the relative popularity of web sites visited by web users in our study, as shown in <a href="#fig1">Figure 1</a>. The distribution is Zipf-like, which results in three sites (google.com, myspace.com and msn.com) accounting for approximately 20% of the pages viewed by the participants in our study. The google.com domain alone accounted for almost twice as many page views as the 630 domains that were viewed five or less times during our study. The accessibility of popular sites more strongly affects users than do sites on the long tail of popularity. While our study is not a replacement for laboratory studies that use common tasks, it offers an important view of accessibility that better matches the experiences of real users.</p>
 
-<img src="img/figure1.png">
-<p>Figure 1: Log frequency of visits per domain name recorded for all participants ordered by popularity.</p>
+<figure id="fig1">
+<img src="img/figure1.png" alt="Domain popularity graph" longdesc="#domain-pop">
+<figcaption>Figure 1: Log frequency of visits per domain name recorded for all participants ordered by popularity.</figcaption>
+</figure>
 
 <p>Blind web users have proven adept at overcoming accessibility problems, and one of the goals of this study was to better understand the coping strategies employed by blind users as they browse the web. For instance, the lack of alternative text is an often-cited accessibility concern, but blind users can often obtain the same information contained within an image from surrounding context. Within-page anchors called "skip links" are designed to help blind users effectively navigate complex web pages by enabling them to jump to relevant content, but these links may be used infrequently because other screen reader functionality also enables users to move non-linearly through a page. If the context surrounding links on a page isn't clearly expressed to blind users,they may explore the page by clicking on links simply to see where they point and then return. WebinSitu explores whether blind web users avoid inaccessible content and also if they make use of coping strategies.</p>
 
@@ -75,7 +77,13 @@
 
 <p>Overall, we found that blind web users browse the web quite similarly to sighted users and that most pages visited during our study were inaccessible to some degree. In our study these problems are placed in the context of their predicted effects because we implicitly weighted pages relative to their popularity. Perhaps most surprising, blind participants generally did not shy away from pages exhibiting accessibility problems anymore than did sighted users. Blind participants were, however, much less likely to visit pages containing content not well addressed by assistive technology. Blind users tended not to visit sites heavily dependent on Asychronous Javascript and <abbr title="Extensible Markup Language">XML</abbr> (<abbr title="Asynchronous JavaScript and XML">AJAX</abbr>), but visited many pages that included Flash content. Blind users also interacted less with both dynamic content and inaccessible web images. Skip links, added to web pages to assist screen reader users, were only used occasionally by our participants. Our analysis highlighted several areas that may suggest the coping strategies used by blind web users when faced with inaccessible content.</p>
 
-<p>The contributions of this paper are as follows: 1) We report on web accessibility as experienced by real web users. 2) We compare the browsing experience of sighted and blind web users on several quantitative dimensions. 3) We demonstrate the effectiveness of proxy-based recording for exploring the interaction of blind web users. 4) We formulate practical user observations that can influence the direction of future web accessibility research.</p>
+<p>The contributions of this paper are as follows: 
+  <ol> 
+    <li>We report on web accessibility as experienced by real web users.</li>
+    <li>We compare the browsing experience of sighted and blind web users on several quantitative dimensions.</li> 
+    <li>We demonstrate the effectiveness of proxy-based recording for exploring the interaction of blind web users.</li>
+    <li> We formulate practical user observations that can influence the direction of future web accessibility research.</li>
+  </ol>
 </section>
 
 <section role="region">
@@ -85,7 +93,7 @@
 
 <section role="region">
 <!-- Study Design -->
-<h2>3. Study Design</h2>
+<h2 id="sec3">3. Study Design</h2>
 <p>In this study, we considered two categories of data related to web browsing that yield insight into accessibility problems faced by blind web users. Many definitions of blindness exist; we use the term blind users for those users that primarily use a screen reader to browse the web and sighted users for those who use a visual display. First, we recorded statistics relating to basic web accessibility of pages viewed in our study, such as alternative text for images, heading tags for added structure and label elements to associate form input with their labels. Second, we considered the browsing behavior of both blind and sighted users, including average time spent on pages and interaction with elements.</p>
 
 <section role="region">
@@ -139,13 +147,15 @@
 
 <p>Our data was collected "in the wild," and, as is often required when working with real data, it was necessary to remove outliers that might have otherwise inappropriately skewed our data. For each metric in this section, we removed data that was more than 3 standard deviations (<abbr title="standard deviation">SD</abbr>) from the mean. This resulted in an average of 1.04% of our data being eliminated for the applicable metrics. Our measures are averages over subjects.</p>
 
-<p>The remainder of this section explores the results of our study for the two broad categories initially outlined in our <a src="Section 3">Study Design (Section 3)</a>. A summary of many of the measurements reported in this section is presented in Figure 3 for both blind and sighted participants.</p>
+<p>The remainder of this section explores the results of our study for the two broad categories initially outlined in our <a href="#sec3">Study Design (Section 3)</a>. A summary of many of the measurements reported in this section is presented in <a href="#fig3">Figure 3</a> for both blind and sighted participants.</p>
 
-<img src="img/figure3.png">
-<p>Figure 3: For the web pages visited by each participant, percentage of: (1) images with alt text, (2) pages that had one or more mouse movement, (3) pages with Flash, (4) pages with <abbr title="Asynchronous JavaScript and XML">AJAX</abbr>, (5) pages containing dynamic content, (6) pages where the participant interacted with dynamic content.
+<figure id="fig3">
+<img src="img/figure3.png" alt="Results graph" longdesc="#sec4-1">
+<figcaption>Figure 3: For the web pages visited by each participant, percentage of: (1) images with alt text, (2) pages that had one or more mouse movement, (3) pages with Flash, (4) pages with <abbr title="Asynchronous JavaScript and XML">AJAX</abbr>, (5) pages containing dynamic content, (6) pages where the participant interacted with dynamic content.</figcaption>
+</figure>
 
 <section role="region">
-<h3>4.1 Accessibility of Content</h3>
+<h3 id="sec4-1">4.1 Accessibility of Content</h3>
 
 <section role="region">
 <h4 id="sec4-1-1">4.1.1 Descriptive Anchor Text and Skip Link</h4>
@@ -176,7 +186,7 @@
 <p><i>Timing</i><p>
 <p>In examining the time spent per task, we found that our data was skewed toward shorter time periods, which is typical when time is used as a performance measure. Because this data does not meet the normality assumption of <abbr title="analysis of variance">ANOVA</abbr>, we applied the commonly used log transformation to all time data. Although this complicates the interpretation of results, it was necessary to perform parametric statistical analysis. All statistical significance reported here is in reference to the transformed data; however, results are reported in the original, untransformed scale.</p>
 
-<p>We found that blind participants spent more time on average on each page visited than sighted participants. For a summary of the results, see Figure 5. These results seemed particularly strong for short tasks, where sighted users were able to complete the tasks much faster than blind users. Blindness had a significant effect on the log of time spent on each page for all but the longest time period. Table 1 shows that the average time spent by blind and sighted participants approach one another as task length increases.</p>
+<p>We found that blind participants spent more time on average on each page visited than sighted participants. For a summary of the results, see Figure 5. These results seemed particularly strong for short tasks, where sighted users were able to complete the tasks much faster than blind users. Blindness had a significant effect on the log of time spent on each page for all but the longest time period. <a href="#table1">Table 1</a> shows that the average time spent by blind and sighted participants approach one another as task length increases.</p>
 
 <p>We also identified four tasks conducted by both blind and sighted participants, which enabled us to compare the time required for users to complete these tasks.</p>
 
@@ -184,7 +194,7 @@
 
 <p><strong>Providing Feedback</strong> Another common task performed by most of our participants was to provide qualitative comments on some of the web pages that they visited as part of the study (See Figure 6). This task also consisted of two subtasks: 1) querying for web pages from the user's web history, and 2) commenting on one of the pages returned. On average, blind and sighted users took 30.36 and 18.41 seconds to complete the first subtask (SD 20.59, 19.84). This represents a marginally significant effect of blindness on the log of time spent querying personal web history. On average, blind and sighted participants spent 104.60 (30.98) and 68.74 (78.74) seconds, respectively, to leave a comment. This represented a significant effect of blindness on the log of time spent commenting on personal web history.</p>
 
-<table>
+<table id="table1">
   <tr><td>Range</td> <td>Blind</td> <td>Sighted</td> <td>Sig. <span class="func">F<sub>1,19</sub></span></td></tr>
   <tr><td>0 - 1.0</td> <td>0.38 (0.26)</td> <td>0.23 (0.23)</td>  <td>32.55, <em>p</em> < .0001</td></tr>
   <tr><td>0 - 2.5</td> <td>0.76 (0.65)</td> <td>0.38 (0.49)</td>  <td>31.83, <em>p</em> < .0001</td></tr>
