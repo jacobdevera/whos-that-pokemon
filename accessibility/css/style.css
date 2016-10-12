@@ -1,0 +1,88 @@
+.skip {
+    position:absolute; 
+    left:-10000px; 
+    top:auto; 
+    width:1px; 
+    height:1px; 
+    overflow:hidden;
+}
+
+.skip:focus { 
+    position:static; 
+    width:auto; 
+    height:auto; 
+} 
+
+div {
+    margin: 2em;
+}
+
+header, nav {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 90%;
+}
+
+nav {
+    float: right;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+nav ul {
+    padding-left: 1.4em;
+}
+
+nav > h2 {
+    font-size: 120%;
+    font-style: bold;
+    text-transform: none;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    text-transform: uppercase;
+}
+
+h4 {
+    font-weight: normal;
+    font-style: italic;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+figcaption {
+    text-align: center;
+    font-weight: bold;
+}
+
+dt {
+    font-weight: bold;
+}
+
+dd {
+    margin-bottom: 1em;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 1em;
+}
+
+caption {
+    caption-side: bottom;
+}
