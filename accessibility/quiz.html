@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="Jacob Devera">
+    <title>WebinSitu: Reading Quiz</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+    <nav role="navigation">
+        <h3 id=#navigation>Navigation</h3>
+        <ul>
+            <li><a href="index.html">Back to Paper</a></li>
+        </ul>
+    </nav>
+    <main role="main">
+        <form role="form">
+            <div>
+            <label for="q1">1. A _______ event occurs when a user leaves and then quickly returns to a page.</label>
+            <input id="q1" type="text">
+            </div>
+
+            <div>
+            <fieldset>
+                <legend>2. How likely were blind users to click on images with alternative text compared to images without it?
+                </legend>
+                <input id="radio1" type="radio" name="q2" value="a"><label for="radio1">a. Less likely</label>
+                <input id="radio2" type="radio" name="q2" value="b"><label for="radio2">b. Just as likely</label>
+                <input id="radio3" type="radio" name="q2" value="c"><label for="radio3">c. More likely</label>
+            </fieldset>
+            </div>
+
+            <div>
+            <label for="q3">3. Which search engine were users asked to query results from?</label>
+            <select id="q3">
+                <option value="volvo">Bing</option>
+                <option value="saab">Yahoo</option>
+                <option value="mercedes">Google</option>
+                <option value="audi">DuckDuckGo</option>
+            </select>
+            </div>
+
+            <div>
+                <button type="button">Submit answers</button>
+            </div>
+        </form>
+    </main>
+</body>
+
+</html>

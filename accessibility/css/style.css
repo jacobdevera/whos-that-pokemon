@@ -1,6 +1,42 @@
-header {
+.skip {
+    position:absolute; 
+    left:-10000px; 
+    top:auto; 
+    width:1px; 
+    height:1px; 
+    overflow:hidden;
+}
+
+.skip:focus { 
+    position:static; 
+    width:auto; 
+    height:auto; 
+} 
+
+div {
+    margin: 2em;
+}
+
+header, nav {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 90%;
+}
+
+nav {
+    float: right;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+}
+
+nav ul {
+    padding-left: 1.4em;
+}
+
+nav > h2 {
+    font-size: 120%;
+    font-style: bold;
+    text-transform: none;
 }
 
 h1 {
@@ -24,6 +60,7 @@ img {
 
 figcaption {
     text-align: center;
+    font-weight: bold;
 }
 
 dt {
@@ -44,4 +81,8 @@ table, th, td {
 
 th, td {
     padding: 1em;
+}
+
+caption {
+    caption-side: bottom;
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <!-- Metadata -->
   <meta charset="UTF-8">
@@ -12,283 +13,339 @@
   <title>WebinSitu: A Comparative Analysis of Blind and Sighted Browsing Behavior</title>
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-<body>
-<article role="article">
-<!-- Title & Authors -->
-<header role="banner">
-<h1>WebinSitu: A Comparative Analysis of Blind and Sighted Browsing Behavior</h1>
-<address role="contentinfo">
-  <a href="mailto:jbigham@cs.washington.edu">Jeffrey P. Bigham</a>, 
-  <a href="mailto:cavender@cs.washington.edu">Anna C. Cavender</a>, 
-  <a href="mailto:jbrudvik@cs.washington.edu">Jeremy T. Brudvik</a>, 
-  <a href="mailto:wobbrock@u.washington.edu">Jacob O.Wobbrock</a> and
-  <a href="mailto:ladner@cs.washington.edu"> Richard E. Ladner</a>
-</address>
-</header>
 
-<nav>
-    <h3>Navigation</h3>
+<body>
+  <a href="#navigation" class="skip">Skip to Navigation</a>
+  <a href="#abstract" class="skip">Skip to Content</a>
+  <!-- Title & Authors -->
+  <header role="banner">
+    <h1>WebinSitu: A Comparative Analysis of Blind and Sighted Browsing Behavior</h1>
+    <address>
+      <a href="mailto:jbigham@cs.washington.edu">Jeffrey P. Bigham</a>,
+      <a href="mailto:cavender@cs.washington.edu">Anna C. Cavender</a>,
+      <a href="mailto:jbrudvik@cs.washington.edu">Jeremy T. Brudvik</a>,
+      <a href="mailto:wobbrock@u.washington.edu">Jacob O.Wobbrock</a> and
+      <a href="mailto:ladner@cs.washington.edu"> Richard E. Ladner</a>
+    </address>
+  </header>
+
+  <nav role="navigation">
+    <h2 id=#navigation>Navigation</h3>
     <ul>
       <li><a href="#abstract">Abstract</a></li>
       <li><a href="#sec1">Introduction</a></li>
       <li><a href="#sec2">Recording Data</a></li>
       <li><a href="#sec3">Study Design</a></li>
-      <ul>
-        <li><a href="#sec3-1">Accessibility of Content</a></li>
+      <li>
         <ul>
-          <li><a href="#sec3-1-1">Descriptive Anchor Text and Skip Links</a></li>
-          <li><a href="#sec3-1-2">Structure, Semantics, and Images</a></li>
-          <li><a href="#sec3-1-3">Dynamic Content, AJAX, and Flash</a></li>
+          <li><a href="#sec3-1">Accessibility of Content</a></li>
+          <li>
+            <ul>
+              <li><a href="#sec3-1-1">Descriptive Anchor Text and Skip Links</a></li>
+              <li><a href="#sec3-1-2">Structure, Semantics, and Images</a></li>
+              <li><a href="#sec3-1-3">Dynamic Content, AJAX, and Flash</a></li>
+            </ul>
+          </li>
+          <li><a href="#sec3-2">Browsing Behavior</a></li>
+          <li>
+            <ul>
+              <li><a href="#sec3-2-1">Probing</a></li>
+              <li><a href="#sec3-2-2">Timing</a></li>
+            </ul>
+          </li>
         </ul>
-        <li><a href="#sec3-2">Browsing Behavior</a></li>
-        <ul>
-          <li><a href="#sec3-2-1">Probing</a></li>
-          <li><a href="#sec3-2-2">Timing</a></li>
-        </ul>
-      </ul>
+      </li>
       <li><a href="#sec4">Results</a></li>
-      <ul>
-        <li><a href="#sec4-1" aria-label="Accessibility of Content Results">Accessibility of Content</a></li>
+      <li>
         <ul>
-          <li><a href="#sec4-1-1" aria-label="Descriptive Anchor Text and Skip Links Results">Descriptive Anchor Text and Skip Links</a></li>
-          <li><a href="#sec4-1-2" aria-label="Structure, Semantics, and Images Results">Structure, Semantics, and Images</a></li>
-          <li><a href="#sec4-1-3" aria-label="Dynamic Content, AJAX, and Flash Results">Dynamic Content, AJAX, and Flash</a></li>
+          <li><a href="#sec4-1" aria-label="Accessibility of Content Results">Accessibility of Content</a></li>
+          <li>
+            <ul>
+              <li><a href="#sec4-1-1" aria-label="Descriptive Anchor Text and Skip Links Results">Descriptive Anchor Text and Skip Links</a></li>
+              <li><a href="#sec4-1-2" aria-label="Structure, Semantics, and Images Results">Structure, Semantics, and Images</a></li>
+              <li><a href="#sec4-1-3" aria-label="Dynamic Content, AJAX, and Flash Results">Dynamic Content, AJAX, and Flash</a></li>
+            </ul>
+          </li>
+          <li><a href="#sec4-2" aria-label="Browsing Behavior Results">Browsing Behavior</a></li>
+          <li>
+            <ul>
+              <li><a href="#sec4-2-1" aria-label="Probing Results">Probing</a></li>
+              <li><a href="#sec4-2-2" aria-label="Timing Results">Timing</a></li>
+            </ul>
+          </li>
         </ul>
-        <li><a href="#sec4-2" aria-label="Browsing Behavior Results">Browsing Behavior</a></li>
-        <ul>
-         <li><a href="#sec4-2-1" aria-label="Probing Results">Probing</a></li>
-         <li><a href="#sec4-2-2" aria-label="Timing Results">Timing</a></li>
-        </ul>
-      </ul>
+      </li>
       <li><a href="#sec5">Discussion</a></li>
       <li><a href="#sec6">Related Work</a></li>
       <li><a href="#sec7">Conclusion</a></li>
       <li><a href="#sec8">Acknowledgements</a></li>
-      <li><a href="#sec9">References</a></li> 
+      <li><a href="#sec9">References</a></li>
     </ul>
-    <a href="#quiz">Reading Quiz</a>
-    <br/>
-    <a href="#ogpaper">Original Paper</a>
-</nav>
+    <a href="quiz.html">Reading Quiz</a>
+    <br>
+    <a href="assets-07.04.pdf">Original Paper</a>
+  </nav>
 
-<section role="region">
-<!-- Abstract and Keywords -->
-<h2 id="abstract">Abstract</h2>
-<p>Web browsing is inefficient for blind web users because of persistent accessibility problems, but the extent of these problems and their practical effects from the perspective of the user has not been sufficiently examined. We conducted a study <i>in situ</i> to investigate the accessibility of the web as experienced by web users. This remote study used an advanced web proxy that leverages <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> technology to record both the pages viewed and the actions taken by users on the web pages that they visited. Our study was conducted remotely over the period of one week, and our participants used the assistive technology and software to which they were already accustomed and had already configured according to preference. These advantages allowed us to aggregate observations of many users and to explore the practical effects on and coping strategies employed by our blind participants. Our study reflects web accessibility from the perspective of web users and describes quantitative differences in the browsing behavior of blind and sighted web users.</p>
+  <main role="main">
+    <article role="article">
+      <section role="region">
+        <!-- Abstract and Keywords -->
+        <h2 id="abstract">Abstract</h2>
+        <p>Web browsing is inefficient for blind web users because of persistent accessibility problems, but the extent of these problems and their practical effects from the perspective of the user has not been sufficiently examined. We conducted a study <i>in situ</i> to investigate the accessibility of the web as experienced by web users. This remote study used an advanced web proxy that leverages <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> technology to record both the pages viewed and the actions taken by users on the web pages that they visited. Our study was conducted remotely over the period of one week, and our participants used the assistive technology and software to which they were already accustomed and had already configured according to preference. These advantages allowed us to aggregate observations of many users and to explore the practical effects on and coping strategies employed by our blind participants. Our study reflects web accessibility from the perspective of web users and describes quantitative differences in the browsing behavior of blind and sighted web users.</p>
 
-<section role="region">
-<h3>Categories and Subject Descriptors</h3>
-<ul>
-  <li>K.4.2 [Social Issues]: Assistive technologies for persons with disabilities</li> 
-  <li>H.5.2 [Information Interfaces and Presentation]: User Interfaces</li>
-</ul>
-</section>
+        <section role="region">
+          <h3>Categories and Subject Descriptors</h3>
+          <ul>
+            <li>K.4.2 [Social Issues]: Assistive technologies for persons with disabilities</li>
+            <li>H.5.2 [Information Interfaces and Presentation]: User Interfaces</li>
+          </ul>
+        </section>
 
-<section role="region">
-<h3>General Terms</h3>
-<ul>
-  <li>Human Factors</li> 
-  <li>Experimentation</li>
-</ul>
-</section>
+        <section role="region">
+          <h3>General Terms</h3>
+          <ul>
+            <li>Human Factors</li>
+            <li>Experimentation</li>
+          </ul>
+        </section>
 
-<section role="region">
-<h3>Keywords</h3>
-<ul>
-  <li>web studies</li> 
-  <li>web accessibility</li> 
-  <li>blind users</li>
-</ul>
-</section>
-</section>
+        <section role="region">
+          <h3>Keywords</h3>
+          <ul>
+            <li>web studies</li>
+            <li>web accessibility</li>
+            <li>blind users</li>
+          </ul>
+        </section>
+      </section>
 
-<section role="region">
-<!-- Introduction -->
-<h2 id="sec1">1. Introduction</h2>
-<p>Browsing the web is inefficient for blind web users because of persistent accessibility problems. However, the extent of these problems and their practical effects on browsing experience are not yet adequately understood from the perspective of blind web users. For web access guidelines, standards, and future improvements to be truly relevant and useful, more information about real-life web interaction is needed. In this work, we seek to understand the accessibility of the web from the user perspective by measuring the accessibility of the pages that users visit and comparing the behavior observed in blind users to their sighted counterparts.</p>
+      <section role="region">
+        <!-- Introduction -->
+        <h2 id="sec1">1. Introduction</h2>
+        <p>Browsing the web is inefficient for blind web users because of persistent accessibility problems. However, the extent of these problems and their practical effects on browsing experience are not yet adequately understood from the perspective of blind web users. For web access guidelines, standards, and future improvements to be truly relevant and useful, more information about real-life web interaction is needed. In this work, we seek to understand the accessibility of the web from the user perspective by measuring the accessibility of the pages that users visit and comparing the behavior observed in blind users to their sighted counterparts.</p>
 
-<p>We used an advanced web proxy to enable our study and quantitatively measured both the presence and observed effectiveness of components thought to impact web accessibility. Most proxy systems can only record <abbr title="Hypertext Transfer Protocol">HTTP</abbr> requests and cannot easily discern user actions performed on web pages. We used an enhanced version of UsaProxy to record participants' browsing. UsaProxy can record actions that are impossible to record with a traditional proxy, such key presses, clicks on arbitrary page elements (including within-page anchor links), and the use of the "back" button to return to a page that was previously viewed. Recording user actions has traditionally required study participants to install specialized browser plugins, but UsaProxy is able to record most user actions by using Javascript code that is injected into pages that are viewed. Because it uses Javascript to parse the viewed web pages, it can also record dynamic page changes, interaction with dynamic content and <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> requests, which are an increasingly important accessibility concern. A proxy approach enables transparent setup by participants and allows them to use their own equipment with its existing configuration.</p>
+        <p>We used an advanced web proxy to enable our study and quantitatively measured both the presence and observed effectiveness of components thought to impact web accessibility. Most proxy systems can only record <abbr title="Hypertext Transfer Protocol">HTTP</abbr> requests and cannot easily discern user actions performed on web pages. We used an enhanced version of UsaProxy to record participants' browsing. UsaProxy can record actions that are impossible to record with a traditional proxy, such key presses, clicks on arbitrary page elements (including within-page anchor links), and the use of the "back" button to return to a page that was previously viewed. Recording user actions has traditionally required study participants to install specialized browser plugins, but UsaProxy is able to record most user actions by using Javascript code that is injected into pages that are viewed. Because it uses Javascript to parse the viewed web pages, it can also record dynamic page changes, interaction with dynamic content and <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> requests, which are an increasingly important accessibility concern. A proxy approach enables transparent setup by participants and allows them to use their own equipment with its existing configuration.</p>
 
-<p id="domain-pop">Prior work has sought a better understanding of the web user experience. The importance of measuring accessibility <i>in situ</i> from the user perspective is illustrated by the relative popularity of web sites visited by web users in our study, as shown in <a href="#fig1">Figure 1</a>. The distribution is Zipf-like, which results in three sites (google.com, myspace.com and msn.com) accounting for approximately 20% of the pages viewed by the participants in our study. The google.com domain alone accounted for almost twice as many page views as the 630 domains that were viewed five or less times during our study. The accessibility of popular sites more strongly affects users than do sites on the long tail of popularity. While our study is not a replacement for laboratory studies that use common tasks, it offers an important view of accessibility that better matches the experiences of real users.</p>
+        <p id="domain-pop">Prior work has sought a better understanding of the web user experience. The importance of measuring accessibility <i>in situ</i> from the user perspective is illustrated by the relative popularity of web sites visited by web users in our study, as shown in <a href="#fig1">Figure 1</a>. The distribution is Zipf-like, which results in three sites (google.com, myspace.com and msn.com) accounting for approximately 20% of the pages viewed by the participants in our study. The google.com domain alone accounted for almost twice as many page views as the 630 domains that were viewed five or less times during our study. The accessibility of popular sites more strongly affects users than do sites on the long tail of popularity. While our study is not a replacement for laboratory studies that use common tasks, it offers an important view of accessibility that better matches the experiences of real users.</p>
 
-<figure id="fig1">
-<img src="img/figure1.png" alt="Domain popularity graph" longdesc="#domain-pop">
-<figcaption>Figure 1: Log frequency of visits per domain name recorded for all participants ordered by popularity.</figcaption>
-</figure>
+        <figure id="fig1">
+          <img src="img/figure1.png" alt="Domain popularity graph" longdesc="#domain-pop">
+          <figcaption>Figure 1: Log frequency of visits per domain name recorded for all participants ordered by popularity.</figcaption>
+        </figure>
 
-<p>Blind web users have proven adept at overcoming accessibility problems, and one of the goals of this study was to better understand the coping strategies employed by blind users as they browse the web. For instance, the lack of alternative text is an often-cited accessibility concern, but blind users can often obtain the same information contained within an image from surrounding context. Within-page anchors called "skip links" are designed to help blind users effectively navigate complex web pages by enabling them to jump to relevant content, but these links may be used infrequently because other screen reader functionality also enables users to move non-linearly through a page. If the context surrounding links on a page isn't clearly expressed to blind users,they may explore the page by clicking on links simply to see where they point and then return. WebinSitu explores whether blind web users avoid inaccessible content and also if they make use of coping strategies.</p>
+        <p>Blind web users have proven adept at overcoming accessibility problems, and one of the goals of this study was to better understand the coping strategies employed by blind users as they browse the web. For instance, the lack of alternative text is an often-cited accessibility concern, but blind users can often obtain the same information contained within an image from surrounding context. Within-page anchors called "skip links" are designed to help blind users effectively navigate complex web pages by enabling them to jump to relevant content, but these links may be used infrequently because other screen reader functionality also enables users to move non-linearly through a page. If the context surrounding links on a page isn't clearly expressed to blind users,they may explore the page by clicking on links simply to see where they point and then return. WebinSitu explores whether blind web users avoid inaccessible content and also if they make use of coping strategies.</p>
 
-<p>The direct effects of technology and developer practices for improving accessibility are difficult to measure in practice because users employ many different browsing and coping strategies that may vary based on the user's familiarity with the page be accessed. Related work has looked at task-based analysis of accessibility, with a major focus on supporting effective accessibility evaluation (see Ivory for a survey of this work). Realistic studies with blind web users are difficult to conduct in the lab due to difficulties in replicating the diversity of assistive technology and configurations normally used by participants. Previous work has advocated remote studies because they allow participants to use their existing assistive technology and software. These studies noted that blind participants can be ineffective at providing feedback when a page is considerably inaccessible, indicating that simply asking blind users to list the problems they face may not be sufficient.</p>
+        <p>The direct effects of technology and developer practices for improving accessibility are difficult to measure in practice because users employ many different browsing and coping strategies that may vary based on the user's familiarity with the page be accessed. Related work has looked at task-based analysis of accessibility, with a major focus on supporting effective accessibility evaluation (see Ivory for a survey of this work). Realistic studies with blind web users are difficult to conduct in the lab due to difficulties in replicating the diversity of assistive technology and configurations normally used by participants. Previous work has advocated remote studies because they allow participants to use their existing assistive technology and software. These studies noted that blind participants can be ineffective at providing feedback when a page is considerably inaccessible, indicating that simply asking blind users to list the problems they face may not be sufficient.</p>
 
-<p>Overall, we found that blind web users browse the web quite similarly to sighted users and that most pages visited during our study were inaccessible to some degree. In our study these problems are placed in the context of their predicted effects because we implicitly weighted pages relative to their popularity. Perhaps most surprising, blind participants generally did not shy away from pages exhibiting accessibility problems anymore than did sighted users. Blind participants were, however, much less likely to visit pages containing content not well addressed by assistive technology. Blind users tended not to visit sites heavily dependent on Asychronous Javascript and <abbr title="Extensible Markup Language">XML</abbr> (<abbr title="Asynchronous JavaScript and XML">AJAX</abbr>), but visited many pages that included Flash content. Blind users also interacted less with both dynamic content and inaccessible web images. Skip links, added to web pages to assist screen reader users, were only used occasionally by our participants. Our analysis highlighted several areas that may suggest the coping strategies used by blind web users when faced with inaccessible content.</p>
+        <p>Overall, we found that blind web users browse the web quite similarly to sighted users and that most pages visited during our study were inaccessible to some degree. In our study these problems are placed in the context of their predicted effects because we implicitly weighted pages relative to their popularity. Perhaps most surprising, blind participants generally did not shy away from pages exhibiting accessibility problems anymore than did sighted users. Blind participants were, however, much less likely to visit pages containing content not well addressed by assistive technology. Blind users tended not to visit sites heavily dependent on Asychronous Javascript and <abbr title="Extensible Markup Language">XML</abbr> (<abbr title="Asynchronous JavaScript and XML">AJAX</abbr>), but visited many pages that included Flash content. Blind users also interacted less with both dynamic content and inaccessible web images. Skip links, added to web pages to assist screen reader users, were only used occasionally by our participants. Our analysis highlighted several areas that may suggest the coping strategies used by blind web users when faced with inaccessible content.</p>
 
-<p>The contributions of this paper are as follows: 
-  <ol> 
-    <li>We report on web accessibility as experienced by real web users.</li>
-    <li>We compare the browsing experience of sighted and blind web users on several quantitative dimensions.</li> 
-    <li>We demonstrate the effectiveness of proxy-based recording for exploring the interaction of blind web users.</li>
-    <li> We formulate practical user observations that can influence the direction of future web accessibility research.</li>
-  </ol>
-</section>
+        <p>The contributions of this paper are as follows:
+          <ol>
+            <li>We report on web accessibility as experienced by real web users.</li>
+            <li>We compare the browsing experience of sighted and blind web users on several quantitative dimensions.</li>
+            <li>We demonstrate the effectiveness of proxy-based recording for exploring the interaction of blind web users.</li>
+            <li> We formulate practical user observations that can influence the direction of future web accessibility research.</li>
+          </ol>
+      </section>
 
-<section role="region">
-<h2 id="sec2">2. Recording Data</h2>
-<p><i>omitted</i></p>
-</section>
+      <section role="region">
+        <h2 id="sec2">2. Recording Data</h2>
+        <p><i>omitted</i></p>
+      </section>
 
-<section role="region">
-<!-- Study Design -->
-<h2 id="sec3">3. Study Design</h2>
-<p>In this study, we considered two categories of data related to web browsing that yield insight into accessibility problems faced by blind web users. Many definitions of blindness exist; we use the term <span id="bu"><dfn aria-describedby="bu">blind users</dfn> for those users that primarily use a screen reader to browse the web</span> and <span id="su"><dfn aria-describedby="su">sighted users</dfn> for those who use a visual display.</span> First, we recorded statistics relating to basic web accessibility of pages viewed in our study, such as alternative text for images, heading tags for added structure and label elements to associate form input with their labels. Second, we considered the browsing behavior of both blind and sighted users, including average time spent on pages and interaction with elements.</p>
+      <section role="region">
+        <!-- Study Design -->
+        <h2 id="sec3">3. Study Design</h2>
+        <p>In this study, we considered two categories of data related to web browsing that yield insight into accessibility problems faced by blind web users. Many definitions of blindness exist; we use the term <span id="bu"><dfn aria-describedby="bu">blind users</dfn> for those users that primarily use a screen reader to browse the web</span> and <span id="su"><dfn aria-describedby="su">sighted users</dfn> for those who use a visual display.</span> First, we recorded statistics relating to basic web accessibility of pages viewed in our study, such as alternative text for images, heading tags for added structure and label elements to associate form input with their labels. Second, we considered the browsing behavior of both blind and sighted users, including average time spent on pages and interaction with elements.</p>
 
-<section role="region">
-<h3 id="sec3-1">3.1 Accessibility of Content</h3>
-<p>Accessibility guidelines for web developers offer suggestions on how to create accessible web content. Most noted is the <cite>Web Content Acccessibility Guidelines</cite> (<abbr title="Web Content Acccessibility Guidelines">WCAG</abbr>) on which many other accessibility guidelines are based. Web developers often don't include the advice presented in these guidelines in their designs. Our study effectively weights pages based on the frequency with which they are viewed, allowing us to measure the accessibility of web content as perceived by web users. The individual metrics reported here suggest the accessibility of web pages that users view, but cannot capture the true usability of these pages. Because inaccessible pages can be inefficient or impractical to use, blind users may choose to visit sites that are more accessible according to ours metrics. In our analysis, we compared the browsing behavior of blind and sighted users according to the metrics below.</p>
+        <section role="region">
+          <h3 id="sec3-1">3.1 Accessibility of Content</h3>
+          <p>Accessibility guidelines for web developers offer suggestions on how to create accessible web content. Most noted is the <cite>Web Content Acccessibility Guidelines</cite> (<abbr title="Web Content Acccessibility Guidelines">WCAG</abbr>) on which many other accessibility guidelines are based. Web developers often don't include the advice presented in these guidelines in their designs. Our study effectively weights pages based on the frequency with which they are viewed, allowing us to measure the accessibility of web content as perceived by web users. The individual metrics reported here suggest the accessibility of web pages that users view, but cannot capture the true usability of these pages. Because inaccessible pages can be inefficient or impractical to use, blind users may choose to visit sites that are more accessible according to ours metrics. In our analysis, we compared the browsing behavior of blind and sighted users according to the metrics below.</p>
 
-<section role="region">
-<h4 id="sec3-1-1">3.1.1 Descriptive Anchor Text and Skip Links</h4>
-<p>Navigating from link to link is common method of moving through web pages using a screen reader. Many screen readers provide users with a list of links accessed via a shortcut key. However, links can be difficult to interpret when separated from the surrounding context. For instance, the destination of a link labeled "Click Here" is impossible to determine without accompanying context. Prior work has shown that descriptive link text helps users efficiently navigate web pages and related work has explored automatically supplying richer descriptions for links. In our study we collected all links on the pages viewed by our participants as well as all links clicked on by our participants. We sampled 1000 links from each set and manually labeled whether or not each was descriptive.</p>
+          <section role="region">
+            <h4 id="sec3-1-1">3.1.1 Descriptive Anchor Text and Skip Links</h4>
+            <p>Navigating from link to link is common method of moving through web pages using a screen reader. Many screen readers provide users with a list of links accessed via a shortcut key. However, links can be difficult to interpret when separated from the surrounding context. For instance, the destination of a link labeled "Click Here" is impossible to determine without accompanying context. Prior work has shown that descriptive link text helps users efficiently navigate web pages and related work has explored automatically supplying richer descriptions for links. In our study we collected all links on the pages viewed by our participants as well as all links clicked on by our participants. We sampled 1000 links from each set and manually labeled whether or not each was descriptive.</p>
 
-<p>Skip links are within-page links that enable users to skip ahead in content. They normally appear near the beginning of the <abbr title="Hypertext Transfer Protocol">HTTP</abbr> source of a page and are meant for blind web users. We identified skip links using two steps. First, we selected all within-page anchors whose anchor text or alternative text (in the case of images used as skip links) contained one of the following phrases (case insensitive): "skip," "jump to," "content," "navigation," "menu." These phrases may not appear in all skip links, but this works for our purposes of efficiently selecting a set of such links. To ensure that the chosen links were skip links, we manually verified each one chosen in the first step.</p>
-</section>
+            <p>Skip links are within-page links that enable users to skip ahead in content. They normally appear near the beginning of the <abbr title="Hypertext Transfer Protocol">HTTP</abbr> source of a page and are meant for blind web users. We identified skip links using two steps. First, we selected all within-page anchors whose anchor text or alternative text (in the case of images used as skip links) contained one of the following phrases (case insensitive): "skip," "jump to," "content," "navigation," "menu." These phrases may not appear in all skip links, but this works for our purposes of efficiently selecting a set of such links. To ensure that the chosen links were skip links, we manually verified each one chosen in the first step.</p>
+          </section>
 
-<section role="region">
-<h4 id="sec3-1-2">3.1.2 Structure, Semanics, and Images</h4>
-<p>Browsing is made more efficient for blind web users when the structure of the page is encoded in its content and when the semantics of elements are not dependent on visual features. Heading tags (<code>&lt;h1&gt;... &lt;h6&gt;</code>) have been shown to provide useful structure that can aid navigation efficiency. The <code>&lt;label&gt;</code> tag allows web developers to semantically associate input elements with the text that describes them. Often this association is expressed visually, which can make filling out forms difficult for blind web users. These are some of the easiest methods for encoding structure and semantics into <abbr title="Hypertext Markup Language">HTML</abbr> pages. Their use may foreshadow the likelihood that web developers will use more complex methods for assigning structure and semantics to web content, such as the WAI-Accessible Rich Internet Applications (<abbr title="Web Accessibility Initiative – Accessible Rich Internet Applications">WAI-ARIA</abbr>).</p>
+          <section role="region">
+            <h4 id="sec3-1-2">3.1.2 Structure, Semanics, and Images</h4>
+            <p>Browsing is made more efficient for blind web users when the structure of the page is encoded in its content and when the semantics of elements are not dependent on visual features. Heading tags (<code>&lt;h1&gt;... &lt;h6&gt;</code>) have been shown to provide useful structure that can aid navigation efficiency. The <code>&lt;label&gt;</code> tag allows web developers to semantically associate input elements with the text that describes them. Often this association is expressed visually, which can make filling out forms difficult for blind web users. These are some of the easiest methods for encoding structure and semantics into <abbr title="Hypertext Markup Language">HTML</abbr> pages. Their use may foreshadow the likelihood that web developers will use more complex methods for assigning structure and semantics to web content, such as the WAI-Accessible Rich Internet Applications (<abbr title="Web Accessibility Initiative – Accessible Rich Internet Applications">WAI-ARIA</abbr>).</p>
 
-<p>Investigating the accessibility of web images has often been used as an easy measure of web accessibility. In this study, we analyzed the appropriateness of alternative text on images viewed by participants. We sampled both 1000 of the images contained on the pages viewed by our participants and 1000 images that were clicked on by our participants. We manually judged the appropriateness of the alternative text provided for these images.</p>
-</section>
+            <p>Investigating the accessibility of web images has often been used as an easy measure of web accessibility. In this study, we analyzed the appropriateness of alternative text on images viewed by participants. We sampled both 1000 of the images contained on the pages viewed by our participants and 1000 images that were clicked on by our participants. We manually judged the appropriateness of the alternative text provided for these images.</p>
+          </section>
 
-<section role="region">
-<h4 id="sec3-1-3">3.1.3 Dynamic Content, <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> and Flash</h4>
-<p>The web has evolved into a more dynamic medium than previous static web pages. This trend, popularly known as Web 2.0, uses Dynamic HTML (<abbr title="Dynamic Hypertext Markup Language">DHTML</abbr>) and Javascript to arbitrarily modify web pages on the client-side after they have been loaded. All users may benefit from this technology, but it raises important accessibility concerns for blind users. Changes or updates to content that occur dynamically have long been recognized by standards such as the <abbr title="Web Content Acccessibility Guidelines">WCAG</abbr> as potential problems for screen reader users because dynamic changes often occur away from a user's focus. In our study, we recorded dynamic changes in viewed pages. <span id="dc">A <dfn aria-describedby="dc">dynamic change</dfn> is defined as any change to the <abbr title="Document Object Model">DOM</abbr> after the page has loaded.</span> We took special interest when users directly interacted with dynamically changed content. Our system cannot detect when users read content that is dynamically introduced, but can detect when users perform an action that uses such an element. We also recorded how many of the pages viewed by our participants contained programmatic or <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> web requests. While not necessarily an accessibility concern, these requests are indicative of the complex applications that often are accessibility concerns.</p>
+          <section role="region">
+            <h4 id="sec3-1-3">3.1.3 Dynamic Content, <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> and Flash</h4>
+            <p>The web has evolved into a more dynamic medium than previous static web pages. This trend, popularly known as Web 2.0, uses Dynamic HTML (<abbr title="Dynamic Hypertext Markup Language">DHTML</abbr>) and Javascript to arbitrarily modify web pages on the client-side after they have been loaded. All users may benefit from this technology, but it raises important accessibility concerns for blind users. Changes or updates to content that occur dynamically have long been recognized by standards such as the <abbr title="Web Content Acccessibility Guidelines">WCAG</abbr> as potential problems for screen reader users because dynamic changes often occur away from a user's focus. In our study, we recorded dynamic changes in viewed pages. <span id="dc">A <dfn aria-describedby="dc">dynamic change</dfn> is defined as any change to the <abbr title="Document Object Model">DOM</abbr> after the page has loaded.</span> We took special interest when users directly interacted with dynamically changed content. Our system cannot detect when users read content that is dynamically introduced, but can detect when users perform an action that uses such an element. We also recorded how many of the pages viewed by our participants contained programmatic or <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> web requests. While not necessarily an accessibility concern, these requests are indicative of the complex applications that often are accessibility concerns.</p>
 
-<p>A growing number of web pages include Flash content. Recent improvements to this technology has enabled web developers to make much of this content accessible, but doing so requires them to consciously decide to implement accessibility features. Conveying this accessibility information to users requires users to browse with up-to-date versions of their web browsers, screen readers and Adobe Flash. We report on the percentage of web pages visited by blind and sighted web users that contain Flash content.</p>
-</section>
-</section>
+            <p>A growing number of web pages include Flash content. Recent improvements to this technology has enabled web developers to make much of this content accessible, but doing so requires them to consciously decide to implement accessibility features. Conveying this accessibility information to users requires users to browse with up-to-date versions of their web browsers, screen readers and Adobe Flash. We report on the percentage of web pages visited by blind and sighted web users that contain Flash content.</p>
+          </section>
+        </section>
 
-<section role="region">
-<h3 id="sec3-2">3.2 Browsing Behavior</h3>
-<p>Blind web users browse the web differently from their sighted counterparts in terms of the tools that they use and the way information is conveyed to them. We explored how these different access methods manifest in quantifiable differences according to several metrics. In particular, because blind web users have proven quite adept at overcoming accessibility problems, it is interesting to explore the practical effects of accessibility problems. For instance, an image that lacks alternative text does not conform to accessibility guidelines, but may still be accessible if it points to a web page with a meaningful filename. Similarly, skip links seem as though they would be of assistance to users, but users may choose not to follow them either because they are most often interested in content that would be skipped or because they prefer potentially longer reading times to potentially missing out on valuable information. Our study seeks to measure such factors. Beyond the simple presence of accessible and inaccessible components in web pages, we also wanted to collect information that helps suggest the effects of the accessibility of web page components.</p>
+        <section role="region">
+          <h3 id="sec3-2">3.2 Browsing Behavior</h3>
+          <p>Blind web users browse the web differently from their sighted counterparts in terms of the tools that they use and the way information is conveyed to them. We explored how these different access methods manifest in quantifiable differences according to several metrics. In particular, because blind web users have proven quite adept at overcoming accessibility problems, it is interesting to explore the practical effects of accessibility problems. For instance, an image that lacks alternative text does not conform to accessibility guidelines, but may still be accessible if it points to a web page with a meaningful filename. Similarly, skip links seem as though they would be of assistance to users, but users may choose not to follow them either because they are most often interested in content that would be skipped or because they prefer potentially longer reading times to potentially missing out on valuable information. Our study seeks to measure such factors. Beyond the simple presence of accessible and inaccessible components in web pages, we also wanted to collect information that helps suggest the effects of the accessibility of web page components.</p>
 
-<section role="region">
-<h4 id="sec3-2-1">3.2.1 Probing</h4>
-<p>A <span id="prb"><dfn aria-describedby="prb">probing</dfn> event occurs when a user leaves and then quickly returns to a page.</span> Web users often exhibit probing behavior as a method of exploration when they are unsure which link to choose. Probing is also often used as a metric of the quality of results returned when analyzing search engines. If a returned link is probed,then the user likely did not find the contents relevant. Because exploring the context surrounding links is less efficient for screen reader users, they may choose to directly follow links to determine explicitly where they lead. If screen reader users probe more than their sighted counterparts then this would motivate the further development of techniques for associating contextual clues with links. In our study, we investigated the use of probing by our blind and sighted participants.</p>
-</section>
+          <section role="region">
+            <h4 id="sec3-2-1">3.2.1 Probing</h4>
+            <p>A <span id="prb"><dfn aria-describedby="prb">probing</dfn> event occurs when a user leaves and then quickly returns to a page.</span> Web users often exhibit probing behavior as a method of exploration when they are unsure which link to choose. Probing is also often used as a metric of the quality of results returned when analyzing search engines. If a returned link is probed,then the user likely did not find the contents relevant. Because exploring the context surrounding links is less efficient for screen reader users, they may choose to directly follow links to determine explicitly where they lead. If screen reader users probe more than their sighted counterparts then this would motivate the further development of techniques for associating contextual clues with links. In our study, we investigated the use of probing by our blind and sighted participants.</p>
+          </section>
 
-<section role="region">
-<h4 id="sec3-2-2">3.2.2 Timing</h4>
-<p>Underlying work in improving web accessibility is the goal of increasing efficiency for blind web users. In our study, we attempted to quantify the differences in time spent web browsing by blind and sighted web users. We first looked at average time per page to see if there is a measurable effect of blindness on per page browsing time. We then looked at specific tasks that were common across our users that we identified from our collected data. The first was entering a query on the Google search engine, looking through the returned results and then clicking on a result page. The second was using our web history page to find a particular page they themselves had visited during the web study, finding it on the results page and then entering feedback for the page. Even though both groups of users could accomplish these tasks (they were accessible to each group), this comparison provides a sense of the relative efficiency of performing typical tasks.</p>
-</section>
-</section>
-</section>
+          <section role="region">
+            <h4 id="sec3-2-2">3.2.2 Timing</h4>
+            <p>Underlying work in improving web accessibility is the goal of increasing efficiency for blind web users. In our study, we attempted to quantify the differences in time spent web browsing by blind and sighted web users. We first looked at average time per page to see if there is a measurable effect of blindness on per page browsing time. We then looked at specific tasks that were common across our users that we identified from our collected data. The first was entering a query on the Google search engine, looking through the returned results and then clicking on a result page. The second was using our web history page to find a particular page they themselves had visited during the web study, finding it on the results page and then entering feedback for the page. Even though both groups of users could accomplish these tasks (they were accessible to each group), this comparison provides a sense of the relative efficiency of performing typical tasks.</p>
+          </section>
+        </section>
+      </section>
 
-<section role="region">
-<!-- Results -->
-<h2 id="sec4">4. Results</h2>
-<p>For our study, we recruited both blind and sighted web users. In the end, we had 10 blind participants (5 female) ranging in age from 18 to 63 years old and 10 sighted participants ranging in age from 19 to 61 (3 female). We began our recruiting of blind users by first contacting people who had previously expressed interest in volunteering for one of our user studies and then by advertising on an email list for blind web users. Our sighted participants were contacted from a large list of potential volunteers and chosen to be roughly similar to our blind participants according to age and occupation area. Participants were given $30 in exchange for completing the week-long study. Both our blind and sighted participants were diverse in their occupations, although fields related to engineering and science accounted for slightly more than half of participants in both groups. We placed no restriction on participation, but all of our participants resided in either the United States or Canada, with geographical diversity within this region.</p>
+      <section role="region">
+        <!-- Results -->
+        <h2 id="sec4">4. Results</h2>
+        <p>For our study, we recruited both blind and sighted web users. In the end, we had 10 blind participants (5 female) ranging in age from 18 to 63 years old and 10 sighted participants ranging in age from 19 to 61 (3 female). We began our recruiting of blind users by first contacting people who had previously expressed interest in volunteering for one of our user studies and then by advertising on an email list for blind web users. Our sighted participants were contacted from a large list of potential volunteers and chosen to be roughly similar to our blind participants according to age and occupation area. Participants were given $30 in exchange for completing the week-long study. Both our blind and sighted participants were diverse in their occupations, although fields related to engineering and science accounted for slightly more than half of participants in both groups. We placed no restriction on participation, but all of our participants resided in either the United States or Canada, with geographical diversity within this region.</p>
 
-<p>Participant were sent instructions outlining how to configure their computers to access the web through our proxy. Only one participant had difficulty with this setup procedure and the issue was quickly resolved by speaking to the researchers on the phone. Each participant was told to browse the web as they normally would for 7 days. During this time, our participants visited 21,244 total pages (7,161 by blind participants), which represented approximately 325 combined hours of browsing (141 by blind participants. "Browsing" time here refers to total time spent on our system with no more than 1 hour of inactivity. The pages they viewed contained 337,036 images (109,264 by blind participants) and 926,901 links (285,207 by blind participants). Of our blind participants, 8 used the <abbr title="Job Access With Speech">JAWS</abbr> screen reader, 2 used Window-Eyes; 9 used Internet Explorer,1 used Mozilla Firefox. All of our blind participants but one used the latest major version of their preferred screen reader. None reported using multiple screen readers, although we know of individuals who report switching between <abbr title="Job Access With Speech">JAWS</abbr> and Window-Eyes depending on the application or web page. All of our participants used Javascript-enabled web browsers, although we did not screen for this.</p>
+        <p>Participant were sent instructions outlining how to configure their computers to access the web through our proxy. Only one participant had difficulty with this setup procedure and the issue was quickly resolved by speaking to the researchers on the phone. Each participant was told to browse the web as they normally would for 7 days. During this time, our participants visited 21,244 total pages (7,161 by blind participants), which represented approximately 325 combined hours of browsing (141 by blind participants. "Browsing" time here refers to total time spent on our system with no more than 1 hour of inactivity. The pages they viewed contained 337,036 images (109,264 by blind participants) and 926,901 links (285,207 by blind participants). Of our blind participants, 8 used the <abbr title="Job Access With Speech">JAWS</abbr> screen reader, 2 used Window-Eyes; 9 used Internet Explorer,1 used Mozilla Firefox. All of our blind participants but one used the latest major version of their preferred screen reader. None reported using multiple screen readers, although we know of individuals who report switching between <abbr title="Job Access With Speech">JAWS</abbr> and Window-Eyes depending on the application or web page. All of our participants used Javascript-enabled web browsers, although we did not screen for this.</p>
 
-<p>Our data was collected "in the wild," and, as is often required when working with real data, it was necessary to remove outliers that might have otherwise inappropriately skewed our data. For each metric in this section, we removed data that was more than 3 standard deviations (<abbr title="standard deviation">SD</abbr>) from the mean. This resulted in an average of 1.04% of our data being eliminated for the applicable metrics. Our measures are averages over subjects.</p>
+        <p>Our data was collected "in the wild," and, as is often required when working with real data, it was necessary to remove outliers that might have otherwise inappropriately skewed our data. For each metric in this section, we removed data that was more than 3 standard deviations (<abbr title="standard deviation">SD</abbr>) from the mean. This resulted in an average of 1.04% of our data being eliminated for the applicable metrics. Our measures are averages over subjects.</p>
 
-<p>The remainder of this section explores the results of our study for the two broad categories initially outlined in our <a href="#sec3">Study Design (Section 3)</a>. A summary of many of the measurements reported in this section is presented in <a href="#fig3">Figure 3</a> for both blind and sighted participants.</p>
+        <p>The remainder of this section explores the results of our study for the two broad categories initially outlined in our <a href="#sec3">Study Design (Section 3)</a>. A summary of many of the measurements reported in this section is presented in <a href="#fig3">Figure 3</a> for both blind and sighted participants.</p>
 
-<figure id="fig3">
-<img src="img/figure3.png" alt="Results graph" longdesc="#sec4-1">
-<figcaption>Figure 3: For the web pages visited by each participant, percentage of: (1) images with alt text, (2) pages that had one or more mouse movement, (3) pages with Flash, (4) pages with <abbr title="Asynchronous JavaScript and XML">AJAX</abbr>, (5) pages containing dynamic content, (6) pages where the participant interacted with dynamic content.</figcaption>
-</figure>
+        <figure id="fig3">
+          <img src="img/figure3.png" alt="Results graph" longdesc="#sec4-1">
+          <figcaption>Figure 3: For the web pages visited by each participant, percentage of: (1) images with alt text, (2) pages that had one or more mouse movement, (3) pages with Flash, (4) pages with <abbr title="Asynchronous JavaScript and XML">AJAX</abbr>, (5) pages containing dynamic content, (6) pages where the participant interacted with dynamic content.</figcaption>
+        </figure>
 
-<section role="region">
-<h3 id="sec4-1">4.1 Accessibility of Content</h3>
+        <section role="region">
+          <h3 id="sec4-1">4.1 Accessibility of Content</h3>
 
-<section role="region">
-<h4 id="sec4-1-1">4.1.1 Descriptive Anchor Text and Skip Link</h4>
-<p><i>omitted</i></p>
-</section>
+          <section role="region">
+            <h4 id="sec4-1-1">4.1.1 Descriptive Anchor Text and Skip Link</h4>
+            <p><i>omitted</i></p>
+          </section>
 
-<section role="region">
-<h4 id="sec4-1-2">4.1.2 Structure, Semantics, and Images</h4>
-<p>Overall, 53.08% of the web pages viewed by our participants contained at least one heading tag and there was no significant difference between pages visited by sighted and blind users. We found that on pages that contained input elements that required labels, only 41.73% contained at least one label element. Using manual evaluation, we found that 56.9% of all images on the pages visited by our participants were properly assigned alternative text and that 55.3% of the images clicked on by web users were properly assigned alternative text based on manual assessment of appropriateness. Blind participants were more likely to click on images that contained alternative text. 72.17% (19.61) of images clicked on by blind participants were assigned appropriate alternative text, compared to 34.03% (29.74) of the images clicked on by sighted participants, which represents a statistically significant effect of blindness on this measure.</p>
-</section>
+          <section role="region">
+            <h4 id="sec4-1-2">4.1.2 Structure, Semantics, and Images</h4>
+            <p>Overall, 53.08% of the web pages viewed by our participants contained at least one heading tag and there was no significant difference between pages visited by sighted and blind users. We found that on pages that contained input elements that required labels, only 41.73% contained at least one label element. Using manual evaluation, we found that 56.9% of all images on the pages visited by our participants were properly assigned alternative text and that 55.3% of the images clicked on by web users were properly assigned alternative text based on manual assessment of appropriateness. Blind participants were more likely to click on images that contained alternative text. 72.17% (19.61) of images clicked on by blind participants were assigned appropriate alternative text, compared to 34.03% (29.74) of the images clicked on by sighted participants, which represents a statistically significant effect of blindness on this measure.</p>
+          </section>
 
-<section role="region">
-<h4 id="sec4-1-3">4.1.3 Dynamic Content, <abbr title="Asynchronous JavaScript and XML">AJAX</abbr>, and Flash</h4>
-<p>Many of the pages viewed by our participants contained dynamic content, <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> and Flash content. Pages visited by sighted participants underwent an average of 21.65 (35.38) dynamic changes to their content as compared to an average of only 1.44 (1.81) changes per page visited by blind participants. This difference was marginally significant. Blind users interacted with only 0.04 (0.08) of page elements that were either dynamically introduced or dynamically altered, while sighted users interacted with 0.77 (0.89) of such elements per page. There was a significant effect of blindness on this measure. Our blind participants may not been aware that the content had been introduced or changed, or were unable to interact with it. Pages visited by blind and sighted users issued an average of 0.02 (0.02) and 0.15 (0.20) <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> requests, respectively. This result is statistically significant and suggests that blind users tend to avoid web pages that contain <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> content. Of the dynamic content categories, Flash was the only one for which we were unable to detect a significant difference in the likelihood of blind versus sighted participants visiting those types of pages. On average 17.03% (<abbr title="standard deviation">SD</abbr> 0.24) and 16.00% (11.38) of the web pages viewed by blind and sighted participants, respectively, contained some Flash content. There was not a detectably significant difference on this measure. We also calculated these four metrics for domains visited (groups of web pages) and reached analogous conclusions.</p>
-</section>
-</section>
+          <section role="region">
+            <h4 id="sec4-1-3">4.1.3 Dynamic Content, <abbr title="Asynchronous JavaScript and XML">AJAX</abbr>, and Flash</h4>
+            <p>Many of the pages viewed by our participants contained dynamic content, <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> and Flash content. Pages visited by sighted participants underwent an average of 21.65 (35.38) dynamic changes to their content as compared to an average of only 1.44 (1.81) changes per page visited by blind participants. This difference was marginally significant. Blind users interacted with only 0.04 (0.08) of page elements that were either dynamically introduced or dynamically altered, while sighted users interacted with 0.77 (0.89) of such elements per page. There was a significant effect of blindness on this measure. Our blind participants may not been aware that the content had been introduced or changed, or were unable to interact with it. Pages visited by blind and sighted users issued an average of 0.02 (0.02) and 0.15 (0.20) <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> requests, respectively. This result is statistically significant and suggests that blind users tend to avoid web pages that contain <abbr title="Asynchronous JavaScript and XML">AJAX</abbr> content. Of the dynamic content categories, Flash was the only one for which we were unable to detect a significant difference in the likelihood of blind versus sighted participants visiting those types of pages. On average 17.03% (<abbr title="standard deviation">SD</abbr> 0.24) and 16.00% (11.38) of the web pages viewed by blind and sighted participants, respectively, contained some Flash content. There was not a detectably significant difference on this measure. We also calculated these four metrics for domains visited (groups of web pages) and reached analogous conclusions.</p>
+          </section>
+        </section>
 
-<section role="region">
-<h3 id="sec4-2">4.2 Browsing Behavior</h3>
-<p><i>content omitted</i></p>
-</section>
+        <section role="region">
+          <h3 id="sec4-2">4.2 Browsing Behavior</h3>
+          <p><i>content omitted</i></p>
 
-<section role="region">
-<h4 id="sec4-2-1">4.2.1 Probing</h4>
-<p>Our blind participants exhibited more probing than their sighted counterparts as shown in Figure 4. On average, blind participants executed 0.34 (<abbr title="standard deviation">SD</abbr> 0.18) probes per page while sighted participants had only 0.12 (0.12), a significant difference and may be indicative of the greater difficulty of blind web users due to limited context.</p>
-</section>
+          <section role="region">
+            <h4 id="sec4-2-1">4.2.1 Probing</h4>
+            <p>Our blind participants exhibited more probing than their sighted counterparts as shown in Figure 4. On average, blind participants executed 0.34 (<abbr title="standard deviation">SD</abbr> 0.18) probes per page while sighted participants had only 0.12 (0.12), a significant difference and may be indicative of the greater difficulty of blind web users due to limited context.</p>
+          </section>
 
-<h4 id="sec4-2-2">4.2.2 Timing</h4>
-<p>In examining the time spent per task, we found that our data was skewed toward shorter time periods, which is typical when time is used as a performance measure. Because this data does not meet the normality assumption of <abbr title="analysis of variance">ANOVA</abbr>, we applied the commonly used log transformation to all time data. Although this complicates the interpretation of results, it was necessary to perform parametric statistical analysis. All statistical significance reported here is in reference to the transformed data; however, results are reported in the original, untransformed scale.</p>
+          <section role="region">
+            <h4 id="sec4-2-2">4.2.2 Timing</h4>
+            <p>In examining the time spent per task, we found that our data was skewed toward shorter time periods, which is typical when time is used as a performance measure. Because this data does not meet the normality assumption of <abbr title="analysis of variance">ANOVA</abbr>, we applied the commonly used log transformation to all time data. Although this complicates the interpretation of results, it was necessary to perform parametric statistical analysis. All statistical significance reported here is in reference to the transformed data; however, results are reported in the original, untransformed scale.</p>
 
-<p>We found that blind participants spent more time on average on each page visited than sighted participants. For a summary of the results, see Figure 5. These results seemed particularly strong for short tasks, where sighted users were able to complete the tasks much faster than blind users. Blindness had a significant effect on the log of time spent on each page for all but the longest time period. <a href="#table1">Table 1</a> shows that the average time spent by blind and sighted participants approach one another as task length increases.</p>
+            <p>We found that blind participants spent more time on average on each page visited than sighted participants. For a summary of the results, see Figure 5. These results seemed particularly strong for short tasks, where sighted users were able to complete the tasks much faster than blind users. Blindness had a significant effect on the log of time spent on each page for all but the longest time period. <a href="#table1">Table 1</a> shows that the average time spent by blind and sighted participants approach one another as task length increases.</p>
 
-<p>We also identified four tasks conducted by both blind and sighted participants, which enabled us to compare the time required for users to complete these tasks.</p>
+            <p>We also identified four tasks conducted by both blind and sighted participants, which enabled us to compare the time required for users to complete these tasks.</p>
 
-<dl>
-<dt>Google</dt> 
-<dd>This task consisted of two subtasks: 1) querying from the Google homepage, and 2) choosing a result. On the first subtask, blind and sighted users spent a mean of 74.66 (<abbr title="standard deviation">SD</abbr> 31.57) and 34.54 (105.5) seconds, respectively. Blindness had a significant effect of blindness on the log of time spent on issuing queries. On the second subtask, the time between page load to clicking on a search result for blind and sighted users was 155.06 (46.14) and 34.81 (222.24) seconds. This represents a significant effect of blindness on the log of time spent on searching Google's results.</dd>
+            <dl>
+              <dt>Google</dt>
+              <dd>This task consisted of two subtasks: 1) querying from the Google homepage, and 2) choosing a result. On the first subtask, blind and sighted users spent a mean of 74.66 (<abbr title="standard deviation">SD</abbr> 31.57) and 34.54 (105.5) seconds, respectively. Blindness had a significant effect of blindness on the log of time spent on issuing queries. On the second subtask, the time between page load to clicking on a search result for blind and sighted users was 155.06 (46.14) and 34.81 (222.24) seconds. This represents a significant effect of blindness on the log of time spent on searching Google's results.</dd>
 
-<dt>Providing Feedback</dt> 
-<dd>Another common task performed by most of our participants was to provide qualitative comments on some of the web pages that they visited as part of the study (See Figure 6). This task also consisted of two subtasks: 1) querying for web pages from the user's web history, and 2) commenting on one of the pages returned. On average, blind and sighted users took 30.36 and 18.41 seconds to complete the first subtask (<abbr title="standard deviation">SD</abbr> 20.59, 19.84). This represents a marginally significant effect of blindness on the log of time spent querying personal web history. On average, blind and sighted participants spent 104.60 (30.98) and 68.74 (78.74) seconds, respectively, to leave a comment. This represented a significant effect of blindness on the log of time spent commenting on personal web history.</dd>
-</dl>
+              <dt>Providing Feedback</dt>
+              <dd>Another common task performed by most of our participants was to provide qualitative comments on some of the web pages that they visited as part of the study (See Figure 6). This task also consisted of two subtasks: 1) querying for web pages from the user's web history, and 2) commenting on one of the pages returned. On average, blind and sighted users took 30.36 and 18.41 seconds to complete the first subtask (<abbr title="standard deviation">SD</abbr> 20.59, 19.84). This represents a marginally significant effect of blindness on the log of time spent querying personal web history. On average, blind and sighted participants spent 104.60 (30.98) and 68.74 (78.74) seconds, respectively, to leave a comment. This represented a significant effect of blindness on the log of time spent commenting on personal web history.</dd>
+            </dl>
 
-<table id="table1">
-  <caption>Table 1: Average time (minutes) and standard deviation per page for increasing time ranges.</caption>
-  <tr><th scope="col">Range</th> <th scope="col">Blind</th> <th scope="col">Sighted</th> <th scope="col">Sig. <span class="func">F<sub>1,19</sub></span></th></tr>
-  <tr><td>0 - 1.0</td> <td>0.38 (0.26)</td> <td>0.23 (0.23)</td>  <td>32.55, <i>p</i> < .0001</td></tr>
-  <tr><td>0 - 2.5</td> <td>0.76 (0.65)</td> <td>0.38 (0.49)</td>  <td>31.83, <i>p</i> < .0001</td></tr>
-  <tr><td>0 - 5.0</td> <td>1.04 (1.05)</td> <td>0.51 (0.80)</td>  <td>10.69, <i>p</i> < .01</td></tr>
-  <tr><td>0 - 10.0</td> <td>1.25 (1.54)</td> <td>0.77 (1.52)</td> <td>6.90, <i>p</i> < .05</td></tr>
-  <tr><td>0 - 20.0</td> <td>1.50 (2.35)</td> <td>1.11 (2.51)</td> <td>5.01, <i>p</i> < .05</td></tr>
-  <tr><td>0 - </td> <td>5.08 (16.68)</td> <td>11.30 (74.36)</td>  <td>0.01, <i>p</i> < .91</td></tr>
-</table>
+            <table id="table1">
+              <caption>Table 1: Average time (minutes) and standard deviation per page for increasing time ranges.</caption>
+              <tr>
+                <th scope="col">Range</th>
+                <th scope="col">Blind</th>
+                <th scope="col">Sighted</th>
+                <th scope="col">Sig. <span class="func">F<sub>1,19</sub></span></th>
+              </tr>
+              <tr>
+                <td>0 - 1.0</td>
+                <td>0.38 (0.26)</td>
+                <td>0.23 (0.23)</td>
+                <td>32.55, <i>p</i> &lt; .0001</td>
+              </tr>
+              <tr>
+                <td>0 - 2.5</td>
+                <td>0.76 (0.65)</td>
+                <td>0.38 (0.49)</td>
+                <td>31.83, <i>p</i> &lt; .0001</td>
+              </tr>
+              <tr>
+                <td>0 - 5.0</td>
+                <td>1.04 (1.05)</td>
+                <td>0.51 (0.80)</td>
+                <td>10.69, <i>p</i> &lt; .01</td>
+              </tr>
+              <tr>
+                <td>0 - 10.0</td>
+                <td>1.25 (1.54)</td>
+                <td>0.77 (1.52)</td>
+                <td>6.90, <i>p</i> &lt; .05</td>
+              </tr>
+              <tr>
+                <td>0 - 20.0</td>
+                <td>1.50 (2.35)</td>
+                <td>1.11 (2.51)</td>
+                <td>5.01, <i>p</i> &lt; .05</td>
+              </tr>
+              <tr>
+                <td>0 - </td>
+                <td>5.08 (16.68)</td>
+                <td>11.30 (74.36)</td>
+                <td>0.01, <i>p</i> &lt; .91</td>
+              </tr>
+            </table>
+          </section>
+        </section>
+      </section>
 
 
-<section role="region">
-<h2 id="sec5">5. Discussion</h2>
-<p><i>omitted</i></p>
-</section>
+      <section role="region">
+        <h2 id="sec5">5. Discussion</h2>
+        <p><i>omitted</i></p>
+      </section>
 
-<section role="region">
-<h2 id="sec6">6. Related Work</h2>
-<p><i>omitted</i></p>
-</section>
+      <section role="region">
+        <h2 id="sec6">6. Related Work</h2>
+        <p><i>omitted</i></p>
+      </section>
 
-<section role="region">
-<h2 id="sec7">7. Conclusion</h2>
-<p>We presented a study <i>in situ</i> of blind and sighted web users performing real-life web browsing tasks using their own equipment over the period of one week. Our analysis indicates that blind web users employ coping strategies to overcome many accessibility problems and are undeterred from visiting pages containing them, although they took more time to access all pages than their sighted counterparts. Blind users avoided pages containing severe accessibility problems, such as those related to dynamic content. In all cases our blind participants were less likely than our sighted participants to interact with page elements that exhibited accessibility problems. Our user-centered approach afforded a unique look web accessibility and the problems that most need addressing. As we move forward with this work, we will continue to design studies investigating accessibility from the perspective of users who are often adept at overcoming accessibility problems.</p>
-</section>
+      <section role="region">
+        <h2 id="sec7">7. Conclusion</h2>
+        <p>We presented a study <i>in situ</i> of blind and sighted web users performing real-life web browsing tasks using their own equipment over the period of one week. Our analysis indicates that blind web users employ coping strategies to overcome many accessibility problems and are undeterred from visiting pages containing them, although they took more time to access all pages than their sighted counterparts. Blind users avoided pages containing severe accessibility problems, such as those related to dynamic content. In all cases our blind participants were less likely than our sighted participants to interact with page elements that exhibited accessibility problems. Our user-centered approach afforded a unique look web accessibility and the problems that most need addressing. As we move forward with this work, we will continue to design studies investigating accessibility from the perspective of users who are often adept at overcoming accessibility problems.</p>
+      </section>
 
-<section role="region">
-<!-- End Material -->
-<h2 id="sec8">8. Acknowledgements</h2>
-<p>This research was funded by National Science Foundation grant IIS-0415273 and a Boeing Professorship. We thank Richard Atterer for his assistance with UsaProxy. We thank Sangyun Hahn and Lindsay Yazzolino for testing our system, Steve Gribble and Scott Rose for helping to ensure that our study ran smoothly, Darren Gergle for his help with statistical analysis and Maxwell Aller for comments on previous drafts. Finally, we thank our study participants.</p>
-</section>
+      <section role="region">
+        <!-- End Material -->
+        <h2 id="sec8">8. Acknowledgements</h2>
+        <p>This research was funded by National Science Foundation grant IIS-0415273 and a Boeing Professorship. We thank Richard Atterer for his assistance with UsaProxy. We thank Sangyun Hahn and Lindsay Yazzolino for testing our system, Steve Gribble and Scott Rose for helping to ensure that our study ran smoothly, Darren Gergle for his help with statistical analysis and Maxwell Aller for comments on previous drafts. Finally, we thank our study participants.</p>
+      </section>
 
-<section role="region">
-<h2 id="sec9">9. References</h2>
-<p><em>omitted</em></p>
-</section>
+      <section role="region">
+        <h2 id="sec9">9. References</h2>
+        <p><em>omitted</em></p>
+      </section>
 
-<footer>
-  <small>
-  Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. To copy otherwise, to republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee.
-  <br/><cite>ASSETS'07</cite>, October 15–17, 2007, Tempe, Arizona, USA..
-  <br/>Copyright 2007 ACM 978-1-59593-573-1/07/0010 ...$5.00.
-  </small>
-</footer>
+      <footer>
+        <small>
+          Permission to make digital or hard copies of all or part of this work for personal or classroom use is granted without fee provided that copies are not made or distributed for profit or commercial advantage and that copies bear this notice and the full citation on the first page. To copy otherwise, to republish, to post on servers or to redistribute to lists, requires prior specific permission and/or a fee.
+          <br><cite>ASSETS'07</cite>, October 15–17, 2007, Tempe, Arizona, USA..
+          <br>Copyright 2007 ACM 978-1-59593-573-1/07/0010 ...$5.00.
+        </small>
+      </footer>
 
-</article>
+    </article>
+  </main>
 </body>
+
 </html>
