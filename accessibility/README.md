@@ -12,6 +12,8 @@ AChecker reports <i> tags in "in situ" and suggests to use <strong> or <em> inst
 meant to be emphasized. It also reports <i> tags for p-values, but as it is a technical term it needs <i>. All of the ommitted sections
 are reported as well, but the assignment tells us to ignore these and not consider them errors.
 
+WAVE reports broken skip links, but they appear to work fine, and I made sure the anchor tags correctly linked the ids.
+
 ##### What are the answers to your reading quiz questions? #####
 > 1. Probing
 2. More likely
