@@ -42,13 +42,42 @@ p {
 }
 
 button {
-    color: white;
     background-color: #814236;
     border-color: #391d18;
 }
 
 button:hover {
     background-color: #5d3027;
+}
+
+nav {
+    background-color: #391d18;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index;
+}
+
+nav ul {
+    list-style: none;
+}
+
+li {
+    display: inline;
+    padding-right: 1em;
+}
+
+a {
+    color: #dfdfdf;
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: white;
+}
+
+.navcart {
+    float: right;
 }
 
 @media screen and (min-width:768px) {
@@ -70,25 +99,6 @@ button:hover {
     }
 }
 
-nav {
-    background-color: #391d18;
-    width: 100%;
-    position: fixed;
-    top: 0;
-}
-
-nav ul {
-    list-style: none;
-}
-
-li {
-    display: inline;
-}
-
-#navcart {
-    float: right;
-}
-
 @media screen and (min-width:992px) {
     header {
         background-image: url("../img/pencil-header-md.jpg");
@@ -108,4 +118,3 @@ li {
         max-width: 585px;
     }
 }
-
