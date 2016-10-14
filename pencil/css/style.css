@@ -36,12 +36,6 @@
     flex-basis: 100%;
 }
 
-.content {
-    text-align: center;
-    font-size: 4rem;
-    height: 100%;
-}
-
 header {
     background: linear-gradient(to bottom, #391D18, #814236);
     margin-top: 2.5rem;
@@ -59,6 +53,10 @@ h2 {
     text-align: center;
     font-variant: small-caps;
     
+}
+
+h3 {
+    text-align: center;
 }
 
 p {
@@ -114,10 +112,24 @@ svg {
     background-color: #f8f8f8;
 }
 
-.card1 {
+.sectype2 {
+    background-color: #ebebeb;
+}
+
+.sectype2 h3 {
+    text-align: left;
+}
+
+.card {
     background-color: white;
-    border-color: #dfdfdf;
+    border: solid #dfdfdf 1px;
     border-radius: 3px;
+}
+
+.card2 img {
+    object-fit: cover;
+    height: 150px;
+    width: 100%;
 }
 
 @media screen and (min-width:768px) {
@@ -142,7 +154,7 @@ svg {
         left: -10000px;
     }
 
-    .flex-column {
+    .card1 {
         flex-basis: 50%;
     }
 }
@@ -155,6 +167,10 @@ svg {
     header p {
         max-width: 485px;
     }
+    
+    .card2 {
+        flex-basis: 50%;
+    }
 }
 
 @media screen and (min-width:1200px) {
@@ -166,7 +182,7 @@ svg {
         max-width: 585px;
     }
 
-    .flex-column {
+    .card1 {
         flex-basis: 25%;
     }
 }
