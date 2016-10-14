@@ -25,7 +25,6 @@
 
 .flexbox-container {
     display: flex;
-    border: 1px solid black;
     min-height: 200px;
     flex-wrap: wrap;
     align-items: center;
@@ -38,7 +37,6 @@
 }
 
 .content {
-    background-color: tomato;
     text-align: center;
     font-size: 4rem;
     height: 100%;
@@ -55,6 +53,12 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
     font-weight: 100;
+}
+
+h2 {
+    text-align: center;
+    font-variant: small-caps;
+    
 }
 
 p {
@@ -102,6 +106,20 @@ a:hover, a:focus {
     float: right;
 }
 
+svg {
+    fill: #814236;
+}
+
+.sectype1 {
+    background-color: #f8f8f8;
+}
+
+.card1 {
+    background-color: white;
+    border-color: #dfdfdf;
+    border-radius: 3px;
+}
+
 @media screen and (min-width:768px) {
     header {
         background-image: url("../img/pencil-header-sm.jpg");
@@ -123,6 +141,10 @@ a:hover, a:focus {
     nav {
         left: -10000px;
     }
+
+    .flex-column {
+        flex-basis: 50%;
+    }
 }
 
 @media screen and (min-width:992px) {
@@ -142,5 +164,9 @@ a:hover, a:focus {
 
     header p {
         max-width: 585px;
+    }
+
+    .flex-column {
+        flex-basis: 25%;
     }
 }
