@@ -20,6 +20,28 @@
     font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 18;
     font-weight: 300;
+    box-sizing: border-box;
+}
+
+.flexbox-container {
+    display: flex;
+    border: 1px solid black;
+    min-height: 200px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column {
+    padding: 20px;
+    flex-basis: 100%;
+}
+
+.content {
+    background-color: tomato;
+    text-align: center;
+    font-size: 4rem;
+    height: 100%;
 }
 
 header {
@@ -96,6 +118,10 @@ a:hover, a:focus {
     header p {
         font-size: 175%;
         max-width: 325px;
+    }
+
+    nav {
+        left: -10000px;
     }
 }
 
