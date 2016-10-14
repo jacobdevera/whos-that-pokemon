@@ -9,11 +9,103 @@
     .container { width: 750px; } 
 }
 @media (min-width: 992px) {
-    .container { width: 970px; } 
+    .container { width: 970px; }
 }
 @media (min-width: 1200px) {
-    .container { width: 1170px; } 
+    .container { width: 1170px; }
 }
 
-
 /* Your CSS rules go here */
+* {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 18;
+    font-weight: 300;
+}
+
+header {
+    background: linear-gradient(to bottom, #391D18, #814236);
+    margin-top: 2.5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-weight: 100;
+}
+
+p {
+    line-height: 1.43;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+button {
+    color: white;
+    background-color: #814236;
+    border-color: #391d18;
+}
+
+button:hover {
+    background-color: #5d3027;
+}
+
+@media screen and (min-width:768px) {
+    header {
+        background-image: url("../img/pencil-header-sm.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        margin-top: 0;
+    }
+
+    header h1 {
+        font-size: 500%;
+    }
+
+    header p {
+        font-size: 175%;
+        max-width: 325px;
+    }
+}
+
+nav {
+    background-color: #391d18;
+    width: 100%;
+    position: fixed;
+    top: 0;
+}
+
+nav ul {
+    list-style: none;
+}
+
+li {
+    display: inline;
+}
+
+#navcart {
+    float: right;
+}
+
+@media screen and (min-width:992px) {
+    header {
+        background-image: url("../img/pencil-header-md.jpg");
+    }
+
+    header p {
+        max-width: 485px;
+    }
+}
+
+@media screen and (min-width:1200px) {
+    header {
+        background-image: url("../img/pencil-header-lg.jpg");
+    }
+
+    header p {
+        max-width: 585px;
+    }
+}
+
