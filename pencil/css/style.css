@@ -2,10 +2,9 @@
 .container {
   padding-right: 15px;
   padding-left: 15px;
-  padding-top: 1rem;
-  padding-bottom: 3rem;
+  padding-top: 2.5rem;
   margin-right: auto;
-  margin-left: auto; 
+  margin-left: auto;
 }
 @media (min-width: 768px) {
     .container { width: 750px; } 
@@ -30,16 +29,19 @@
     flex-wrap: wrap;
     align-items: space-between;
     justify-content: space-between;
+    padding-bottom: 50px;
 }
 
 .flex-column {
-    padding: 20px;
     flex-basis: 100%;
+}
+
+.content {
+    padding: 1rem;
 }
 
 header {
     background: linear-gradient(to bottom, #391D18, #814236);
-    margin-top: 2.5rem;
     padding-bottom: 1rem;
 }
 
@@ -50,6 +52,7 @@ h1, h2, h3, h4, h5, h6 {
 h1 {
     font-weight: 100;
     color: white;
+    margin-bottom: 0;
 }
 
 header p {
@@ -58,10 +61,15 @@ header p {
 
 h2 {
     font-variant: small-caps;
+    padding-bottom: 2rem;
 }
 
 h2 {
     text-align: center;
+}
+
+h3 {
+    margin: 0 0 0.25rem 0;
 }
 
 .card2 h3, .card3 h3 {
@@ -95,10 +103,10 @@ nav {
     z-index: 1;
 }
 
-nav ul {
+ul {
     list-style: none;
     padding: 0;
-    margin: 16px 16px 16px 16px;
+    margin: 16px;
 }
 
 li {
@@ -106,8 +114,11 @@ li {
     padding-right: 1em;
 }
 
-a {
+nav a {
     color: #dfdfdf;
+}
+
+nav a, footer a {
     text-decoration: none;
 }
 
@@ -158,12 +169,28 @@ svg {
 
 .card3 .content p, .card3 .content h3 {
     padding-left: 100px;
-    margin-top: 0;
 }
 
 .job {
     font-size: 0.8rem;
     color: #999999;
+}
+
+footer {
+    background-color: #391d18;
+    padding-bottom: 5rem;
+}
+
+footer p {
+    color: #eeeeee;
+}
+
+footer a {
+    color: #aaaaaa;
+}
+
+.contact i {
+    padding-right: 0.5rem;
 }
 
 @media screen and (min-width:768px) {
@@ -173,11 +200,12 @@ svg {
         background-repeat: no-repeat;
         background-position: center bottom;
         margin-top: 0;
+        padding-bottom: 2rem;
     }
 
     header h1 {
         font-size: 500%;
-        padding-top: 10rem;
+        padding-top: 5rem;
         color: black;
     }
 
@@ -201,16 +229,17 @@ svg {
     }
 
     .card1 .content p, .card1 .content h3 {
-        padding-left: 0;
-    }
-
-    .card1 .content h3 {
         text-align: center;
+        padding-left: 0;
     }
 
     svg {
         float: none;
         width: 100%;
+    }
+
+    .contact {
+        text-align: right;
     }
 }
 
