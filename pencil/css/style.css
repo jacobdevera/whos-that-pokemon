@@ -16,7 +16,7 @@
     .container { width: 1170px; }
 }
 
-/* Your CSS rules go here */
+/* general rules */
 * {
     font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 18;
@@ -40,9 +40,60 @@
     padding: 1rem;
 }
 
+/* mobile header rules */
 header {
     background: linear-gradient(to bottom, #391D18, #814236);
     padding-bottom: 1rem;
+}
+
+header p {
+    color: white;
+}
+
+/* 768 header rules */
+@media screen and (min-width:768px) {
+    header {
+        background-image: url("../img/pencil-header-sm.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        margin-top: 0;
+        padding-bottom: 2rem;
+    }
+
+    header h1 {
+        font-size: 500%;
+        padding-top: 5rem;
+        color: black;
+    }
+
+    header p {
+        font-size: 175%;
+        max-width: 325px;
+        color: black;
+    }
+}
+
+/* 992 header rules */
+@media screen and (min-width:992px) {
+    header {
+        background-image: url("../img/pencil-header-md.jpg");
+    }
+
+    header p {
+        max-width: 485px;
+    }
+}
+
+/* 1200 header rules */
+@media screen and (min-width:1200px) {
+    header {
+        background-image: url("../img/pencil-header-lg.jpg");
+    }
+
+    header p {
+        max-width: 585px;
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -53,10 +104,6 @@ h1 {
     font-weight: 100;
     color: white;
     margin-bottom: 0;
-}
-
-header p {
-    color: white;
 }
 
 h2 {
@@ -194,27 +241,6 @@ footer a {
 }
 
 @media screen and (min-width:768px) {
-    header {
-        background-image: url("../img/pencil-header-sm.jpg");
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center bottom;
-        margin-top: 0;
-        padding-bottom: 2rem;
-    }
-
-    header h1 {
-        font-size: 500%;
-        padding-top: 5rem;
-        color: black;
-    }
-
-    header p {
-        font-size: 175%;
-        max-width: 325px;
-        color: black;
-    }
-
     nav {
         left: -10000px;
     }
@@ -244,14 +270,6 @@ footer a {
 }
 
 @media screen and (min-width:992px) {
-    header {
-        background-image: url("../img/pencil-header-md.jpg");
-    }
-
-    header p {
-        max-width: 485px;
-    }
-    
     .card2 {
         flex-basis: 50%;
     }
@@ -262,14 +280,6 @@ footer a {
 }
 
 @media screen and (min-width:1200px) {
-    header {
-        background-image: url("../img/pencil-header-lg.jpg");
-    }
-
-    header p {
-        max-width: 585px;
-    }
-
     .card1 {
         flex-basis: 25%;
     }
