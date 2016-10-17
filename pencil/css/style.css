@@ -40,6 +40,48 @@
     padding: 1rem;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-weight: 100;
+    color: white;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-variant: small-caps;
+    padding-bottom: 2rem;
+}
+
+h2 {
+    text-align: center;
+}
+
+h3 {
+    margin: 0 0 0.25rem 0;
+}
+
+p {
+    line-height: 1.43;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+.sectype1 {
+    background-color: #f8f8f8;
+}
+
+.sectype2 {
+    background-color: #ebebeb;
+}
+
+.job {
+    font-size: 0.8rem;
+    color: #999999;
+}
+
 /* mobile header rules */
 header {
     background: linear-gradient(to bottom, #391D18, #814236);
@@ -96,39 +138,7 @@ header p {
     }
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-h1 {
-    font-weight: 100;
-    color: white;
-    margin-bottom: 0;
-}
-
-h2 {
-    font-variant: small-caps;
-    padding-bottom: 2rem;
-}
-
-h2 {
-    text-align: center;
-}
-
-h3 {
-    margin: 0 0 0.25rem 0;
-}
-
-.card2 h3, .card3 h3 {
-    text-align: left;
-}
-
-p {
-    line-height: 1.43;
-    margin-top: 0;
-    margin-bottom: 1rem;
-}
-
+/* mobile button rules */
 button {
     position: fixed;
     left: -10000px;
@@ -142,6 +152,15 @@ button:hover {
     background-color: #5d3027;
 }
 
+/* large screen button rules */
+@media screen and (min-width:768px) {
+    button {
+        position: static;
+        left: 0;
+    }
+}
+
+/* mobile nav and link rules */
 nav {
     background-color: #391d18;
     width: 100%;
@@ -178,6 +197,13 @@ a:hover, a:focus {
     padding-right: 0;
 }
 
+/* large screen nav rules */
+@media screen and (min-width:768px) {
+    nav {
+        left: -10000px;
+    }
+}
+
 svg {
     fill: #814236;
     object-fit: contain;
@@ -185,28 +211,21 @@ svg {
     float: left;
 }
 
-.sectype1 {
-    background-color: #f8f8f8;
-}
-
-.sectype2 {
-    background-color: #ebebeb;
-}
-
+/* mobile card rules */
 .card1, .card2 {
     background-color: white;
     border: solid #dfdfdf 1px;
     border-radius: 3px;
 }
 
-.card1 .content p, .card1 .content h3 {
-    padding-left: 4rem;
-}
-
 .card2 img {
     object-fit: cover;
     height: 150px;
     width: 100%;
+}
+
+.card2 h3, .card3 h3 {
+    text-align: left;
 }
 
 .card3 img {
@@ -218,11 +237,41 @@ svg {
     padding-left: 100px;
 }
 
-.job {
-    font-size: 0.8rem;
-    color: #999999;
+.card1 .content p, .card1 .content h3 {
+    padding-left: 4rem;
 }
 
+/* 768 card rules */
+@media screen and (min-width:768px) {
+    .card1 {
+        flex-basis: 50%;
+    }
+
+    .card1 .content p, .card1 .content h3 {
+        text-align: center;
+        padding-left: 0;
+    }
+}
+
+/* 992 card rules */
+@media screen and (min-width:992px) {
+    .card2 {
+        flex-basis: 50%;
+    }
+
+    .card3 {
+        flex-basis: 33%;
+    }
+}
+
+/*1200 card ruels */
+@media screen and (min-width:1200px) {
+    .card1 {
+        flex-basis: 25%;
+    }
+}
+
+/* mobile footer rules */
 footer {
     background-color: #391d18;
     padding-bottom: 5rem;
@@ -240,25 +289,8 @@ footer a {
     padding-right: 0.5rem;
 }
 
+/* large screen footer rules */
 @media screen and (min-width:768px) {
-    nav {
-        left: -10000px;
-    }
-
-    button {
-        position: static;
-        left: 0;
-    }
-
-    .card1 {
-        flex-basis: 50%;
-    }
-
-    .card1 .content p, .card1 .content h3 {
-        text-align: center;
-        padding-left: 0;
-    }
-
     svg {
         float: none;
         width: 100%;
@@ -266,21 +298,5 @@ footer a {
 
     .contact {
         text-align: right;
-    }
-}
-
-@media screen and (min-width:992px) {
-    .card2 {
-        flex-basis: 50%;
-    }
-
-    .card3 {
-        flex-basis: 33%;
-    }
-}
-
-@media screen and (min-width:1200px) {
-    .card1 {
-        flex-basis: 25%;
     }
 }
