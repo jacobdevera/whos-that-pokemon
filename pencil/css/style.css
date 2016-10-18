@@ -2,7 +2,7 @@
 .container {
     padding-right: 1em;
     padding-left: 1em;
-    padding-top: 2.5rem;
+    margin-top: 2.5rem;
     margin-right: auto;
     margin-left: auto;
 }
@@ -76,6 +76,10 @@ p {
     margin-bottom: 1rem;
 }
 
+section {
+    padding-top: 1em;
+}
+
 .sectype1 {
     background-color: #f8f8f8;
 }
@@ -91,7 +95,7 @@ p {
 
 /* mobile header rules */
 header {
-    background: linear-gradient(to bottom, #391D18, #814236);
+    background: linear-gradient(#391D18, #814236);
     padding-bottom: 1rem;
 }
 
@@ -109,10 +113,14 @@ header p {
         margin-top: 0;
         padding-bottom: 2rem;
     }
+    header .container {
+        margin-top: 0;
+    }
 
     header h1 {
         font-size: 500%;
-        padding-top: 5rem;
+        padding-top: 10rem;
+        margin-top: 0;
         color: black;
     }
 
@@ -169,7 +177,7 @@ header a:hover {
 
 /* mobile nav and link rules */
 nav {
-    background-color: #391d18;
+    background-color: #391D18;
     width: 100%;
     position: fixed;
     top: 0;
@@ -281,6 +289,7 @@ svg {
 /* mobile footer rules */
 footer {
     background-color: #391d18;
+    padding-top: 1rem;
     padding-bottom: 5rem;
 }
 
