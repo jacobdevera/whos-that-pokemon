@@ -1,13 +1,17 @@
 /* general container element to constrain content width on wider screens */
 .container {
-  padding-right: 15px;
-  padding-left: 15px;
-  padding-top: 2.5rem;
-  margin-right: auto;
-  margin-left: auto;
+    padding-right: 1em;
+    padding-left: 1em;
+    padding-top: 2.5rem;
+    margin-right: auto;
+    margin-left: auto;
 }
 @media (min-width: 768px) {
-    .container { width: 750px; } 
+    .container {
+        width: 750px; 
+        padding-right: 0;
+        padding-left: 0;
+    } 
 }
 @media (min-width: 992px) {
     .container { width: 970px; }
@@ -19,7 +23,7 @@
 /* general rules */
 * {
     font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 18;
+    font-size: 18px;
     font-weight: 300;
     box-sizing: border-box;
 }
@@ -27,17 +31,17 @@
 .flexbox-container {
     display: flex;
     flex-wrap: wrap;
-    align-items: space-between;
-    justify-content: space-between;
+    justify-content: space-around;
     padding-bottom: 50px;
 }
 
 .flex-column {
-    flex-basis: 100%;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .content {
-    padding: 1rem;
+    padding: 0.75rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -51,15 +55,18 @@ h1 {
 }
 
 h2 {
+    font-size: 1.5em;
     font-variant: small-caps;
     padding-bottom: 2rem;
 }
 
 h2 {
+    font-size: 1.5em;
     text-align: center;
 }
 
 h3 {
+    font-size: 1.17em;
     margin: 0 0 0.25rem 0;
 }
 
@@ -139,7 +146,7 @@ header p {
 }
 
 /* mobile button rules */
-button {
+header a {
     position: fixed;
     left: -10000px;
     color: white;
@@ -148,13 +155,13 @@ button {
     border: solid #391d18 1px;
 }
 
-button:hover {
+header a:hover {
     background-color: #5d3027;
 }
 
 /* large screen button rules */
 @media screen and (min-width:768px) {
-    button {
+    header a {
         position: static;
         left: 0;
     }
@@ -184,7 +191,7 @@ nav a {
     color: #dfdfdf;
 }
 
-nav a, footer a {
+a {
     text-decoration: none;
 }
 
@@ -238,13 +245,13 @@ svg {
 }
 
 .card1 .content p, .card1 .content h3 {
-    padding-left: 4rem;
+    padding-left: 3.5rem;
 }
 
 /* 768 card rules */
 @media screen and (min-width:768px) {
     .card1 {
-        flex-basis: 50%;
+        width: 45%;
     }
 
     .card1 .content p, .card1 .content h3 {
@@ -256,18 +263,18 @@ svg {
 /* 992 card rules */
 @media screen and (min-width:992px) {
     .card2 {
-        flex-basis: 50%;
+        width: 48%;
     }
 
     .card3 {
-        flex-basis: 33%;
+        width: 30%;
     }
 }
 
 /*1200 card ruels */
 @media screen and (min-width:1200px) {
     .card1 {
-        flex-basis: 25%;
+        width: 23%;
     }
 }
 
@@ -285,7 +292,7 @@ footer a {
     color: #aaaaaa;
 }
 
-.contact i {
+i {
     padding-right: 0.5rem;
 }
 
