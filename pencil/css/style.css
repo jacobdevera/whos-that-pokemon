@@ -1,19 +1,327 @@
 /* general container element to constrain content width on wider screens */
 .container {
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto; 
+    padding-right: 1em;
+    padding-left: 1em;
+    margin-top: 2.5rem;
+    margin-right: auto;
+    margin-left: auto;
 }
 @media (min-width: 768px) {
-    .container { width: 750px; } 
+    .container {
+        width: 750px; 
+        padding-right: 0;
+        padding-left: 0;
+    } 
 }
 @media (min-width: 992px) {
-    .container { width: 970px; } 
+    .container { width: 970px; }
 }
 @media (min-width: 1200px) {
-    .container { width: 1170px; } 
+    .container { width: 1170px; }
 }
 
+/* general rules */
+* {
+    font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    box-sizing: border-box;
+}
 
-/* Your CSS rules go here */
+.flexbox-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-bottom: 50px;
+}
+
+.flex-column {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.content {
+    padding: 0.75rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: Raleway, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+h1 {
+    font-weight: 100;
+    color: white;
+    margin-bottom: 0;
+}
+
+h2 {
+    font-size: 1.5em;
+    font-variant: small-caps;
+    padding-bottom: 2rem;
+}
+
+h2 {
+    font-size: 1.5em;
+    text-align: center;
+}
+
+h3 {
+    font-size: 1.17em;
+    margin: 0 0 0.25rem 0;
+}
+
+p {
+    line-height: 1.43;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+section {
+    padding-top: 1em;
+}
+
+.sectype1 {
+    background-color: #f8f8f8;
+}
+
+.sectype2 {
+    background-color: #ebebeb;
+}
+
+.job {
+    font-size: 0.8rem;
+    color: #999999;
+}
+
+/* default header rules */
+header {
+    background: linear-gradient(#391D18, #814236);
+    margin-top: 52px;
+    padding-bottom: 1rem;
+}
+
+header p {
+    color: white;
+}
+
+/* 768 header rules */
+@media screen and (min-width:768px) {
+    header {
+        background-image: url("../img/pencil-header-sm.jpg");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        margin-top: 0;
+        padding-bottom: 2rem;
+    }
+    header .container {
+        margin-top: 0;
+    }
+
+    header h1 {
+        font-size: 500%;
+        padding-top: 10rem;
+        margin-top: 0;
+        color: black;
+    }
+
+    header p {
+        font-size: 175%;
+        max-width: 325px;
+        color: black;
+    }
+}
+
+/* 992 header rules */
+@media screen and (min-width:992px) {
+    header {
+        background-image: url("../img/pencil-header-md.jpg");
+    }
+
+    header p {
+        max-width: 485px;
+    }
+}
+
+/* 1200 header rules */
+@media screen and (min-width:1200px) {
+    header {
+        background-image: url("../img/pencil-header-lg.jpg");
+    }
+
+    header p {
+        max-width: 585px;
+    }
+}
+
+/* default "Get Yours" button rules */
+header a {
+    position: fixed;
+    left: -10000px;
+    color: white;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    background-color: #814236;
+    border: solid #391d18 1px;
+}
+
+header a:hover {
+    background-color: #5d3027;
+}
+
+/* large screen "Get Yours" button rules */
+@media screen and (min-width:768px) {
+    header a {
+        position: static;
+        left: 0;
+    }
+}
+
+/* default nav and link rules */
+nav {
+    background-color: #391D18;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 16px;
+}
+
+li {
+    display: inline;
+    padding-right: 1em;
+}
+
+nav a {
+    color: #dfdfdf;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    color: white;
+}
+
+.navcart {
+    float: right;
+    padding-right: 0;
+}
+
+/* large screen nav rules */
+@media screen and (min-width:768px) {
+    nav {
+        left: -10000px;
+    }
+}
+
+/* default svg rules */
+svg {
+    fill: #814236;
+    object-fit: contain;
+    height: 50px;
+    float: left;
+}
+
+/* large screen svg rules */
+@media screen and (min-width:768px) {
+    svg {
+        float: none;
+        width: 100%;
+    }
+}
+
+/* default card rules */
+.card1, .card2 {
+    background-color: white;
+    border: solid #dfdfdf 1px;
+    border-radius: 3px;
+}
+
+.card2 img {
+    object-fit: cover;
+    height: 150px;
+    width: 100%;
+}
+
+.card2 h3, .card3 h3 {
+    text-align: left;
+}
+
+.card3 img {
+    float: left;
+    border-radius: 50%;
+}
+
+.card3 .content p, .card3 .content h3 {
+    padding-left: 100px;
+}
+
+.card1 .content p, .card1 .content h3 {
+    padding-left: 3.5rem;
+}
+
+/* 768 card rules */
+@media screen and (min-width:768px) {
+    .card1 {
+        width: 45%;
+    }
+
+    .card1 .content p, .card1 .content h3 {
+        text-align: center;
+        padding-left: 0;
+    }
+}
+
+/* 992 card rules */
+@media screen and (min-width:992px) {
+    .card2 {
+        width: 48%;
+    }
+
+    .card3 {
+        width: 30%;
+    }
+}
+
+/*1200 card rules */
+@media screen and (min-width:1200px) {
+    .card1 {
+        width: 23%;
+    }
+}
+
+/* default footer rules */
+footer {
+    background-color: #391d18;
+    padding-top: 1rem;
+    padding-bottom: 5rem;
+}
+
+footer p {
+    color: #eeeeee;
+}
+
+footer a {
+    color: #aaaaaa;
+}
+
+small a {
+    font-size: 1em;
+}
+
+i {
+    padding-right: 0.5rem;
+}
+
+/* large screen footer rules */
+@media screen and (min-width:768px) {
+    .contact {
+        text-align: right;
+    }
+}
