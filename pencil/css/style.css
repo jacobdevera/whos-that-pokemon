@@ -311,6 +311,10 @@ footer a {
     color: #aaaaaa;
 }
 
+small a {
+    font-size: 1em;
+}
+
 i {
     padding-right: 0.5rem;
 }
