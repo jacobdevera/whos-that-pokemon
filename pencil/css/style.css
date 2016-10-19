@@ -93,9 +93,10 @@ section {
     color: #999999;
 }
 
-/* mobile header rules */
+/* default header rules */
 header {
     background: linear-gradient(#391D18, #814236);
+    margin-top: 52px;
     padding-bottom: 1rem;
 }
 
@@ -153,7 +154,7 @@ header p {
     }
 }
 
-/* mobile button rules */
+/* default "Get Yours" button rules */
 header a {
     position: fixed;
     left: -10000px;
@@ -167,7 +168,7 @@ header a:hover {
     background-color: #5d3027;
 }
 
-/* large screen button rules */
+/* large screen "Get Yours" button rules */
 @media screen and (min-width:768px) {
     header a {
         position: static;
@@ -175,7 +176,7 @@ header a:hover {
     }
 }
 
-/* mobile nav and link rules */
+/* default nav and link rules */
 nav {
     background-color: #391D18;
     width: 100%;
@@ -219,6 +220,7 @@ a:hover, a:focus {
     }
 }
 
+/* default svg rules */
 svg {
     fill: #814236;
     object-fit: contain;
@@ -226,7 +228,15 @@ svg {
     float: left;
 }
 
-/* mobile card rules */
+/* large screen svg rules */
+@media screen and (min-width:768px) {
+    svg {
+        float: none;
+        width: 100%;
+    }
+}
+
+/* default card rules */
 .card1, .card2 {
     background-color: white;
     border: solid #dfdfdf 1px;
@@ -279,14 +289,14 @@ svg {
     }
 }
 
-/*1200 card ruels */
+/*1200 card rules */
 @media screen and (min-width:1200px) {
     .card1 {
         width: 23%;
     }
 }
 
-/* mobile footer rules */
+/* default footer rules */
 footer {
     background-color: #391d18;
     padding-top: 1rem;
@@ -307,11 +317,6 @@ i {
 
 /* large screen footer rules */
 @media screen and (min-width:768px) {
-    svg {
-        float: none;
-        width: 100%;
-    }
-
     .contact {
         text-align: right;
     }
