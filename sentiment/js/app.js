@@ -1,18 +1,18 @@
 'use strict';
 
 /* Your script goes here */
-var _EMOTIONS = {
-	"positive": [],
-	"negative": [],
-	"anger": [],
-	"anticipation": [],
-	"disgust": [],
-	"fear": [],
-	"joy": [],
-	"sadness": [],
-	"surprise": [],
-	"trust": []
-}
+var _EMOTIONS = [
+	"positive",
+	"negative",
+	"anger",
+	"anticipation",
+	"disgust",
+	"fear",
+	"joy",
+	"sadness",
+	"surprise",
+	"trust"
+];
 
 function extractWords(tweet) {
 	var str = tweet.text;
@@ -30,8 +30,9 @@ function findSentimentWords(words) {
 		var wordsWithEmotion = words.filter(function(word) {
 			if (_SENTIMENTS[word] != undefined) 
 				return _SENTIMENTS[word][emotion] != undefined;
+			return false;
 		});
-		emotion = wordsWithEmotion;
+		result[emotion] = wordsWithEmotion;
 	});
 	return result;
 }
