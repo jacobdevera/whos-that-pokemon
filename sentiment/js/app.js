@@ -14,10 +14,9 @@ var _EMOTIONS = [
 	"trust"
 ];
 
-function extractWords(tweet) {
-	var str = tweet.text;
-	str = str.toLowerCase();
-	var words = str.split(/\W+/);
+function extractWords(text) {
+	text = text.toLowerCase();
+	var words = text.split(/\W+/);
 	words = words.filter(function(word) {
 		return word.length >= 2;
 	});
@@ -41,7 +40,7 @@ function analyzeTweets(tweets) {
 	var result = {};
 	/* create words array and word sentiment object as new properties of each tweet */
 	tweets.forEach(function(tweet) {
-		tweet["words"] = extractWords(tweet);
+		tweet["words"] = extractWords(tweet.text);
 		tweet["emotions"] = findSentimentWords(tweet["words"]);
 	});
 
@@ -58,7 +57,7 @@ function analyzeTweets(tweets) {
 			total += tweet["emotions"][emotion].length;
 			return total;
 		}, 0);
-		result[emotion]["percent"] = ((sumEmotion / sumAllWords) * 100) + "%";
+		result[emotion]["percent"] = ((sumEmotion / sumAllWords) * 100);
 	});
 
 	/* make list of words as a property for each emotion and calculate word frequency */ 
@@ -75,6 +74,7 @@ function analyzeTweets(tweets) {
 		});
 	});
 	
+	/* sort list of words for each emotion */
 	_EMOTIONS.forEach(function(emotion) {
 		var sortedWords = Object.keys(result[emotion]["words"]);
 		sortedWords.sort(function(a, b) {
@@ -87,6 +87,49 @@ function analyzeTweets(tweets) {
 			}
 		});
 		result[emotion]["sortedWords"] = sortedWords;
-		console.log(result);
 	});
+
+	/* get hashtags for each emotion */
+	_EMOTIONS.forEach(function(emotion) {
+		result[emotion]["hashtags"] = getHashtags(tweets, emotion);
+		/* count hashtags */
+		result[emotion]["hashtags"].forEach(function(hashtag) {
+			if (hashtag["count"] != undefined) {
+				hashtag["count"]++;
+			} else {
+				hashtag["count"] = 1;
+			}
+		});
+
+		/* sort hashtags */
+		result[emotion]["hashtags"].sort(function(a, b) {
+			if (a["count"] > b["count"]) {
+				return -1;
+			} else if (a["count"] < b["count"]) {
+				return 1;
+			} else {
+				return 0;
+			}
+		});
+	});
+	console.log(result);
+}
+
+/* takes in tweet and an emotion, returns hashtags */
+function getHashtags(tweets, emotion) {
+	/* filter for tweets that have the emotion */
+	var filterEmotion = Object.keys(tweets).filter(function(tweetIndex) {
+		return tweets[tweetIndex]["emotions"][emotion].length > 0;
+	});
+	/* map out hashtags */
+	var hashtagMap = filterEmotion.map(function(tweetIndex) {
+		return tweets[tweetIndex]["entities"]["hashtags"];
+	});
+	var hashtagList = [];
+	hashtagMap.forEach(function(tweet) {
+		tweet.forEach(function(hashtag) {
+			hashtagList.push(hashtag);
+		});
+	});
+	return hashtagList;
 }
