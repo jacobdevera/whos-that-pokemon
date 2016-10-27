@@ -3,15 +3,15 @@
 /* Your script goes here */
 var _EMOTIONS = [
 	"positive",
-	"negative",
-	"anger",
+	"trust",
 	"anticipation",
+	"joy",
+	"surprise",
+	"negative",
+	"sadness",
 	"disgust",
 	"fear",
-	"joy",
-	"sadness",
-	"surprise",
-	"trust"
+	"anger"
 ];
 
 function extractWords(text) {
@@ -57,7 +57,7 @@ function analyzeTweets(tweets) {
 			total += tweet["emotions"][emotion].length;
 			return total;
 		}, 0);
-		result[emotion]["percent"] = ((sumEmotion / sumAllWords) * 100);
+		result[emotion]["percent"] = ((sumEmotion / sumAllWords));
 	});
 
 	/* make list of words as a property for each emotion and calculate word frequency */ 
@@ -100,7 +100,6 @@ function analyzeTweets(tweets) {
 				hashtag["count"] = 1;
 			}
 		});
-
 		/* sort hashtags */
 		result[emotion]["hashtags"].sort(function(a, b) {
 			if (a["count"] > b["count"]) {
@@ -112,7 +111,7 @@ function analyzeTweets(tweets) {
 			}
 		});
 	});
-	console.log(result);
+	return result;
 }
 
 /* takes in tweet and an emotion, returns hashtags */
@@ -132,4 +131,24 @@ function getHashtags(tweets, emotion) {
 		});
 	});
 	return hashtagList;
+}
+
+function showStatistics(tweets) {
+	console.log(tweets);
+	var tbody = $('#sentiment-table > tbody:last-child');
+	_EMOTIONS.forEach(function(emotion) {
+		var exampleWords = tweets[emotion]["sortedWords"].slice(0,3).join(', ');
+		var hashtagList = [];
+		tweets[emotion]["hashtags"].forEach(function(hashtag) {
+			hashtagList.push("#" + hashtag.text);
+		});
+		var topHashtags = hashtagList.slice(0,3).join(', ');
+		tbody
+			.append($('<tr>' +
+				'<td>' + emotion + '</td>' +
+				'<td>' + numeral(tweets[emotion].percent).format('0.00%') + '</td>' +
+				'<td>' + exampleWords + '</td>' +
+				'<td>' + topHashtags + '</td> </tr>'
+			));
+	});
 }
