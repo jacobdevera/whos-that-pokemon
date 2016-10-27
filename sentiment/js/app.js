@@ -14,6 +14,8 @@ var _EMOTIONS = [
 	"anger"
 ];
 
+showStatistics(analyzeTweets(_SAMPLE_TWEETS));
+
 function extractWords(text) {
 	text = text.toLowerCase();
 	var words = text.split(/\W+/);
@@ -94,10 +96,9 @@ function analyzeTweets(tweets) {
 		result[emotion]["hashtags"] = getHashtags(tweets, emotion);
 		/* count hashtags */
 		result[emotion]["hashtags"].forEach(function(hashtag) {
+			hashtag["count"] = 0;
 			if (hashtag["count"] != undefined) {
 				hashtag["count"]++;
-			} else {
-				hashtag["count"] = 1;
 			}
 		});
 		/* sort hashtags */
@@ -134,8 +135,9 @@ function getHashtags(tweets, emotion) {
 }
 
 function showStatistics(tweets) {
-	console.log(tweets);
-	var tbody = $('#sentiment-table > tbody:last-child');
+	$('tbody').remove();
+	$('table').append('<tbody></tbody');
+	var tableEnd = $('#sentiment-table > tbody:last-child');
 	_EMOTIONS.forEach(function(emotion) {
 		var exampleWords = tweets[emotion]["sortedWords"].slice(0,3).join(', ');
 		var hashtagList = [];
@@ -143,7 +145,7 @@ function showStatistics(tweets) {
 			hashtagList.push("#" + hashtag.text);
 		});
 		var topHashtags = hashtagList.slice(0,3).join(', ');
-		tbody
+		tableEnd
 			.append($('<tr>' +
 				'<td>' + emotion + '</td>' +
 				'<td>' + numeral(tweets[emotion].percent).format('0.00%') + '</td>' +
@@ -151,4 +153,14 @@ function showStatistics(tweets) {
 				'<td>' + topHashtags + '</td> </tr>'
 			));
 	});
+}
+
+function loadTweets(url) {
+	fetch(url)
+		.then(function(response) {
+			return response.json();
+		})
+		.then(function(data){
+			showStatistics(analyzeTweets(data));
+		})
 }
