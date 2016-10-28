@@ -173,7 +173,7 @@ function loadTweets(url) {
 		})
 		.then(function(data){
 			showStatistics(analyzeTweets(data));
-		})
+		});
 }
 
 var search = $('#searchButton');
