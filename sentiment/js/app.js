@@ -164,3 +164,8 @@ function loadTweets(url) {
 			showStatistics(analyzeTweets(data));
 		})
 }
+
+var search = $('#searchButton');
+search.click(function(event) {
+	loadTweets("http://faculty.washington.edu/joelross/proxy/twitter/timeline/?screen_name=" + $('#searchBox').val() + "&count=100");
+});
