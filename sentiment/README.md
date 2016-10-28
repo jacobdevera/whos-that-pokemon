@@ -21,4 +21,5 @@ The below questions should be answered regarding your submission!
 
 
 ##### Did you encounter any problems in this assignment we should warn students about in the future? How can we make the assignment better? #####
-> No
+> The link provided for fetching data was http instead of https, and somewhat interfered with fetching data since the browser would refuse to load
+it unless we allowed it to go through; it was hard to spot at first.
