@@ -178,5 +178,5 @@ function loadTweets(url) {
 
 var search = $('#searchButton');
 search.click(function(event) {
-	loadTweets("http://faculty.washington.edu/joelross/proxy/twitter/timeline/?screen_name=" + $('#searchBox').val() + "&count=100");
+	loadTweets("https://faculty.washington.edu/joelross/proxy/twitter/timeline/?screen_name=" + $('#searchBox').val() + "&count=100");
 });
