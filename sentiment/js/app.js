@@ -16,6 +16,7 @@ var _EMOTIONS = [
 
 showStatistics(analyzeTweets(_SAMPLE_TWEETS));
 
+/* extract words from a tweet and put them into an array */
 function extractWords(text) {
 	text = text.toLowerCase();
 	var words = text.split(/\W+/);
@@ -25,12 +26,13 @@ function extractWords(text) {
 	return words;
 }
 
+/* take in a list of words and find their emotions */
 function findSentimentWords(words) {
 	var emotions = {};
 	_EMOTIONS.forEach(function(emotion) {
 		var wordsWithEmotion = words.filter(function(word) {
-			if (_SENTIMENTS[word] != undefined) 
-				return _SENTIMENTS[word][emotion] != undefined;
+			if (_SENTIMENTS[word] != undefined) // if the word exists in the sentiment object
+				return _SENTIMENTS[word][emotion] != undefined; //if the word has the emotion
 			return false;
 		});
 		emotions[emotion] = wordsWithEmotion;
@@ -38,7 +40,9 @@ function findSentimentWords(words) {
 	return emotions;
 }
 
+/* take in a set of tweets and analyze them */
 function analyzeTweets(tweets) {
+	/* create result object to store analyzed tweet data */
 	var result = {};
 	/* create words array and word sentiment object as new properties of each tweet */
 	tweets.forEach(function(tweet) {
@@ -125,6 +129,8 @@ function getHashtags(tweets, emotion) {
 	var hashtagMap = filterEmotion.map(function(tweetIndex) {
 		return tweets[tweetIndex]["entities"]["hashtags"];
 	});
+
+	/* extract hashtag objects from tweets of interest */
 	var hashtagList = [];
 	hashtagMap.forEach(function(tweet) {
 		tweet.forEach(function(hashtag) {
@@ -134,16 +140,20 @@ function getHashtags(tweets, emotion) {
 	return hashtagList;
 }
 
+/* display analyzed tweet data in the table */
 function showStatistics(tweets) {
 	$('tbody').remove();
 	$('table').append('<tbody></tbody');
 	var tableEnd = $('#sentiment-table > tbody:last-child');
 	_EMOTIONS.forEach(function(emotion) {
 		var exampleWords = tweets[emotion]["sortedWords"].slice(0,3).join(', ');
+
+		/* extract hashtag text from hashtag objects and put it in an array for display */
 		var hashtagList = [];
 		tweets[emotion]["hashtags"].forEach(function(hashtag) {
 			hashtagList.push("#" + hashtag.text);
 		});
+
 		var topHashtags = hashtagList.slice(0,3).join(', ');
 		tableEnd
 			.append($('<tr>' +
@@ -155,6 +165,7 @@ function showStatistics(tweets) {
 	});
 }
 
+/* loads specified url to grab tweets for analyzing  */
 function loadTweets(url) {
 	fetch(url)
 		.then(function(response) {
