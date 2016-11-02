@@ -1,4 +1,12 @@
+"use strict";
+
 var cards = [];
+var state = {
+    startTime: moment(),
+    flipped: null,
+    flipping: false
+};
+
 function createGrid() {
     for (var i = 0; i < 32; i++) {
         cards.push({
@@ -13,8 +21,11 @@ createGrid(); // initialize grid before starting game
 $('#start').click(startGame);
 
 function startGame() {
+    state.startTime = moment();
     shuffleCards();
-    
+    window.setInterval(function() {
+        $('#time').html("Time: " + moment().diff(state.startTime, 'seconds'));
+    }, 1000);
 }
 
 function shuffleCards() {
@@ -48,6 +59,9 @@ function shuffleCards() {
             'aria-label': 'Card'
         });
         button.addClass('face-down');
+        button.width($(window).width() / 6);
+        button.height(button.width());
+        button.data('card', card);
 
         /* content (card number) that can be read to users for accessibility */
         var content = $(document.createElement('span'));
@@ -59,4 +73,41 @@ function shuffleCards() {
         row.append(button);
     });
     board.append(row);
+    $('#board button').click(flipCard);
+    console.log(duplicatedCards);
 }
+
+function flipCard() {
+    if ($(event.target).hasClass('face-down') && !state.flipping) {
+        if (state.flipped != null) { // if second flip
+            var curr = $(event.target);
+            curr.toggleClass('face-down');
+            curr.css('background-image', 'url(' + curr.data('card').src + ')');
+            if (state.flipped.data('card').cardIndex != curr.data('card').cardIndex) {
+                state.flipping = true;
+                window.setTimeout(function() {
+                    curr.toggleClass('face-down');
+                    state.flipped.toggleClass('face-down');
+                    curr.css('background-image', 'url("img/card-back.png"');
+                    state.flipped.css('background-image', 'url("img/card-back.png"');
+                    state.flipped = null;
+                    state.flipping = false;
+                }, 1000);
+            } else {
+                state.flipped = null;
+                if (!$('#board button').hasClass('face-down')) {
+                    console.log('yas fam');
+                }
+            }
+        } else { // if first flip
+            state.flipped = $(event.target);
+            state.flipped.toggleClass('face-down');
+            state.flipped.css('background-image', 'url(' + state.flipped.data('card').src + ')');
+        }
+    }
+}
+
+$(window).resize(function() {
+    $('#board button').width($(window).width() / 6);
+    $('#board button').height($(window).width() / 6);
+});

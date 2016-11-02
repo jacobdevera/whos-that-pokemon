@@ -1,3 +1,11 @@
+#board {
+    margin: auto;
+}
+
+#board button.face-down {
+    background-image: url("../img/card-back.png");
+}
+
 .face-down span {
     display: none;
 }
