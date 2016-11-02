@@ -8,6 +8,8 @@ function createGrid() {
     }
 }
 
+createGrid(); // initialize grid before starting game
+
 $('#start').click(startGame);
 
 function startGame() {
@@ -27,12 +29,23 @@ function shuffleCards() {
     duplicatedCards = _.shuffle(duplicatedCards); // shuffle once more to separate pairs
 
     var board = $('#board');
+    board.empty();
     var row = $(document.createElement('div'));
+    row.attr('role', 'row');
 
     _.forEach(duplicatedCards, function(card, index) {
         if (index % 4 == 0 && index > 0) {
             board.append(row);
             row = $(document.createElement('div'));
+            row.attr('role', 'row');
         }
+        var button = $(document.createElement('button'));
+        button.attr({
+            role: 'gridcell',
+            'aria-label': 'Card' + index
+        });
+        button.addClass('face-down');
+        row.append(button);
     });
+    board.append(row);
 }
