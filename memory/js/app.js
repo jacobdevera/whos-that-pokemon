@@ -21,10 +21,11 @@ createGrid(); // initialize grid before starting game
 $('#start').click(startGame);
 
 function startGame() {
-    state.startTime = moment();
+    state.startTime = moment(); // initialize start time
     shuffleCards();
+    /* increment timer */
     window.setInterval(function() {
-        $('#time').html("Time: " + moment().diff(state.startTime, 'seconds'));
+        $('#time').html("Time: " + moment(moment().diff(state.startTime)).format("mm:ss"));
     }, 1000);
 }
 
@@ -74,7 +75,6 @@ function shuffleCards() {
     });
     board.append(row);
     $('#board button').click(flipCard);
-    console.log(duplicatedCards);
 }
 
 function flipCard() {
@@ -88,15 +88,15 @@ function flipCard() {
                 window.setTimeout(function() {
                     curr.toggleClass('face-down');
                     state.flipped.toggleClass('face-down');
-                    curr.css('background-image', 'url("img/card-back.png"');
-                    state.flipped.css('background-image', 'url("img/card-back.png"');
+                    curr.css('background-image', '');
+                    state.flipped.css('background-image', '');
                     state.flipped = null;
                     state.flipping = false;
                 }, 1000);
             } else {
                 state.flipped = null;
                 if (!$('#board button').hasClass('face-down')) {
-                    console.log('yas fam');
+                    gameWin();
                 }
             }
         } else { // if first flip
@@ -108,6 +108,16 @@ function flipCard() {
 }
 
 $(window).resize(function() {
-    $('#board button').width($(window).width() / 6);
-    $('#board button').height($(window).width() / 6);
+    var newSize = $(window).width() / 6;
+    var buttons = $('#board button');
+    buttons.width(newSize);
+    buttons.height(newSize);
 });
+
+function gameWin() {
+    $('#win').modal();
+}
+
+$('#restart').click(function() {
+    startGame();
+})

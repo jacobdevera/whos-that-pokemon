@@ -1,9 +1,19 @@
-#board {
-    margin: auto;
+* {
+    text-align: center;
+}
+
+#board button {
+    padding: 0;
+    background-size: contain;
+    transform: rotateX(0) rotateY(0);
+    transform-style: preserve-3d;
+    transition: all .4s ease-in-out;
 }
 
 #board button.face-down {
     background-image: url("../img/card-back.png");
+    
+    transform: rotateY(-179deg);
 }
 
 .face-down span {
