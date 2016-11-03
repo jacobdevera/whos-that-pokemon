@@ -4,7 +4,8 @@ var cards = [];
 var state = {
     startTime: moment(),
     flipped: null,
-    flipping: false
+    flipping: false,
+    pairsLeft: 8
 };
 
 function createGrid() {
@@ -21,8 +22,10 @@ createGrid(); // initialize grid before starting game
 $('#start').click(startGame);
 
 function startGame() {
-    state.startTime = moment(); // initialize start time
+    state.startTime = moment();
+    state.pairsLeft = 8;
     shuffleCards();
+    createProgressBar();
     /* increment timer */
     window.setInterval(function() {
         $('#time').html("Time: " + moment(moment().diff(state.startTime)).format("mm:ss"));
@@ -57,7 +60,7 @@ function shuffleCards() {
         var button = $(document.createElement('button'));
         button.attr({
             role: 'gridcell',
-            'aria-label': 'Card'
+            'aria-label': 'Card',
         });
         button.addClass('face-down');
         button.width($(window).width() / 6);
@@ -94,8 +97,13 @@ function flipCard() {
                     state.flipping = false;
                 }, 1000);
             } else {
+                /* update game state and progress */
                 state.flipped = null;
-                if (!$('#board button').hasClass('face-down')) {
+                state.pairsLeft--;
+                $('#progress span').text(state.pairsLeft + ' pairs left');
+                $('.progress-bar').attr('aria-valuenow', state.pairsLeft);
+                $('.progress-bar').css('width', (state.pairsLeft / 8) * 100 + '%');
+                if (!$('#board button').hasClass('face-down')) { // if no more face down, win
                     gameWin();
                 }
             }
@@ -107,6 +115,26 @@ function flipCard() {
     }
 }
 
+/* create and initialize progress bar value */
+function createProgressBar() {
+    var progressCont = $('#progress');
+    progressCont.empty();
+    var progressBar = $(document.createElement('div'));
+    progressBar.addClass('progress-bar');
+    progressBar.attr({
+        role: "progressbar",
+        "aria-valuenow": "8",
+        "aria-valuemin": "0",
+        "aria-valuemax": "8"
+    });
+    progressBar.css('width', '100%');
+    var progress = $(document.createElement('span'));
+    progress.text(state.pairsLeft + ' pairs left');
+    progressCont.append(progress);
+    progressCont.append(progressBar);
+}
+
+/* dynamically resize the grid whenever the browser is resized */
 $(window).resize(function() {
     var newSize = $(window).width() / 6;
     var buttons = $('#board button');

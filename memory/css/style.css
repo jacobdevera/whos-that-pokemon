@@ -19,3 +19,19 @@
 .face-down span {
     display: none;
 }
+
+#progress {
+    margin: auto;
+    margin-top: 2em;
+    width: 75%;
+}
+
+#progress span {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+#progress .progress-bar {
+    height: 20px;
+}

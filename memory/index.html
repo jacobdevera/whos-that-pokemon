@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
-	<head lang="en">
+<html lang="en">
+	<head>
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<meta name="description" content"A memory card-matching game">
+		<meta name="description" content="A memory card-matching game">
 		<meta name="author" content="Jacob Devera">
 		<title>Memory</title>
 		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -15,15 +15,16 @@
 		</header>
 		<section class="menu" role="region">
 			<button id="start" class="btn btn-primary" type="button" role="button">Start New Game</button>
-			<div id="time">Time: 0</div>
+			<div id="time">Time: 00:00</div>
 		</section>
-		<section id="board" role="grid"></section>
+		<div id="board" role="grid"></div>
+		<div id="progress"></div>
 
 		<div id="win" class="modal fade" tabindex="-1" role="dialog">
   			<div class="modal-dialog modal-sm" role="document">
     			<div class="modal-content">
 					<div class="modal-header">
-						<h4 class="modal-title">You won!</h4>
+						<h2 class="modal-title">You won!</h2>
 					</div>
 					<div class="modal-body">
 						<button id="restart" class="btn btn-primary" type="button" role="button" data-dismiss="modal">Play Again</button>
