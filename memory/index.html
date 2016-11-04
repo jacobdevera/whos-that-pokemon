@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="A memory card-matching game">
+		<meta name="author" content="Jacob Devera">
+		<title>Memory</title>
+		<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+	</head>
+	<body>
+		<header class="page-header" role="banner">
+			<h1>Memory Game</h1>
+		</header>
+		<section class="menu" role="region">
+			<button id="start" class="btn btn-primary" type="button" role="button">Start New Game</button>
+			<div id="time">Time: 00:00</div>
+		</section>
+		<div id="board" role="grid"></div>
+		<div id="progress"></div>
+
+		<div id="win" class="modal fade" tabindex="-1" role="dialog">
+  			<div class="modal-dialog modal-sm" role="document">
+    			<div class="modal-content">
+					<div class="modal-header">
+						<h2 class="modal-title">You won!</h2>
+					</div>
+					<div class="modal-body">
+						<button id="restart" class="btn btn-primary" type="button" role="button" data-dismiss="modal">Play Again</button>
+					</div>
+    			</div>
+  			</div>
+		</div>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.16.6/lodash.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js"></script>
+		<script src="js/app.js"></script>
+	</body>
+</html>
