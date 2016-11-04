@@ -63,8 +63,15 @@ function shuffleCards() {
             'aria-label': 'Card',
         });
         button.addClass('face-down');
-        button.width($(window).width() / 6);
-        button.height(button.width());
+
+        /* adjust grid size depending on if window is taller or wider */
+        if ($(window).width() > $(window).height()) {
+            var newSize = $(window).height() / 6;
+        } else {
+            var newSize = $(window).width() / 6;
+        }
+        button.width(newSize);
+        button.height(newSize);
         button.data('card', card);
 
         /* content (card number) that can be read to users for accessibility */
@@ -81,14 +88,15 @@ function shuffleCards() {
 }
 
 function flipCard() {
-    if ($(event.target).hasClass('face-down') && !state.flipping) {
+    /* if clicked a card that is face down, and a pair isn't currently flipping back */
+    if ($(event.target).hasClass('face-down') && !state.flipping) { 
         if (state.flipped != null) { // if second flip
             var curr = $(event.target);
             curr.toggleClass('face-down');
             curr.css('background-image', 'url(' + curr.data('card').src + ')');
             if (state.flipped.data('card').cardIndex != curr.data('card').cardIndex) {
                 state.flipping = true;
-                window.setTimeout(function() {
+                window.setTimeout(function() { // after one second, put both cards face down
                     curr.toggleClass('face-down');
                     state.flipped.toggleClass('face-down');
                     curr.css('background-image', '');
@@ -97,10 +105,10 @@ function flipCard() {
                     state.flipping = false;
                 }, 1000);
             } else {
-                /* update game state and progress */
+                /* update game state and progress if a pair is found */
                 state.flipped = null;
                 state.pairsLeft--;
-                $('#progress span').text(state.pairsLeft + ' pairs left');
+                $('#progress span').text(state.pairsLeft + ' pair(s) left');
                 $('.progress-bar').attr('aria-valuenow', state.pairsLeft);
                 $('.progress-bar').css('width', (state.pairsLeft / 8) * 100 + '%');
                 if (!$('#board button').hasClass('face-down')) { // if no more face down, win
@@ -136,16 +144,22 @@ function createProgressBar() {
 
 /* dynamically resize the grid whenever the browser is resized */
 $(window).resize(function() {
-    var newSize = $(window).width() / 6;
+    if ($(window).width() > $(window).height()) {
+        var newSize = $(window).height() / 6;
+    } else {
+        var newSize = $(window).width() / 6;
+    }
     var buttons = $('#board button');
     buttons.width(newSize);
     buttons.height(newSize);
 });
 
+/* show modal when the player wins */
 function gameWin() {
     $('#win').modal();
 }
 
+/* restart the game anytime the player clicks the button */
 $('#restart').click(function() {
     startGame();
-})
+});
