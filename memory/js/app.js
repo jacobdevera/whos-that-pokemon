@@ -137,7 +137,7 @@ function createProgressBar() {
     });
     progressBar.css('width', '100%');
     var progress = $(document.createElement('span'));
-    progress.text(state.pairsLeft + ' pairs left');
+    progress.text(state.pairsLeft + ' pair(s) left');
     progressCont.append(progress);
     progressCont.append(progressBar);
 }
