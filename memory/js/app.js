@@ -157,6 +157,7 @@ $(window).resize(function() {
 /* show modal when the player wins */
 function gameWin() {
     $('#win').modal();
+    $('#win p').text('Your time: ' + moment(moment().diff(state.startTime)).format("mm:ss"));
 }
 
 /* restart the game anytime the player clicks the button */
