@@ -1,9 +1,9 @@
 import React from 'react';
 import PokeController from './PokeController';
+import { Card, CardTitle, Col, Collapsible, CollapsibleItem } from 'react-materialize';
+import _ from 'lodash';
 
-//a "root" component
 class App extends React.Component {
-  //how to display this component
    constructor(props) {
       super(props);
       this.state = {
@@ -15,32 +15,45 @@ class App extends React.Component {
       /* fetch region data */
       var regionArray = [];
       PokeController.fetchData('/region/')
-      .then ( (data) => {
+      .then ((data) => {
          data.results.forEach(function(region){ 
-            regionArray.push(<Card className='small' title={region.name} key={region.name} />);
+            regionArray.push(<RegionItem header={_.capitalize(region.name)} key={(region.name)}> </RegionItem>);
          })
          this.setState({regions: regionArray});
       });
+      $(document).ready(function(){
+         $('.collapsible').collapsible();
+      });
+        
    }
 
    render() {
       return (
          <div>
             <h1>Who's that Pokemon?</h1>
-            <RegionCards regions={this.state.regions}/>
+            <RegionCollection regions={this.state.regions}/>
          </div>
       );
    }
 }
 
-import { Card, CardTitle, Col } from 'react-materialize';
-
-class RegionCards extends React.Component {
+class RegionCollection extends React.Component {
    render() {
       return (
          <div>
-            {this.props.regions}
+            <h2>Select a Region</h2>
+            <Collapsible popout accordion>
+               {this.props.regions}
+            </Collapsible>
          </div>
+      );
+   }
+}
+
+class RegionItem extends React.Component {
+   render() {
+      return (
+         <CollapsibleItem header={this.props.header}>Let's play</CollapsibleItem>
       );
    }
 }
