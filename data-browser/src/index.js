@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import App from './App'; // import our component
 
 // can load other CSS files (e.g,. Bootstrap) here
@@ -12,6 +13,8 @@ import './index.css';
 
 // render the Application view
 ReactDOM.render(
-  <App />,
+  <MuiThemeProvider>
+    <App />
+  </MuiThemeProvider>,
   document.getElementById('root')
 );
