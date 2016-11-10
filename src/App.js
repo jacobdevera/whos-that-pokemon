@@ -1,64 +1,55 @@
 import React from 'react';
-import injectTapEventplugin from 'react-tap-event-plugin';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
-
-import { AppBar, DropDownMenu, MenuItem } from 'material-ui';
-import { Navbar, NavItem, Button, Icon, Collapsible, CollapsibleItem } from 'react-materialize';
+import { AppBar, DropDownMenu, MenuItem, Subheader } from 'material-ui';
 import _ from 'lodash';
 
-injectTapEventplugin();
+injectTapEventPlugin();
 
 class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         regions: [],
-         selectedRegion: null
-      };
-   }
-
-   componentDidMount() {
-      /* fetch region data */
-      var regionArray = [];
-      PokeController.fetchData('/region/')
-      .then ((data) => {
-         data.results.forEach(function(region, index){ 
-            regionArray.push(<RegionItem value={index} name={_.capitalize(region.name)} key={(region.name)}> </RegionItem>);
-         })
-         this.setState({regions: regionArray});
-      });    
-   }
-
    render() {
       return (
          <div>
             <AppBar title="Who's that Pokemon?" />
-            <RegionCollection regions={this.state.regions} />
+            <RegionCollection />
          </div>
       );
    }
 }
 
 class RegionCollection extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         value: 0,
+         regions: []
+      };
+   }
+
+   componentDidMount() {
+      // fetch region data
+      var regionArray = [];
+      PokeController.fetchData('/region/')
+      .then ((data) => {
+         data.results.forEach(function(region, index){ 
+            regionArray.push(<MenuItem value={index} primaryText={_.capitalize(region.name)} key={index} />);
+         })
+         this.setState({regions: regionArray});
+      });  
+   }
+
+   handleChange = (event, index, value) => {
+      this.setState({value: value});
+   }
+
    render() {
       return (
          <div>
-            <DropDownMenu>
-               {this.props.regions}
+            <Subheader>Region</Subheader>
+            <DropDownMenu value={this.state.value} onChange={this.handleChange}>
+               {this.state.regions}
             </DropDownMenu>
          </div>
-      );
-   }
-}
-
-class RegionItem extends React.Component {
-   setRegion() {
-      console.log('click');
-   }
-
-   render() {
-      return (
-         <MenuItem value={this.props.index} primaryText={this.props.name} />
       );
    }
 }
