@@ -5,7 +5,7 @@ var controller = {
   //download data from the url
   fetchData: function(query) {    
     //construct URL
-    var uri = 'https://pokeapi.co/api/v2' + query;
+    var uri = query;
 
     return fetch(uri) //download the data
       .then(function(res) { return res.json(); })
