@@ -144,7 +144,7 @@ class GuessBox extends React.Component {
       });
    };
 
-   giveHintType = () => {
+   giveHint = () => {
       var types = [];
       this.state.currentPokeData["types"].forEach((type) => {
          types.push(_.capitalize(type["type"].name));
@@ -201,12 +201,12 @@ class GuessBox extends React.Component {
             <div>
                <Card>
                   <CardHeader
-                     title={this.state.currentPokeData["name"]}
+                     title={"Name: " + (this.state.hint.length > 0 ? ("_ ".repeat(this.state.currentPokeData["name"].length)) : "")}
                      subtitle={"Type: " + this.state.hint}
                   />
                   <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
                   <CardActions>
-                     <FlatButton label="Get hint (type)" onTouchTap={this.giveHintType} />
+                     <FlatButton label="Hint" onTouchTap={this.giveHint} />
                      <FlatButton label="Submit" onTouchTap={this.submitGuess} primary={true} />
                      <FlatButton label="Give up" onTouchTap={this.result} secondary={true} />
                   </CardActions>
