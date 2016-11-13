@@ -157,7 +157,7 @@ class GuessBox extends React.Component {
          guessed: true
       })
 
-      if (this.state.currentPokeData["name"].toUpperCase() === this.state.guess.toUpperCase()){
+      if (this.state.currentPokeData["species"]["name"].toUpperCase() === this.state.guess.toUpperCase()){
          this.result();
       }
    }
@@ -201,7 +201,7 @@ class GuessBox extends React.Component {
             <div>
                <Card>
                   <CardHeader
-                     title={"Name: " + (this.state.hint.length > 0 ? ("_ ".repeat(this.state.currentPokeData["name"].length)) : "")}
+                     title={"Name: " + (this.state.hint.length > 0 ? ("_ ".repeat(this.state.currentPokeData["species"]["name"].length)) : "")}
                      subtitle={"Type: " + this.state.hint}
                   />
                   <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
@@ -214,14 +214,14 @@ class GuessBox extends React.Component {
                      <TextField
                         hintText="Enter your guess"
                         floatingLabelText="Who's that Pokemon?"
-                        errorText={(this.state.guessed && (this.state.currentPokeData["name"].toUpperCase() !== this.state.guess.toUpperCase())) && 'wrong'}
+                        errorText={(this.state.guessed && (this.state.currentPokeData["species"]["name"].toUpperCase() !== this.state.guess.toUpperCase())) && 'wrong'}
                         value={this.state.guess}
                         onChange={this.handleChange}
                      />
                   </CardText>
                </Card>
                <Dialog
-                  title={"It's " + _.capitalize(this.state.currentPokeData["name"])+ "!"}
+                  title={"It's " + _.capitalize(this.state.currentPokeData["species"]["name"])+ "!"}
                   actions={dialogActions}
                   modal={false}
                   open={this.state.dialogOpen}
