@@ -9,7 +9,7 @@ import {
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import _ from 'lodash';
 
-injectTapEventPlugin();
+injectTapEventPlugin(); // attaches an onTouchTap() event to components
 
 class App extends React.Component {
    render() {
@@ -106,10 +106,12 @@ class GuessBox extends React.Component {
       this.state = {
          currentPoke: {},
          currentPokeData: {},
+         currentSpeciesData: {},
          guess: '',
          hint: '',
          guessed: false,
-         dialogOpen: false
+         dialogOpen: false,
+         flavorText: []
       };
    }
 
@@ -127,6 +129,7 @@ class GuessBox extends React.Component {
          PokeController.fetchData(speciesData["varieties"][0]["pokemon"].url)
          .then((pokeData) => {
             this.setState({
+               currentSpeciesData: speciesData,
                currentPokeData: pokeData,
                guess: '' // empty text field from previous game
             });
@@ -142,14 +145,21 @@ class GuessBox extends React.Component {
    };
 
    giveHintType = () => {
-      this.setState({hint: this.state.currentPokeData["types"][0]["type"].name})
+      var types = [];
+      this.state.currentPokeData["types"].forEach((type) => {
+         types.push(_.capitalize(type["type"].name));
+      })
+      this.setState({hint: types.toString()})
    }
 
    submitGuess = () => {
       this.setState({ 
-         guessed: true,
-         dialogOpen: ((this.state.currentPokeData["name"].toUpperCase() === this.state.guess.toUpperCase()))
+         guessed: true
       })
+
+      if (this.state.currentPokeData["name"].toUpperCase() === this.state.guess.toUpperCase()){
+         this.result();
+      }
    }
 
    handleClose = () => {
@@ -157,18 +167,30 @@ class GuessBox extends React.Component {
       this.chooseRandomPoke();
    }
 
+   result = () => {
+      var flavorText = [];
+      this.state.currentSpeciesData["flavor_text_entries"].forEach((entry) => {
+         if (entry["language"].name == "en")
+            flavorText.push(entry.flavor_text);
+      })
+      this.setState({
+         dialogOpen: true,
+         flavorText: flavorText
+      })
+   }
    render() {
       const dialogActions = [
          <FlatButton
             label="Continue"
             primary={true}
             onTouchTap={this.handleClose}
+            keyboardFocused={true}
          />,
          <FlatButton
             label="Choose new Pokedex"
             primary={true}
             onTouchTap={this.props.handleRestart}
-         />
+         />,
       ]
 
       return (
@@ -180,12 +202,13 @@ class GuessBox extends React.Component {
                <Card>
                   <CardHeader
                      title={this.state.currentPokeData["name"]}
-                     subtitle={"Type: " + _.capitalize(this.state.hint)}
+                     subtitle={"Type: " + this.state.hint}
                   />
-                  <img src={this.state.currentPokeData["sprites"]["back_default"]} alt="Back of Pokemon" />
+                  <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
                   <CardActions>
                      <FlatButton label="Get hint (type)" onTouchTap={this.giveHintType} />
-                     <FlatButton label="Submit" onTouchTap={this.submitGuess} />
+                     <FlatButton label="Submit" onTouchTap={this.submitGuess} primary={true} />
+                     <FlatButton label="Give up" onTouchTap={this.result} secondary={true} />
                   </CardActions>
                   <CardText>
                      <TextField
@@ -198,12 +221,15 @@ class GuessBox extends React.Component {
                   </CardText>
                </Card>
                <Dialog
-                  title="You guessed right!"
+                  title={"It's " + _.capitalize(this.state.currentPokeData["name"])+ "!"}
                   actions={dialogActions}
                   modal={false}
                   open={this.state.dialogOpen}
                   onRequestClose={this.handleClose}
+                  autoScrollBodyContent={true}
                >
+                  <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" /><br />
+                  {this.state.flavorText[0]}
                </Dialog>
             </div>
          }
