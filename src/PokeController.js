@@ -11,7 +11,13 @@ var controller = {
       .then(function(res) { return res.json(); })
   },
 
-  //other functions can go here
+  getSpriteUrl: function(currentPokeData) {
+    if (currentPokeData["sprites"]) {
+      return currentPokeData["sprites"]["back_default"];
+    } else {
+      return ''; // don't load until url ready
+    }
+  }
 };
 
 export default controller; //export object

@@ -2,7 +2,9 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
 import { 
-   AppBar, DropDownMenu, IconButton, IconMenu, MenuItem, RaisedButton, Subheader 
+   AppBar, Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, 
+   Dialog, DropDownMenu, FlatButton, IconButton, IconMenu, MenuItem, 
+   RaisedButton, TextField, Subheader 
 } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import _ from 'lodash';
@@ -39,7 +41,6 @@ class PlayArea extends React.Component {
          pokedexes: [],
          pokedexData: {},
          started: false,
-         loading: 'hide'
       };
    }
 
@@ -48,14 +49,6 @@ class PlayArea extends React.Component {
       var pokedexArray = [];
       PokeController.fetchData('http://pokeapi.co/api/v2/pokedex/')
       .then ((data) => {
-         /* data.results.forEach(function(pokedex) {
-            PokeController.fetchData(pokedex.url)
-            .then ((pokedexData) => {
-               if (pokedexData.is_main_series) {
-                  pokedexArray.push(pokedexData);
-               }
-            })
-         }) */
          data.results.forEach(function(pokedex) {
             pokedexArray.push(pokedex);
          })
@@ -68,19 +61,24 @@ class PlayArea extends React.Component {
          value: value,
          started: false
       });
+   };
+
+   gameStart = () => {
+      // get pokedex data from selected pokedex
+      console.log("fetching pokedex data");
+      if (!this.state.started) {
+         PokeController.fetchData(this.state.pokedexes[this.state.value].url)
+         .then ((data) => {
+            this.setState({
+               pokedexData: data,
+               started: true,
+            });
+         })
+      }
    }
 
-   gameStart() {
-      // get pokedex data from selected pokedex
-      this.setState({loading: 'loading'})
-      PokeController.fetchData(this.state.pokedexes[this.state.value].url)
-      .then ((data) => {
-         this.setState({
-            pokedexData: data,
-            started: true,
-            loading: 'hide'
-         });
-      })
+   handleRestart = () => {
+      this.setState({started: false});
    }
 
    render() {
@@ -94,9 +92,9 @@ class PlayArea extends React.Component {
             <DropDownMenu value={this.state.value} onChange={this.handleChange}>
                {pokedexList}
             </DropDownMenu>
-            <RaisedButton label="Start" primary={true} onTouchTap={this.gameStart.bind(this)}/>
+            <RaisedButton label="Start" primary={true} onTouchTap={this.gameStart} />
             {this.state.started && 
-                  <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} />}
+                  <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} handleRestart={this.handleRestart} />}
          </div>
       );
    }
@@ -106,20 +104,109 @@ class GuessBox extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         currentPokemon: {}
+         currentPoke: {},
+         currentPokeData: {},
+         guess: '',
+         hint: '',
+         guessed: false,
+         dialogOpen: false
       };
    }
 
    componentDidMount() {
-      // select a random Pokemon for the player to guess
-      console.log(this.props.pokedexData);
-      var entryNumber = Math.floor(Math.random() * (this.props.pokedexData["pokemon_entries"].length + 1));
-      this.setState({currentPokemon: this.props.pokedexData["pokemon_entries"][entryNumber]});
-      console.log(this.state.currentPokemon);
+      this.chooseRandomPoke();
    }
+
+   chooseRandomPoke = () => {
+      console.log("generating new poke");
+      // select a random Pokemon for the player to guess
+      var pokeIndex = Math.floor(Math.random() * (this.props.pokedexData["pokemon_entries"].length));
+      // get data for current Pokemon
+      PokeController.fetchData(this.props.pokedexData["pokemon_entries"][pokeIndex]["pokemon_species"].url)
+      .then ((speciesData) => {
+         PokeController.fetchData(speciesData["varieties"][0]["pokemon"].url)
+         .then((pokeData) => {
+            this.setState({
+               currentPokeData: pokeData,
+               guess: '' // empty text field from previous game
+            });
+         })
+      })
+   }
+
+   handleChange = (event) => {
+      this.setState({
+         guess: event.target.value,
+         guessed: false
+      });
+   };
+
+   giveHintType = () => {
+      this.setState({hint: this.state.currentPokeData["types"][0]["type"].name})
+   }
+
+   submitGuess = () => {
+      this.setState({ 
+         guessed: true,
+         dialogOpen: ((this.state.currentPokeData["name"].toUpperCase() === this.state.guess.toUpperCase()))
+      })
+   }
+
+   handleClose = () => {
+      this.setState({hint: '', guessed: false, dialogOpen: false})
+      this.chooseRandomPoke();
+   }
+
    render() {
+      const dialogActions = [
+         <FlatButton
+            label="Continue"
+            primary={true}
+            onTouchTap={this.handleClose}
+         />,
+         <FlatButton
+            label="Choose new Pokedex"
+            primary={true}
+            onTouchTap={this.props.handleRestart}
+         />
+      ]
+
       return (
+         // make sure Pokemon data is fetched before mounting
          <div>
+         { 
+            !_.isEmpty(this.state.currentPokeData) &&
+            <div>
+               <Card>
+                  <CardHeader
+                     title={this.state.currentPokeData["name"]}
+                     subtitle={"Type: " + _.capitalize(this.state.hint)}
+                  />
+                  <img src={this.state.currentPokeData["sprites"]["back_default"]} alt="Back of Pokemon" />
+                  <CardActions>
+                     <FlatButton label="Get hint (type)" onTouchTap={this.giveHintType} />
+                     <FlatButton label="Submit" onTouchTap={this.submitGuess} />
+                  </CardActions>
+                  <CardText>
+                     <TextField
+                        hintText="Enter your guess"
+                        floatingLabelText="Who's that Pokemon?"
+                        errorText={(this.state.guessed && (this.state.currentPokeData["name"].toUpperCase() !== this.state.guess.toUpperCase())) && 'wrong'}
+                        value={this.state.guess}
+                        onChange={this.handleChange}
+                     />
+                  </CardText>
+               </Card>
+               <Dialog
+                  title="You guessed right!"
+                  actions={dialogActions}
+                  modal={false}
+                  open={this.state.dialogOpen}
+                  onRequestClose={this.handleClose}
+               >
+               </Dialog>
+            </div>
+         }
          </div>
       );
    }
