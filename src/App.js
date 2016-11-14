@@ -4,7 +4,7 @@ import PokeController from './PokeController';
 import { 
    AppBar, Card, CardActions, CardHeader, CardTitle, CardText,
    Dialog, DropDownMenu, FlatButton, IconButton, IconMenu, LinearProgress,
-   MenuItem, RaisedButton, TextField, Subheader 
+   MenuItem, RaisedButton, List, ListItem, TextField, Subheader 
 } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import _ from 'lodash';
@@ -130,7 +130,8 @@ class GuessBox extends React.Component {
          hint: '',
          guessed: false,
          dialogOpen: false,
-         flavorText: []
+         flavorText: [],
+         moreInfo: false
       };
    }
 
@@ -182,12 +183,6 @@ class GuessBox extends React.Component {
       }
    }
 
-   // clicking outside the dialog will continue with the current pokedex
-   handleClose = () => {
-      this.setState({hint: '', guessed: false, dialogOpen: false})
-      this.chooseRandomPoke();
-   }
-
    // display the flavor text entry for the Pokmeon after each round
    result = () => {
       var flavorText = [];
@@ -200,6 +195,13 @@ class GuessBox extends React.Component {
          flavorText: flavorText
       })
    }
+
+   // clicking outside the dialog will continue with the current pokedex
+   handleClose = () => {
+      this.setState({hint: '', guessed: false, dialogOpen: false})
+      this.chooseRandomPoke();
+   }
+
    render() {
       // actions for the result dialog
       const dialogActions = [
@@ -207,17 +209,15 @@ class GuessBox extends React.Component {
             label="Continue"
             primary={true}
             onTouchTap={this.handleClose}
-            keyboardFocused={true}
          />,
          <FlatButton
             label="Choose new Pokedex"
             primary={true}
             onTouchTap={this.props.handleRestart}
-         />,
+         />
       ]
 
       return (
-         
          <div>
          { 
             !_.isEmpty(this.state.currentPokeData) && // make sure Pokemon data is fetched before mounting
@@ -234,6 +234,7 @@ class GuessBox extends React.Component {
                      <FlatButton label="Give up" onTouchTap={this.result} secondary={true} />
                   </CardActions>
                   <CardText>
+                     {this.state.hint.length > 0 && <PokeTable currentPokeData={this.state.currentPokeData}/>}
                      <TextField
                         hintText="Enter your guess"
                         floatingLabelText="Who's that Pokemon?"
@@ -258,6 +259,36 @@ class GuessBox extends React.Component {
          }
             {this.state.loading && <LinearProgress style={loadStyle}/>}
          </div>
+      );
+   }
+}
+
+class PokeTable extends React.Component {
+   render() {
+      // map pokemon data to list items
+      var gameIndices = this.props.currentPokeData["game_indices"].map(function(index, i) {
+         return <ListItem key={i} primaryText={_.startCase(index["version"].name) + ": " + index.game_index} />;
+      })
+      
+      var height = this.props.currentPokeData["height"] / 10;
+      var weight = this.props.currentPokeData["weight"] / 10;
+
+      var abilities = this.props.currentPokeData["abilities"].map(function(ability, index) {
+         return <ListItem key={index} primaryText={_.startCase(ability["ability"].name)} />;
+      })
+
+      var heldItems = this.props.currentPokeData["held_items"].map(function(item, index) {
+         return <ListItem key={index} primaryText={_.startCase(item["item"].name)} />;
+      })
+
+      return (
+         <List>
+            <ListItem primaryText={"Pokedex Entry Numbers: "} nestedItems={gameIndices}/>
+            <ListItem primaryText={"Height: " + height + " m"}/>
+            <ListItem primaryText={"Weight: " + weight + " kg"}/>
+            <ListItem primaryText={"Abilities: "} nestedItems={abilities}/>
+            <ListItem primaryText={"Held items in the wild: " + (heldItems.length === 0 ? "None" : "")} nestedItems={heldItems}/>
+         </List>
       );
    }
 }
