@@ -2,14 +2,25 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
 import { 
-   AppBar, Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, 
-   Dialog, DropDownMenu, FlatButton, IconButton, IconMenu, MenuItem, 
-   RaisedButton, TextField, Subheader 
+   AppBar, Card, CardActions, CardHeader, CardMedia, CardTitle, CardText,
+   Dialog, DropDownMenu, FlatButton, IconButton, IconMenu, LinearProgress,
+   MenuItem, RaisedButton, TextField, Subheader 
 } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import _ from 'lodash';
 
 injectTapEventPlugin(); // attaches an onTouchTap() event to components
+
+const loadStyle = {
+   position: 'absolute',
+   top: '64px',
+};
+
+const containerStyle = {
+   maxWidth: '768px',
+   marginLeft: 'auto',
+   marginRight: 'auto',
+};
 
 class App extends React.Component {
    render() {
@@ -41,6 +52,7 @@ class PlayArea extends React.Component {
          pokedexes: [],
          pokedexData: {},
          started: false,
+         loading: false
       };
    }
 
@@ -65,13 +77,14 @@ class PlayArea extends React.Component {
 
    gameStart = () => {
       // get pokedex data from selected pokedex
-      console.log("fetching pokedex data");
       if (!this.state.started) {
+         this.setState({loading: true});
          PokeController.fetchData(this.state.pokedexes[this.state.value].url)
          .then ((data) => {
             this.setState({
                pokedexData: data,
                started: true,
+               loading: false
             });
          })
       }
@@ -87,12 +100,13 @@ class PlayArea extends React.Component {
          return <MenuItem value={index} primaryText={_.startCase(pokedex.name)} key={index} />;
       });
       return (
-         <div>
+         <div style={containerStyle}>
             <Subheader>Choose a Pokedex</Subheader>
             <DropDownMenu value={this.state.value} onChange={this.handleChange}>
                {pokedexList}
             </DropDownMenu>
             <RaisedButton label="Start" primary={true} onTouchTap={this.gameStart} />
+            {this.state.loading && <LinearProgress style={loadStyle}/>}
             {this.state.started && 
                   <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} handleRestart={this.handleRestart} />}
          </div>
@@ -107,6 +121,7 @@ class GuessBox extends React.Component {
          currentPoke: {},
          currentPokeData: {},
          currentSpeciesData: {},
+         loading: false,
          guess: '',
          hint: '',
          guessed: false,
@@ -120,7 +135,7 @@ class GuessBox extends React.Component {
    }
 
    chooseRandomPoke = () => {
-      console.log("generating new poke");
+      this.setState({loading: true});
       // select a random Pokemon for the player to guess
       var pokeIndex = Math.floor(Math.random() * (this.props.pokedexData["pokemon_entries"].length));
       // get data for current Pokemon
@@ -131,6 +146,7 @@ class GuessBox extends React.Component {
             this.setState({
                currentSpeciesData: speciesData,
                currentPokeData: pokeData,
+               loading: false,
                guess: '' // empty text field from previous game
             });
          })
@@ -233,6 +249,7 @@ class GuessBox extends React.Component {
                </Dialog>
             </div>
          }
+            {this.state.loading && <LinearProgress style={loadStyle}/>}
          </div>
       );
    }
