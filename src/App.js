@@ -2,9 +2,9 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
 import { 
-   AppBar, Card, CardActions, CardHeader, CardTitle, CardText,
-   Dialog, DropDownMenu, FlatButton, IconButton, IconMenu, LinearProgress,
-   MenuItem, RaisedButton, List, ListItem, TextField, Subheader 
+   AppBar, Card, CardActions, CardHeader, CardText, Dialog, DropDownMenu, 
+   FlatButton, IconButton, IconMenu, LinearProgress, MenuItem, RaisedButton, 
+   List, ListItem, TextField, Subheader 
 } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import QuestionMark from 'material-ui/svg-icons/action/help';
@@ -72,6 +72,7 @@ class App extends React.Component {
                actions={actions}
                modal={false}
                open={this.state.dialogOpen}
+               onRequestClose={this.handleClose}
             >
                Choose a Pokedex from one of the various games. The national Pokedex 
                includes all 721 Pokemon up to generation VI. You will then be asked
@@ -149,7 +150,8 @@ class PlayArea extends React.Component {
             <RaisedButton label="Start" primary={true} onTouchTap={this.gameStart} />
             {this.state.loading && <LinearProgress style={loadStyle}/>}
             {this.state.started && 
-                  <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} handleRestart={this.handleRestart} />}
+                  <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} 
+                  handleRestart={this.handleRestart} />}
          </div>
       );
    }
