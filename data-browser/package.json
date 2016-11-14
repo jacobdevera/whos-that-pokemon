@@ -1,0 +1,26 @@
+{
+  "name": "data-browser",
+  "author": "Jacob Devera",
+  "homepage": "https://info343-au16.github.io/challenges-kefkiroth/data-browser/build",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "0.7.0"
+  },
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "lodash": "^4.16.6",
+    "material-ui": "^0.16.1",
+    "normalize.css": "^5.0.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-tap-event-plugin": "^1.0.0",
+    "whatwg-fetch": "^1.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
