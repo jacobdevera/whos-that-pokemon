@@ -7,6 +7,7 @@ import {
    MenuItem, RaisedButton, List, ListItem, TextField, Subheader 
 } from 'material-ui';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import QuestionMark from 'material-ui/svg-icons/action/help';
 import _ from 'lodash';
 
 injectTapEventPlugin(); // attaches an onTouchTap() event to components
@@ -25,21 +26,57 @@ const containerStyle = {
 };
 
 class App extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         dialogOpen: false
+      };
+   }
+
+   handleOpen = () => {
+      this.setState({dialogOpen: true});
+   }
+
+   handleClose = () => {
+      this.setState({dialogOpen: false});
+   }
+
    render() {
+      // action for 'how to play' dialog
+      const actions = [
+         <FlatButton
+            label="Okay"
+            primary={true}
+            onTouchTap={this.handleClose}
+            keyboardFocused={true}
+         />
+      ];
+
       return (
          <div>
             <AppBar 
                title="Who's that Pokemon?" 
+               iconElementLeft={<IconButton><QuestionMark /></IconButton>}
                iconElementRight={
                   <IconMenu
                      iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
                      anchorOrigin={{horizontal: 'right', vertical: 'top'}}
                   >
-                     <MenuItem primaryText="Restart" />
+                     <MenuItem primaryText="Help" onTouchTap={this.handleOpen} />
                   </IconMenu>
                }
             />
+            <Dialog
+               title="How to play"
+               actions={actions}
+               modal={false}
+               open={this.state.dialogOpen}
+            >
+               Choose a Pokedex from one of the various games. The national Pokedex 
+               includes all 721 Pokemon up to generation VI. You will then be asked
+               to guess the Pokemon based on the given sprite.
+            </Dialog>
             <PlayArea />
          </div>
       );
@@ -209,6 +246,7 @@ class GuessBox extends React.Component {
             label="Continue"
             primary={true}
             onTouchTap={this.handleClose}
+            keyboardFocused={true}
          />,
          <FlatButton
             label="Choose new Pokedex"
@@ -268,18 +306,18 @@ class PokeTable extends React.Component {
       // map pokemon data to list items
       var gameIndices = this.props.currentPokeData["game_indices"].map(function(index, i) {
          return <ListItem key={i} primaryText={_.startCase(index["version"].name) + ": " + index.game_index} />;
-      })
+      });
       
       var height = this.props.currentPokeData["height"] / 10;
       var weight = this.props.currentPokeData["weight"] / 10;
 
       var abilities = this.props.currentPokeData["abilities"].map(function(ability, index) {
          return <ListItem key={index} primaryText={_.startCase(ability["ability"].name)} />;
-      })
+      });
 
       var heldItems = this.props.currentPokeData["held_items"].map(function(item, index) {
          return <ListItem key={index} primaryText={_.startCase(item["item"].name)} />;
-      })
+      });
 
       return (
          <List>
