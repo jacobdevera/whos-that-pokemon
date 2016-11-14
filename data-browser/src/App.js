@@ -99,7 +99,7 @@ class PlayArea extends React.Component {
    componentDidMount() {
       // fetch list of pokedexes
       var pokedexArray = [];
-      PokeController.fetchData('http://pokeapi.co/api/v2/pokedex/')
+      PokeController.fetchData('https://pokeapi.co/api/v2/pokedex/')
       .then ((data) => {
          data.results.forEach(function(pokedex) {
             pokedexArray.push(pokedex);
