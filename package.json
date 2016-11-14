@@ -1,7 +1,7 @@
 {
   "name": "data-browser",
-  "author": "YOUR NAME HERE",
-  "homepage": "https://info343-au16.github.io/challenges-YOURUSERNAME/data-browser/build",
+  "author": "Jacob Devera",
+  "homepage": "https://info343-au16.github.io/challenges-kefkiroth/data-browser/build",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
