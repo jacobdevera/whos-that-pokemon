@@ -2,7 +2,7 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
 import { 
-   AppBar, Card, CardActions, CardHeader, CardMedia, CardTitle, CardText,
+   AppBar, Card, CardActions, CardHeader, CardTitle, CardText,
    Dialog, DropDownMenu, FlatButton, IconButton, IconMenu, LinearProgress,
    MenuItem, RaisedButton, TextField, Subheader 
 } from 'material-ui';
@@ -14,6 +14,8 @@ injectTapEventPlugin(); // attaches an onTouchTap() event to components
 const loadStyle = {
    position: 'absolute',
    top: '64px',
+   left: '0',
+   right: '0'
 };
 
 const containerStyle = {
@@ -68,6 +70,7 @@ class PlayArea extends React.Component {
       });
    }
 
+   // update selected pokedex upon picking a dropdown item
    handleChange = (event, index, value) => {
       this.setState({
          value: value,
@@ -90,6 +93,7 @@ class PlayArea extends React.Component {
       }
    }
 
+   // choosing a new pokedex will unmount the guessing box
    handleRestart = () => {
       this.setState({started: false});
    }
@@ -178,15 +182,17 @@ class GuessBox extends React.Component {
       }
    }
 
+   // clicking outside the dialog will continue with the current pokedex
    handleClose = () => {
       this.setState({hint: '', guessed: false, dialogOpen: false})
       this.chooseRandomPoke();
    }
 
+   // display the flavor text entry for the Pokmeon after each round
    result = () => {
       var flavorText = [];
       this.state.currentSpeciesData["flavor_text_entries"].forEach((entry) => {
-         if (entry["language"].name == "en")
+         if (entry["language"].name === "en")
             flavorText.push(entry.flavor_text);
       })
       this.setState({
@@ -195,6 +201,7 @@ class GuessBox extends React.Component {
       })
    }
    render() {
+      // actions for the result dialog
       const dialogActions = [
          <FlatButton
             label="Continue"
@@ -210,10 +217,10 @@ class GuessBox extends React.Component {
       ]
 
       return (
-         // make sure Pokemon data is fetched before mounting
+         
          <div>
          { 
-            !_.isEmpty(this.state.currentPokeData) &&
+            !_.isEmpty(this.state.currentPokeData) && // make sure Pokemon data is fetched before mounting
             <div>
                <Card>
                   <CardHeader
