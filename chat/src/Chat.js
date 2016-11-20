@@ -4,12 +4,24 @@ import { Link, hashHistory } from 'react-router';
 import noUserPic from './img/no-user-pic.png';
 
 export class ChannelsList extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {};
+   }
+   
    componentDidMount() {
       var user = firebase.auth().currentUser;
       if (!user) {
          console.log('redirecting to login page');
          hashHistory.push('login');
       }
+   }
+
+   render() {
+       return (
+           <div>
+           </div>
+       );
    }
 }
 
@@ -61,5 +73,3 @@ export class MsgBox extends React.Component {
       );
    }
 }
-
-export default Chat;

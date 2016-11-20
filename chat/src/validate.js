@@ -1,3 +1,5 @@
+import React from 'react';
+
 /**
 * A helper function to validate a value based on a hash of validations
 * second parameter has format e.g., 
@@ -71,7 +73,7 @@ class ValidationErrors extends React.Component {
                <p className="help-block">Not an email address!</p>
             }
             {this.props.errors.minLength &&
-               <p className="help-block">Must be at least {this.props.errors.minLength}characters.</p>
+               <p className="help-block">Must be at least {this.props.errors.minLength} characters.</p>
             }
          </div>
       );

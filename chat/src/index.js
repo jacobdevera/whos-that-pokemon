@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import firebase from 'firebase';
-import {Router, Route, hashHistory, IndexRoute} from 'react-router';
+import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 import App from './App'; // import our component
-import ChannelsList from './Chat';
+import { ChannelsList, ChannelPage } from './Chat';
 import { JoinPage, LoginPage } from './SignUp';
 
 // Initialize Firebase
@@ -16,7 +16,8 @@ var config = {
 };
 firebase.initializeApp(config);
 
-// load our CSS file
+// css
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 
 // render the Application view

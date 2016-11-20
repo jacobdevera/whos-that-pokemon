@@ -2,7 +2,7 @@ import React from 'react';
 import noUserPic from './img/no-user-pic.png';
 import firebase from 'firebase';
 import hashHistory from 'react-router';
-import validate, { ValidatedInput } from 'validate';
+import validate, { ValidatedInput } from './validate';
 
 class LoginPage extends React.Component {
    constructor(props) {
@@ -69,9 +69,9 @@ class LoginPage extends React.Component {
 
    render() {
       //field validation
-      var emailErrors = validate.validate(this.state.email, { required: true, email: true });
-      var passwordErrors = validate.validate(this.state.password, { required: true, minLength: 6 });
-      var handleErrors = validate.validate(this.state.handle, { required: true, minLength: 3 });
+      var emailErrors = validate(this.state.email, { required: true, email: true });
+      var passwordErrors = validate(this.state.password, { required: true, minLength: 6 });
+      var handleErrors = validate(this.state.handle, { required: true, minLength: 3 });
 
       //button validation
       var signUpEnabled = (emailErrors.isValid && passwordErrors.isValid && handleErrors.isValid);
@@ -119,11 +119,11 @@ class SignUpApp extends React.Component {
             <header>
                <h1>Sign Up!</h1>
             </header>
-            <SignUpForm signUpCallback={this.signUp} signInCallback={this.signIn} />
+            <LoginPage signUpCallback={this.signUp} signInCallback={this.signIn} />
          </div>
       );
    }
 }
 
-export { SignUpApp };
+export { SignUpApp, LoginPage };
 export default LoginPage;

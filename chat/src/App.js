@@ -1,4 +1,5 @@
 import React from 'react';
+import { hashHistory } from 'react-router';
 import firebase from 'firebase';
 import { ChannelsList, MsgBox } from './Chat';
 
@@ -31,14 +32,6 @@ class App extends React.Component {
    }
 
    render() {
-      var content = null;
-
-      if (!this.state.userId) { // if not logged in, show signup form
-         
-      }
-      else { // if the user is logged in, show channels list
-         content = <div><ChannelsList /></div>;
-      }
 
       return (
          <div>
@@ -46,8 +39,15 @@ class App extends React.Component {
                <div className="logo">
                   <i className="fa fa-twitter fa-3x" aria-label="Accord logo"></i>
                </div>
+               { this.state.userId && <div className="logout">
+                  <button className="btn btn-warning" onClick={()=>this.signOut()}>
+                     Sign out {firebase.auth().currentUser.displayName}
+                  </button>
+               </div> }
             </header>
-
+            <main className="container">
+                {this.props.children}
+            </main>
          </div>
       );
    }
