@@ -1,7 +1,7 @@
 import React from 'react';
 import noUserPic from './img/no-user-pic.png';
 import firebase from 'firebase';
-import hashHistory from 'react-router';
+import { hashHistory } from 'react-router';
 import validate, { ValidatedInput } from './validate';
 
 class LoginPage extends React.Component {
@@ -28,6 +28,58 @@ class LoginPage extends React.Component {
    // handle signUp button
    signUp(event) {
       event.preventDefault(); //don't submit
+      hashHistory.push('/join');
+   }
+
+   // handle signIn button
+   signIn = (event) => {
+      event.preventDefault(); //don't submit
+      this.signInCallback(this.state.email, this.state.password);
+   }
+
+   // log in existing users
+   signInCallback(email, password) {
+      firebase.auth().signInWithEmailAndPassword(email, password)
+         .then((response) => {
+            hashHistory.push('/channels');
+         })
+         .catch(err => console.log(err));
+   }
+
+   render() {
+      return (
+         <AuthFields newUser={false} email={this.state.email} password={this.state.password} 
+                     handle={this.state.handle} avatar={this.state.avatar} handleChange={this.handleChange} 
+                     signUp={this.signUp} signIn={this.signIn}/>
+      );
+   }
+}
+
+class JoinPage extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         'email': undefined,
+         'password': undefined,
+         'confirm': undefined,
+         'handle': undefined,
+         'avatar': ''
+      };
+   }
+
+   // update state for specific field
+   handleChange = (event) => {
+      var field = event.target.name;
+      var value = event.target.value;
+
+      var changes = {}; //object to hold changes
+      changes[field] = value; //change this field
+      this.setState(changes); //update state
+   }
+
+   // handle signUp button
+   signUp = (event) => {
+      event.preventDefault(); //don't submit
       this.signUpCallback(this.state.email, this.state.password, this.state.handle, this.state.avatar);
    }
 
@@ -52,57 +104,66 @@ class LoginPage extends React.Component {
          .catch(err => console.log(err));
    }
 
-   // handle signIn button
-   signIn(event) {
-      event.preventDefault(); //don't submit
-      this.signInCallback(this.state.email, this.state.password);
+   render() {
+      return (
+         <AuthFields newUser={true} email={this.state.email} password={this.state.password} 
+                     confirm={this.state.confirm} handle={this.state.handle} avatar={this.state.avatar} 
+                     handleChange={this.handleChange} signUp={this.signUp} signIn={this.signIn} />
+      );
    }
+}
 
-   // log in existing users
-   signInCallback(email, password) {
-      firebase.auth().signInWithEmailAndPassword(email, password)
-         .then((response) => {
-            hashHistory.push('/channels');
-         })
-         .catch(err => console.log(err));
-   }
-
+class AuthFields extends React.Component {
    render() {
       //field validation
-      var emailErrors = validate(this.state.email, { required: true, email: true });
-      var passwordErrors = validate(this.state.password, { required: true, minLength: 6 });
-      var handleErrors = validate(this.state.handle, { required: true, minLength: 3 });
+      var emailErrors = validate(this.props.email, { required: true, email: true });
+      var passwordErrors = validate(this.props.password, { required: true, minLength: 6 });
+
+      if (this.props.newUser)
+         var confirmErrors = validate(this.props.confirm, { required: true, password: this.props.password });
+
+      var handleErrors = validate(this.props.handle, { required: true, minLength: 3 });
 
       //button validation
-      var signUpEnabled = (emailErrors.isValid && passwordErrors.isValid && handleErrors.isValid);
+      var signUpEnabled = ((!this.props.newUser) || (emailErrors.isValid && passwordErrors.isValid && confirmErrors.isValid && handleErrors.isValid));
+
       var signInEnabled = (emailErrors.isValid && passwordErrors.isValid);
 
       return (
          <form role="form" className="sign-up-form">
 
-            <ValidatedInput field="email" type="email" label="Email" changeCallback={this.handleChange} errors={emailErrors} />
+            <ValidatedInput field="email" type="email" label="Email" changeCallback={this.props.handleChange} errors={emailErrors} />
 
-            <ValidatedInput field="password" type="password" label="Password" changeCallback={this.handleChange} errors={passwordErrors} />
+            <ValidatedInput field="password" type="password" label="Password" changeCallback={this.props.handleChange} errors={passwordErrors} />
 
-            <ValidatedInput field="handle" type="text" label="Handle" changeCallback={this.handleChange} errors={handleErrors} />
+            { this.props.newUser && 
+               <ValidatedInput field="confirm" type="password" label="Confirm Password" changeCallback={this.props.handleChange} errors={confirmErrors} />
+            }
 
-            {/* full html for the URL (because image) */}
+            { this.props.newUser &&
+            <ValidatedInput field="handle" type="text" label="Handle" changeCallback={this.props.handleChange} errors={handleErrors} />
+            }
+
+            { this.props.newUser &&
             <div className="form-group">
-               <img className="avatar" src={this.state.avatar || noUserPic} alt="avatar preview" />
+               <img className="avatar" src={this.props.avatar || noUserPic} alt="avatar preview" />
                <label htmlFor="avatar" className="control-label">Avatar Image URL</label>
-               <input id="avatar" name="avatar" className="form-control" onChange={this.handleChange} />
+               <input id="avatar" name="avatar" className="form-control" onChange={this.props.handleChange} />
             </div>
+            }
 
             <div className="form-group sign-up-buttons">
-               <button className="btn btn-primary" disabled={!signUpEnabled} onClick={(e) => this.signUp(e)}>Sign-up</button>
-               <button className="btn btn-primary" disabled={!signInEnabled} onClick={(e) => this.signIn(e)}>Sign-in</button>
+               <button className="btn btn-primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
+                  {this.props.newUser ? "Sign up" : "Need an account?"}
+               </button>
+               <button className="btn btn-primary" disabled={!signInEnabled} onClick={(e) => this.props.signIn(e)}>Sign-in</button>
             </div>
          </form>
       );
    }
 }
 
-//simple wrapper for displaying the form
+/* simple wrapper for displaying the form
 class SignUpApp extends React.Component {
 
    signUp(email, password, handle, avatar) {
@@ -123,7 +184,7 @@ class SignUpApp extends React.Component {
          </div>
       );
    }
-}
+} */
 
-export { SignUpApp, LoginPage };
+export { LoginPage, JoinPage };
 export default LoginPage;

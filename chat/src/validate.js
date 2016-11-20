@@ -9,46 +9,54 @@ import React from 'react';
 export function validate(value, validations) {
    var errors = { isValid: true, style: '' };
 
-   if (value !== undefined) { //check validations
-      //handle required
+   if (value !== undefined) { // check validations
+      // handle required
       if (validations.required && value === '') {
          errors.required = true;
          errors.isValid = false;
       }
 
-      //handle minLength
+      // handle minLength
       if (validations.minLength && value.length < validations.minLength) {
          errors.minLength = validations.minLength;
          errors.isValid = false;
       }
 
-      //handle email type ??
+      // handle email type ??
       if (validations.email) {
          //pattern comparison from w3c
          //https://www.w3.org/TR/html-markup/input.email.html#input.email.attrs.value.single
-         var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value)
+         var valid = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value);
          if (!valid) {
             errors.email = true;
             errors.isValid = false;
          }
       }
+
+      // handle password confirmation
+      if (validations.password) {
+         var confirm = (value === validations.password);
+         if (!confirm) {
+            errors.isValid = false;
+            errors.confirm = true;
+         }
+      }
    }
 
-   //display details
-   if (!errors.isValid) { //if found errors
+   if (!errors.isValid) {
       errors.style = 'has-error';
    }
-   else if (value !== undefined) { //valid and has input
-      //errors.style = 'has-success' //show success coloring
+   else if (value !== undefined) { // valid and has input
+      //errors.style = 'has-success' // show success coloring
    }
-   else { //valid and no input
-      errors.isValid = false; //make false anyway
+   else { // valid and no input
+      errors.isValid = false; // make false anyway
    }
-   return errors; //return data object
+   return errors;
 }
 
-//A component that displays an input form with validation styling
-//props are: field, type, label, changeCallback, errors
+// A component that displays an input form with validation styling
+// props are: field, type, label, changeCallback, errors
 class ValidatedInput extends React.Component {
    render() {
       return (
@@ -61,7 +69,7 @@ class ValidatedInput extends React.Component {
    }
 }
 
-//a component to represent and display validation errors
+// a component to represent and display validation errors
 class ValidationErrors extends React.Component {
    render() {
       return (
@@ -74,6 +82,9 @@ class ValidationErrors extends React.Component {
             }
             {this.props.errors.minLength &&
                <p className="help-block">Must be at least {this.props.errors.minLength} characters.</p>
+            }
+            {this.props.errors.confirm &&
+               <p className="help-block">Passwords must match.</p>
             }
          </div>
       );
