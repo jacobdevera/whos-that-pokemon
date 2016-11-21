@@ -3,6 +3,7 @@ import noUserPic from './img/no-user-pic.png';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import validate, { ValidatedInput } from './validate';
+import md5 from 'js-md5';
 
 class LoginPage extends React.Component {
    constructor(props) {
@@ -25,7 +26,7 @@ class LoginPage extends React.Component {
       this.setState(changes); //update state
    }
 
-   // handle signUp button
+   // go to sign up page
    signUp(event) {
       event.preventDefault(); //don't submit
       hashHistory.push('/join');
@@ -49,7 +50,7 @@ class LoginPage extends React.Component {
    render() {
       return (
          <AuthFields newUser={false} email={this.state.email} password={this.state.password} 
-                     handle={this.state.handle} avatar={this.state.avatar} handleChange={this.handleChange} 
+                     handle={this.state.handle} handleChange={this.handleChange} 
                      signUp={this.signUp} signIn={this.signIn}/>
       );
    }
@@ -72,15 +73,22 @@ class JoinPage extends React.Component {
       var field = event.target.name;
       var value = event.target.value;
 
-      var changes = {}; //object to hold changes
-      changes[field] = value; //change this field
-      this.setState(changes); //update state
+      var changes = {}; // object to hold changes
+      changes[field] = value; // change this field
+      this.setState(changes); // update state
    }
 
    // handle signUp button
    signUp = (event) => {
-      event.preventDefault(); //don't submit
+      event.preventDefault();
+      this.setState({ avatar: 'https://www.gravatar.com/avatar/' + md5(this.state.email)});
       this.signUpCallback(this.state.email, this.state.password, this.state.handle, this.state.avatar);
+   }
+
+   // back to login screen
+   signIn(event) {
+      event.preventDefault(); //don't submit
+      hashHistory.push('/login');
    }
 
    // register new users
@@ -96,9 +104,7 @@ class JoinPage extends React.Component {
 
             var profilePromise = firebaseUser.updateProfile(userData);
 
-            // add to the JOITC
-            var newUserRef = firebase.database().ref('users/' + firebaseUser.uid)
-            newUserRef.set(userData);
+            hashHistory.push('/channels');
             return profilePromise;
          })
          .catch(err => console.log(err));
@@ -107,7 +113,7 @@ class JoinPage extends React.Component {
    render() {
       return (
          <AuthFields newUser={true} email={this.state.email} password={this.state.password} 
-                     confirm={this.state.confirm} handle={this.state.handle} avatar={this.state.avatar} 
+                     confirm={this.state.confirm} handle={this.state.handle} 
                      handleChange={this.handleChange} signUp={this.signUp} signIn={this.signIn} />
       );
    }
@@ -141,50 +147,21 @@ class AuthFields extends React.Component {
             }
 
             { this.props.newUser &&
-            <ValidatedInput field="handle" type="text" label="Handle" changeCallback={this.props.handleChange} errors={handleErrors} />
-            }
-
-            { this.props.newUser &&
-            <div className="form-group">
-               <img className="avatar" src={this.props.avatar || noUserPic} alt="avatar preview" />
-               <label htmlFor="avatar" className="control-label">Avatar Image URL</label>
-               <input id="avatar" name="avatar" className="form-control" onChange={this.props.handleChange} />
-            </div>
+               <ValidatedInput field="handle" type="text" label="Handle" changeCallback={this.props.handleChange} errors={handleErrors} />
             }
 
             <div className="form-group sign-up-buttons">
                <button className="btn btn-primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
                   {this.props.newUser ? "Sign up" : "Need an account?"}
                </button>
-               <button className="btn btn-primary" disabled={!signInEnabled} onClick={(e) => this.props.signIn(e)}>Sign-in</button>
+               <button className="btn btn-primary" disabled={!this.props.newUser && !signInEnabled} onClick={(e) => this.props.signIn(e)}>
+                  {this.props.newUser ? "Back to login" : "Sign in"}
+               </button>
             </div>
          </form>
       );
    }
 }
-
-/* simple wrapper for displaying the form
-class SignUpApp extends React.Component {
-
-   signUp(email, password, handle, avatar) {
-      window.alert("Signing up:", email, 'with handle', handle);
-   }
-
-   signIn(email, password) {
-      window.alert("Signing in:", email);
-   }
-
-   render() {
-      return (
-         <div className="container">
-            <header>
-               <h1>Sign Up!</h1>
-            </header>
-            <LoginPage signUpCallback={this.signUp} signInCallback={this.signIn} />
-         </div>
-      );
-   }
-} */
 
 export { LoginPage, JoinPage };
 export default LoginPage;

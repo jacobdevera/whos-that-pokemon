@@ -1,31 +1,45 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Link, hashHistory } from 'react-router';
+import { hashHistory } from 'react-router';
 import noUserPic from './img/no-user-pic.png';
 
-export class ChannelsList extends React.Component {
+class ChannelsList extends React.Component {
    constructor(props) {
       super(props);
       this.state = {};
    }
-   
+
    componentDidMount() {
       var user = firebase.auth().currentUser;
       if (!user) {
          console.log('redirecting to login page');
-         hashHistory.push('login');
+         hashHistory.push('/login');
+      } else {
+         console.log('showing channels list');
       }
    }
 
    render() {
-       return (
-           <div>
-           </div>
-       );
+      return (
+         <div>
+         </div>
+      );
    }
 }
 
-export class MsgBox extends React.Component {
+class Channel extends React.Component {
+   componentDidMount() {
+      console.log('welcome to ' + this.props.params.channelName);
+   }
+   render() {
+      return (
+         <div>
+         </div>
+      );
+   }
+}
+
+class MsgBox extends React.Component {
    constructor(props) {
       super(props);
       this.state = { post: '' };
@@ -73,3 +87,5 @@ export class MsgBox extends React.Component {
       );
    }
 }
+
+export { ChannelsList, Channel };

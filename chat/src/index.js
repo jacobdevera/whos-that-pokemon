@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import firebase from 'firebase';
 import { Router, Route, hashHistory, IndexRoute } from 'react-router';
 import App from './App'; // import our component
-import { ChannelsList, ChannelPage } from './Chat';
+import { ChannelsList, Channel } from './Chat';
 import { JoinPage, LoginPage } from './SignUp';
 
 // Initialize Firebase
@@ -28,7 +28,7 @@ ReactDOM.render(
          <Route path="join" component={JoinPage} />
          <Route path="login" component={LoginPage} />
          <Route path="channels" component={ChannelsList} />
-         <Route path="channel/:channelName" component={ChannelPage} />
+         <Route path="channel/:channelName" component={Channel} />
       </Route>
    </Router>,
    document.getElementById('root')
