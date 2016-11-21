@@ -2,7 +2,6 @@ import React from 'react';
 import { Link, hashHistory } from 'react-router';
 import { Button, ControlLabel, Form, FormControl, FormGroup, Nav, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
-import { ChannelsList, MsgBox } from './Chat';
 
 //a "root" component
 class App extends React.Component {
@@ -38,7 +37,6 @@ class App extends React.Component {
 
    handleChange = (event) => this.setState({ addChannel: event.target.value });
 
-
    handleAddChannel = (event) => {
       event.preventDefault();
       if (this.state.addChannel.length > 0) {
@@ -53,7 +51,7 @@ class App extends React.Component {
                   newChannelRef.set(channelData)
                      .then(() => {
                         console.log('channel successfully added');
-                        hashHistory.push('channel/:' + this.state.addChannel);
+                        hashHistory.push('channel/' + this.state.addChannel);
                      })
                      .catch(function (response) {
                         console.log(response);
@@ -96,8 +94,7 @@ class App extends React.Component {
                         </Button>
                      </Form>
 
-                     <Button onClick={this.signOut}>
-                        Sign out {firebase.auth().currentUser.displayName}
+                     <Button onClick={this.signOut}> Sign out {firebase.auth().currentUser.displayName}
                      </Button>
                   </div>
                }

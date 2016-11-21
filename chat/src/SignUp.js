@@ -98,12 +98,15 @@ class JoinPage extends React.Component {
             console.log('user created: ' + firebaseUser.uid);
 
             var userData = {
+               userId: firebaseUser.uid,
                displayName: handle,
                photoURL: avatar
             }
 
             var profilePromise = firebaseUser.updateProfile(userData);
-
+            var newUserRef = firebase.database().ref('users/' + firebaseUser.uid)
+            newUserRef.set(userData); // asynchronous function
+            
             hashHistory.push('/channels');
             return profilePromise;
          })
