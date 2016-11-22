@@ -26,8 +26,14 @@ class App extends React.Component {
             generalRef.once("value")
             .then((snapshot) => {
                if (!snapshot.exists()) {
-                  this.setState({addChannel: 'general'})
-                  this.handleAddChannel();
+                  generalRef.set({ name: 'general' })
+                     .then(() => {
+                        console.log('general channel successfully added');
+                        hashHistory.push('channel/general');
+                     })
+                     .catch(function (response) {
+                        console.log(response);
+                     })
                }
             });
 
@@ -43,8 +49,7 @@ class App extends React.Component {
                this.setState({ channels: channelsArray }); //add to state
             });
             hashHistory.push('/channels');
-         }
-         else {
+         } else {
             console.log('logged out');
             this.setState({ userId: null });
          }
@@ -98,7 +103,7 @@ class App extends React.Component {
          <div>
          {  this.state.userId &&
             <div>
-               <Navbar defaultExpanded collapseOnSelect>
+               <Navbar fixedTop defaultExpanded collapseOnSelect>
                      <Navbar.Header>
                         <Navbar.Brand>
                            {"Accord #" + this.state.currentChannel}
@@ -121,11 +126,11 @@ class App extends React.Component {
                         </Navbar.Form>
                      </Navbar.Collapse>
                </Navbar>
-               <div className="container-fluid">
-                  {this.props.children}
-               </div>
             </div>
          }
+            <div className="container-fluid">
+               {this.props.children}
+            </div>
          </div>
       );
    }

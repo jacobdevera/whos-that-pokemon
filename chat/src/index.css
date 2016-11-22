@@ -1,15 +1,24 @@
+.msg-list {
+   margin-top: 5em;
+   margin-bottom: 10em;
+}
+
+.msg-item {
+   padding: 0.5em;
+}
+
 .write-msg {
-   position:fixed;
-   bottom:30px;
+   position: fixed;
+   bottom: 5px;
 }
 
 .time {   
    font-size: 0.85em;
+   margin-left: 1em;
    color: #9d9d9d;
 }
 
-.edit {
+.action {
    padding: 0.1em;
    margin-left: 0.5em;
-   margin-top: 0.5em;
 }

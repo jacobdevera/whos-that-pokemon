@@ -27,7 +27,7 @@ class LoginPage extends React.Component {
    }
 
    // go to sign up page
-   signUp(event) {
+   signUp = (event) => {
       event.preventDefault();
       hashHistory.push('/join');
    }
@@ -86,7 +86,7 @@ class JoinPage extends React.Component {
    }
 
    // back to login screen
-   signIn(event) {
+   signIn = (event) => {
       event.preventDefault();
       hashHistory.push('/login');
    }

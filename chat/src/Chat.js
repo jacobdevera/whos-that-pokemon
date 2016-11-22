@@ -115,12 +115,14 @@ export class MsgList extends React.Component {
    }
 
    getChannelMsgs = () => {
-      var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs');
+      var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs')
+         .orderByChild('time').limitToLast(100);
       msgsRef.on('value', (snapshot) => {
          var msgsArray = [];
          snapshot.forEach(function (childSnapshot) {
             var msgObj = childSnapshot.val();
-            msgObj.key = childSnapshot.key;
+            msgObj.uid = childSnapshot.key;
+            console.log(childSnapshot.key);
             msgsArray.push(msgObj);
          });
          this.setState({ msgs: msgsArray });
@@ -136,12 +138,14 @@ export class MsgList extends React.Component {
       // map messages to <MsgItem /> components
       var msgItems = this.state.msgs.map((msgObj) => {
          return <MsgItem
+            channel={this.props.channel}
             msg={msgObj}
             user={this.state.users[msgObj.userId]}
-            key={msgObj.uid} />
+            key={msgObj.uid} 
+            uid={msgObj.uid} />;
       })
 
-      return <div>{msgItems}</div>;
+      return <div className="msg-list">{msgItems}</div>;
    }
 }
 
@@ -151,14 +155,19 @@ class MsgItem extends React.Component {
       
    }
 
-   // edit a post if the user is the author
-   editPost(event) {
+   // edit a message if the user is the author
+   editMsg = (event) => {
+      var msgRef = firebase.database().ref('channels/' + this.props.channel + '/msgs' + this.props.uid);
+   }
+
+   // delete a message if the user is the author
+   deleteMsg = (event) => {
       
    }
 
    render() {
       return (
-         <div className="msg-box">
+         <div className="msg-item">
             <div>
                <img className="image" src={this.props.user.photoURL} role="presentation" />
 
@@ -166,8 +175,17 @@ class MsgItem extends React.Component {
                <span className="time"><Time value={this.props.msg.time} relative /></span>
 
                {this.props.user.userId == firebase.auth().currentUser.uid &&
-                  <Button className="edit" onClick={this.editPost}> Edit </Button>
+                  <Button href="#" className="action" onClick={this.editMsg}> 
+                     <i className="fa fa-pencil" aria-hidden="true"></i> 
+                  </Button>
                }
+
+               {this.props.user.userId == firebase.auth().currentUser.uid &&
+                  <Button href="#" className="action" onClick={this.deleteMsg}> 
+                     <i className="fa fa-trash-o" aria-hidden="true"></i> 
+                  </Button>
+               }
+
             </div>
             <div className="msg">{this.props.msg.text} </div>
          </div>
