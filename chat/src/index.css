@@ -1,1 +1,15 @@
-/* Your CSS goes here */
+.write-msg {
+   position:fixed;
+   bottom:30px;
+}
+
+.time {   
+   font-size: 0.85em;
+   color: #9d9d9d;
+}
+
+.edit {
+   padding: 0.1em;
+   margin-left: 0.5em;
+   margin-top: 0.5em;
+}

@@ -1,29 +1,51 @@
 import React from 'react';
 import { Link, hashHistory } from 'react-router';
-import { Button, ControlLabel, Form, FormControl, FormGroup, Nav, NavItem } from 'react-bootstrap';
+import { Button, FormControl, FormGroup, Nav, Navbar, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
 
-//a "root" component
 class App extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
-         addChannel: ''
+         addChannel: '',
+         channels: [],
+         currentChannel: ''
       };
    }
 
    componentDidMount() {
-      // component added to the page
       firebase.auth().onAuthStateChanged(firebaseUser => {
          if (firebaseUser) {
             console.log('logged in');
-            //assign firebaseUser.uid to `userId` using this.setState()
-            this.setState({ userId: firebaseUser.uid })
+            this.setState({
+               userId: firebaseUser.uid,
+            })
+
+            // check if a general channel exists; if not, add it
+            var generalRef = firebase.database().ref('channels/general')
+            generalRef.once("value")
+            .then((snapshot) => {
+               if (!snapshot.exists()) {
+                  this.setState({addChannel: 'general'})
+                  this.handleAddChannel();
+               }
+            });
+
+            // get channels and put them into the state for use in the nav
+            var channelsRef = firebase.database().ref('channels/');
+            channelsRef.on('value', (snapshot) => {
+               var channelsArray = []; //an array to put in the state
+               snapshot.forEach(function (childSnapshot) { //go through each item like an array
+                  var channelObj = childSnapshot.val(); //convert this snapshot into an object
+                  channelObj.key = childSnapshot.key; //save the child's unique id for later
+                  channelsArray.push(channelObj); //put into our new array
+               });
+               this.setState({ channels: channelsArray }); //add to state
+            });
             hashHistory.push('/channels');
          }
          else {
             console.log('logged out');
-            //assign null to `userId` using this.setState()
             this.setState({ userId: null });
          }
       });
@@ -40,10 +62,7 @@ class App extends React.Component {
    handleAddChannel = (event) => {
       event.preventDefault();
       if (this.state.addChannel.length > 0) {
-         var channelData = {
-            name: this.state.addChannel,
-            messages: []
-         }
+         var channelData = { name: this.state.addChannel }
          var newChannelRef = firebase.database().ref('channels/' + this.state.addChannel);
          newChannelRef.once("value")
             .then((snapshot) => {
@@ -66,42 +85,47 @@ class App extends React.Component {
    }
 
    handleSelect = (selectedKey) => {
-      var channelRef = firebase.database().ref('channels/' + this.state.channels[selectedKey]);
       hashHistory.push('channel/' + this.state.channels[selectedKey].name);
+      this.setState({currentChannel: this.state.channels[selectedKey].name});
    }
 
    render() {
-
+      // map channel names to nav items
+      var channelItems = this.state.channels.map((channelObj, i) => {
+         return <NavItem eventKey={i} key={channelObj.name}>{"#" + channelObj.name}</NavItem>;
+      })
       return (
          <div>
-            <header className="container-fluid">
-               <div className="logo">
-                  <i className="fa fa-twitter fa-3x" aria-label="Accord logo"></i>
+         {  this.state.userId &&
+            <div>
+               <Navbar defaultExpanded collapseOnSelect>
+                     <Navbar.Header>
+                        <Navbar.Brand>
+                           {"Accord #" + this.state.currentChannel}
+                        </Navbar.Brand>
+                        <Navbar.Toggle />
+                     </Navbar.Header>
+                     <Navbar.Collapse>
+                        <Nav onSelect={this.handleSelect}>
+                           {channelItems}
+                        </Nav>
+                        <Navbar.Form pullRight>
+                           <FormGroup controlId="formInlineName">
+                              <FormControl type="text" placeholder="add a channel..." onChange={this.handleChange} />
+                           </FormGroup>
+                           <Button type="submit" onClick={this.handleAddChannel}>
+                              Add
+                           </Button>
+                           <Button onClick={this.signOut}> Sign out {firebase.auth().currentUser.displayName}
+                           </Button>
+                        </Navbar.Form>
+                     </Navbar.Collapse>
+               </Navbar>
+               <div className="container-fluid">
+                  {this.props.children}
                </div>
-               {this.state.userId &&
-                  <div>
-                     <Nav pullLeft={true} bsStyle="pills" stacked activeKey={1} onSelect={this.handleSelect}>
-                        <NavItem eventKey={1}>NavItem 1 content</NavItem>
-                        <NavItem eventKey={2}>NavItem 2 content</NavItem>
-                     </Nav>
-
-                     <Form>
-                        <FormGroup controlId="formInlineName">
-                           <FormControl type="text" placeholder="Add channel" onChange={this.handleChange} />
-                        </FormGroup>
-                        <Button type="submit" onClick={this.handleAddChannel}>
-                           Add channel
-                        </Button>
-                     </Form>
-
-                     <Button onClick={this.signOut}> Sign out {firebase.auth().currentUser.displayName}
-                     </Button>
-                  </div>
-               }
-            </header>
-            <main className="container">
-               {this.props.children}
-            </main>
+            </div>
+         }
          </div>
       );
    }
@@ -110,9 +134,3 @@ class App extends React.Component {
 
 
 export default App; //make this class available to other files (e.g., index.js)
-
-/*
-<NavItem onClick={() => this.addChannel}>
-   Add channel
-</NavItem>
-*/

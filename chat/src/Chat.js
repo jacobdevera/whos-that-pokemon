@@ -33,6 +33,10 @@ class Channel extends React.Component {
    componentDidMount() {
       console.log('welcome to ' + this.props.params.channelName);
    }
+
+   componentWillReceiveProps() {
+      console.log(this.props.params.channelName);
+   }
    render() {
       return (
          <div>
@@ -55,7 +59,7 @@ class MsgBox extends React.Component {
 
    // post a new message to the database
    postMsg(event) {
-      event.preventDefault(); //don't submit
+      event.preventDefault(); // don't submit
 
       var msgData = {
          text: this.state.post,
@@ -67,17 +71,17 @@ class MsgBox extends React.Component {
       var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs');
       msgsRef.push(msgData);
 
-      this.setState({ post: '' }); //empty out post (controlled input)
+      this.setState({ post: '' }); //vempty out post
    }
 
    render() {
       return (
          <div className="msg-box write-msg">
-            {/* Show image of current user, who must be logged in */}
             <img className="image" src={firebase.auth().currentUser.photoURL} alt="user avatar" />
 
             <form className="msg-input" role="form">
-               <textarea placeholder="Send a message..." name="text" value={this.state.post} className="form-control" onChange={(e) => this.updatePost(e)}></textarea>
+               <textarea placeholder="Send a message..." name="text" value={this.state.post} className="form-control" 
+                  onChange={(e) => this.updatePost(e)}></textarea>
 
                <div className="form-group send-msg">
                   <button className="btn btn-primary"
@@ -91,45 +95,45 @@ class MsgBox extends React.Component {
    }
 }
 
-
-//A list of messages that have been posted
 export class MsgList extends React.Component {
    constructor(props) {
       super(props);
       this.state = { msgs: [] };
    }
 
-   //Lifecycle callback executed when the component appears on the screen.
-   //It is cleaner to use this than the constructor for fetching data
    componentDidMount() {
-      /* Add a listener for changes to the user details object, and save in the state */
       var usersRef = firebase.database().ref('users');
-      usersRef.on('value', (snapshot) => { //arrow function for callback
+      usersRef.on('value', (snapshot) => { 
          var newVal = snapshot.val();
          this.setState({ users: newVal });
       });
+      this.getChannelMsgs();
+   }
 
-      /* Add a listener for changes to the msgs object, and save in the state */
+   componentWillReceiveProps() {
+      this.getChannelMsgs();
+   }
+
+   getChannelMsgs = () => {
       var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs');
       msgsRef.on('value', (snapshot) => {
-         var msgsArray = []; //an array to put in the state
-         snapshot.forEach(function (childSnapshot) { //go through each item like an array
-            var msgObj = childSnapshot.val(); //convert this snapshot into an object
-            msgObj.key = childSnapshot.key; //save the child's unique id for later
-            msgsArray.push(msgObj); //put into our new array
+         var msgsArray = [];
+         snapshot.forEach(function (childSnapshot) {
+            var msgObj = childSnapshot.val();
+            msgObj.key = childSnapshot.key;
+            msgsArray.push(msgObj);
          });
-         this.setState({ msgs: msgsArray }); //add to state
-         console.log(this.state);
+         this.setState({ msgs: msgsArray });
       });
    }
 
    render() {
-      //don't show if don't have user data yet (to avoid partial loads)
+      // don't show if don't have user data yet (to avoid partial loads)
       if (!this.state.users) {
          return null;
       }
 
-      /* Create a list of <MsgItem /> objects */
+      // map messages to <MsgItem /> components
       var msgItems = this.state.msgs.map((msgObj) => {
          return <MsgItem
             msg={msgObj}
@@ -137,42 +141,35 @@ export class MsgList extends React.Component {
             key={msgObj.uid} />
       })
 
-      return <div>{msgItems}</div>; //should return element containing the <MsgItems/> instead!
+      return <div>{msgItems}</div>;
    }
 }
 
-
-//A single Msg
-class MsgItem extends React.Component { // eslint-disable-line no-alert 
+class MsgItem extends React.Component {
    
    componentDidMount() {
-      console.log('message appeared');
+      
    }
 
    // edit a post if the user is the author
    editPost(event) {
-
+      
    }
 
    render() {
       return (
          <div className="msg-box">
             <div>
-               {/* This image's src should be the user's avatar */}
-               <img className="image" src={this.props.user.avatar} role="presentation" />
+               <img className="image" src={this.props.user.photoURL} role="presentation" />
 
-               {/* Show the user's handle */}
-               <span className="handle">{this.props.user.handle} {/*space*/}</span>
-
-               {/* Show the time of the msg (use a Time component!) */}
+               <span className="handle">{this.props.user.displayName}</span>
                <span className="time"><Time value={this.props.msg.time} relative /></span>
-               
+
                {this.props.user.userId == firebase.auth().currentUser.uid &&
-                  <Button onClick={this.editPost}> Edit post </Button>
+                  <Button className="edit" onClick={this.editPost}> Edit </Button>
                }
             </div>
-            {/* Show the text of the msg */}
-            <div className="msg">{this.props.msg.text}</div>
+            <div className="msg">{this.props.msg.text} </div>
          </div>
       );
    }

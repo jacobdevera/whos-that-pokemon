@@ -21,20 +21,20 @@ class LoginPage extends React.Component {
       var field = event.target.name;
       var value = event.target.value;
 
-      var changes = {}; //object to hold changes
-      changes[field] = value; //change this field
-      this.setState(changes); //update state
+      var changes = {};
+      changes[field] = value;
+      this.setState(changes);
    }
 
    // go to sign up page
    signUp(event) {
-      event.preventDefault(); //don't submit
+      event.preventDefault();
       hashHistory.push('/join');
    }
 
    // handle signIn button
    signIn = (event) => {
-      event.preventDefault(); //don't submit
+      event.preventDefault();
       this.signInCallback(this.state.email, this.state.password);
    }
 
@@ -73,9 +73,9 @@ class JoinPage extends React.Component {
       var field = event.target.name;
       var value = event.target.value;
 
-      var changes = {}; // object to hold changes
-      changes[field] = value; // change this field
-      this.setState(changes); // update state
+      var changes = {};
+      changes[field] = value;
+      this.setState(changes);
    }
 
    // handle signUp button
@@ -87,7 +87,7 @@ class JoinPage extends React.Component {
 
    // back to login screen
    signIn(event) {
-      event.preventDefault(); //don't submit
+      event.preventDefault();
       hashHistory.push('/login');
    }
 
@@ -105,7 +105,7 @@ class JoinPage extends React.Component {
 
             var profilePromise = firebaseUser.updateProfile(userData);
             var newUserRef = firebase.database().ref('users/' + firebaseUser.uid)
-            newUserRef.set(userData); // asynchronous function
+            newUserRef.set(userData);
             
             hashHistory.push('/channels');
             return profilePromise;
@@ -124,7 +124,7 @@ class JoinPage extends React.Component {
 
 class AuthFields extends React.Component {
    render() {
-      //field validation
+      // field validation
       var emailErrors = validate(this.props.email, { required: true, email: true });
       var passwordErrors = validate(this.props.password, { required: true, minLength: 6 });
 
@@ -133,13 +133,13 @@ class AuthFields extends React.Component {
 
       var handleErrors = validate(this.props.handle, { required: true, minLength: 3 });
 
-      //button validation
+      // button validation
       var signUpEnabled = ((!this.props.newUser) || (emailErrors.isValid && passwordErrors.isValid && confirmErrors.isValid && handleErrors.isValid));
 
       var signInEnabled = (emailErrors.isValid && passwordErrors.isValid);
 
       return (
-         <form role="form" className="sign-up-form">
+         <form role="form">
 
             <ValidatedInput field="email" type="email" label="Email" changeCallback={this.props.handleChange} errors={emailErrors} />
 
