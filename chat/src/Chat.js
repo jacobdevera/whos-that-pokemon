@@ -122,7 +122,6 @@ export class MsgList extends React.Component {
          snapshot.forEach(function (childSnapshot) {
             var msgObj = childSnapshot.val();
             msgObj.uid = childSnapshot.key;
-            console.log(childSnapshot.key);
             msgsArray.push(msgObj);
          });
          this.setState({ msgs: msgsArray });
