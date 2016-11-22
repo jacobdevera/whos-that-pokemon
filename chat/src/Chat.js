@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import Time from 'react-time';
-import { Button, ControlLabel, Form, FormControl, FormGroup, Nav, NavItem } from 'react-bootstrap';
+import { Button, ControlLabel, Form, FormControl, FormGroup, Modal, Nav, NavItem } from 'react-bootstrap';
 import noUserPic from './img/no-user-pic.png';
 
 class ChannelsList extends React.Component {
@@ -31,11 +31,11 @@ class ChannelsList extends React.Component {
 
 class Channel extends React.Component {
    componentDidMount() {
-      console.log('welcome to ' + this.props.params.channelName);
+      console.log('(first load) welcome to ' + this.props.params.channelName);
    }
 
    componentWillReceiveProps() {
-      console.log(this.props.params.channelName);
+      console.log('welcome to ' + this.props.params.channelName);
    }
    render() {
       return (
@@ -53,12 +53,10 @@ class MsgBox extends React.Component {
    }
 
    // when the text in the form changes
-   updatePost(event) {
-      this.setState({ post: event.target.value });
-   }
+   updatePost = (event) => this.setState({ post: event.target.value });
 
    // post a new message to the database
-   postMsg(event) {
+   postMsg = (event) => {
       event.preventDefault(); // don't submit
 
       var msgData = {
@@ -71,7 +69,7 @@ class MsgBox extends React.Component {
       var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs');
       msgsRef.push(msgData);
 
-      this.setState({ post: '' }); //vempty out post
+      this.setState({ post: '' }); // empty out post
    }
 
    render() {
@@ -149,19 +147,40 @@ export class MsgList extends React.Component {
 }
 
 class MsgItem extends React.Component {
-   
-   componentDidMount() {
-      
+   constructor(props){
+      super(props);
+      this.state = {
+         showEdit: false,
+         showDelete: false,
+         edit: this.props.msg.text
+      }
    }
+   
+   showEdit = () => this.setState({showEdit: true});
+   closeEdit = () => this.setState({showEdit: false});
 
-   // edit a message if the user is the author
+   showDelete = () => this.setState({showDelete: true});
+   closeDelete = () => this.setState({showDelete: false});
+
+   updateEdit = (event) => this.setState({ edit: event.target.value });
+
    editMsg = (event) => {
-      var msgRef = firebase.database().ref('channels/' + this.props.channel + '/msgs' + this.props.uid);
+      event.preventDefault();
+      var msgData = {
+         text: this.state.edit,
+         userId: this.props.user.userId,
+         time: this.props.msg.time,
+         edit: true
+      }
+      var msgRef = firebase.database().ref('channels/' + this.props.channel + '/msgs/' + this.props.uid);
+      msgRef.set(msgData);
+      this.setState({showEdit: false});
    }
 
    // delete a message if the user is the author
-   deleteMsg = (event) => {
-      
+   deleteMsg = () => {
+      var msgRef = firebase.database().ref('channels/' + this.props.channel + '/msgs/' + this.props.uid);
+      msgRef.remove();
    }
 
    render() {
@@ -174,19 +193,47 @@ class MsgItem extends React.Component {
                <span className="time"><Time value={this.props.msg.time} relative /></span>
 
                {this.props.user.userId == firebase.auth().currentUser.uid &&
-                  <Button href="#" className="action" onClick={this.editMsg}> 
+                  <Button href="#" className="action" onClick={this.showEdit}> 
                      <i className="fa fa-pencil" aria-hidden="true"></i> 
                   </Button>
                }
 
                {this.props.user.userId == firebase.auth().currentUser.uid &&
-                  <Button href="#" className="action" onClick={this.deleteMsg}> 
+                  <Button href="#" className="action" onClick={this.showDelete}> 
                      <i className="fa fa-trash-o" aria-hidden="true"></i> 
                   </Button>
                }
 
             </div>
             <div className="msg">{this.props.msg.text} </div>
+            {/* edit modal */}
+            <Modal show={this.state.showEdit} onHide={this.closeEdit}>
+               <Modal.Header closeButton>
+                  <Modal.Title>Edit message</Modal.Title>
+               </Modal.Header>
+               <Modal.Body>
+                  <textarea placeholder="edit your message..." name="text" value={this.state.edit} className="form-control" 
+                  onChange={(e) => this.updateEdit(e)}></textarea>
+               </Modal.Body>
+               <Modal.Footer>
+                  <Button onClick={this.closeEdit}>Close</Button>
+                  <Button bsStyle="primary" onClick={this.editMsg}>Submit</Button>
+               </Modal.Footer>
+            </Modal>
+
+            {/* delete modal */}
+            <Modal show={this.state.showDelete} onHide={this.closeDelete}>
+               <Modal.Header closeButton>
+                  <Modal.Title>Delete confirmation</Modal.Title>
+               </Modal.Header>
+               <Modal.Body>
+                  Are you sure you want to permanently delete this message?
+               </Modal.Body>
+               <Modal.Footer>
+                  <Button onClick={this.closeDelete}>No</Button>
+                  <Button bsStyle="primary" onClick={this.deleteMsg}>Yes</Button>
+               </Modal.Footer>
+            </Modal>
          </div>
       );
    }
