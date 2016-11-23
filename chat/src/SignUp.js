@@ -107,11 +107,17 @@ class JoinPage extends React.Component {
             var profilePromise = firebaseUser.updateProfile(userData);
             var newUserRef = firebase.database().ref('users/' + firebaseUser.uid)
             newUserRef.set(userData);
-            
-            hashHistory.push('/channels');
+
             return profilePromise;
          })
          .catch(err => console.log(err));
+
+      firebase.auth().onAuthStateChanged(function(user) {
+         user.sendEmailVerification()
+         .then((promise) => {
+            hashHistory.push('/channels');
+         })
+      })
    }
 
    render() {

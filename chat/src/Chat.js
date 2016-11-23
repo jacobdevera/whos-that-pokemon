@@ -18,33 +18,14 @@ class ChannelsList extends React.Component {
          hashHistory.push('/login');
       } else {
          console.log('showing channels list');
-         var channelsRef = firebase.database().ref('channels/').orderByKey();
-         channelsRef.on('value', (snapshot) => {
-            var channelsArray = [];
-            snapshot.forEach(function (childSnapshot) {
-               var channelObj = childSnapshot.val();
-               channelObj.key = childSnapshot.key;
-               channelsArray.push(channelObj);
-            });
-            this.setState({ channels: channelsArray });
-         });
       }
    }
 
-   handleSelect = (selectedKey) => {
-      hashHistory.push('channel/' + this.state.channels[selectedKey].name);
-      this.setState({currentChannel: this.state.channels[selectedKey].name});
-   }
-
    render() {
-      var channelItems = this.state.channels.map((channelObj, i) => {
-         return <NavItem key={channelObj.name} eventKey={i}>{"#" + channelObj.name}</NavItem>;
-      });
 
       return (
          <div className="channel-list">
-            <p>Welcome! Please select a channel to enter.</p>
-            <Nav bsStyle="pills" stacked onSelect={this.handleSelect}>{channelItems}</Nav>
+            <p>Welcome! Please select a channel above to enter.</p>
          </div>
       );
    }
@@ -58,6 +39,7 @@ class Channel extends React.Component {
    componentWillReceiveProps() {
       console.log('welcome to ' + this.props.params.channelName);
    }
+
    render() {
       return (
          <div>
@@ -212,7 +194,7 @@ class MsgItem extends React.Component {
 
                <span className="handle">{this.props.user.displayName}</span>
                <span className="time"><Time value={this.props.msg.time} relative /></span>
-
+               
                {this.props.user.userId == firebase.auth().currentUser.uid &&
                   <Button href="#" className="action" onClick={this.showEdit}> 
                      <i className="fa fa-pencil" aria-hidden="true"></i> 
