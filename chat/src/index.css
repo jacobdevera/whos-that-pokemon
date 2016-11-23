@@ -1,0 +1,60 @@
+.welcome {
+   position: fixed;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   text-align: center;
+   font-size: 20pt;
+}
+
+.loader {
+   position: fixed;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   background: white;
+   z-index: 9999;
+}
+
+.msg-list {
+   margin-top: 5em;
+   margin-bottom: 7.5em;
+}
+
+.msg-item {
+   padding: 0.5em;
+   word-break: break-word;
+}
+
+.login-form {
+   margin-top: 5em;
+}
+
+.msg-input {
+   position: fixed;
+   bottom: 5px;
+   width: inherit;
+}
+
+.msg-input textarea {
+   resize: none;
+}
+
+.avatar {
+   max-width: 32px;
+   margin-right: 0.25em;
+   margin-bottom: 0.25em;
+}
+
+.time {   
+   font-size: 0.85em;
+   margin-left: 1em;
+   color: #9d9d9d;
+}
+
+.action {
+   padding: 0.1em;
+   margin-left: 0.5em;
+   border: none;
+}
