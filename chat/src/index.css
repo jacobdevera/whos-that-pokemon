@@ -1,4 +1,4 @@
-.msg-list {
+.channel-list, .msg-list {
    margin-top: 5em;
    margin-bottom: 10em;
 }
@@ -6,6 +6,10 @@
 .msg-item {
    padding: 0.5em;
    word-break: break-word;
+}
+
+.login-form {
+   margin-top: 5em;
 }
 
 .write-msg {

@@ -2,6 +2,7 @@ import React from 'react';
 import noUserPic from './img/no-user-pic.png';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
+import { PageHeader } from 'react-bootstrap';
 import validate, { ValidatedInput } from './validate';
 import md5 from 'js-md5';
 
@@ -139,29 +140,32 @@ class AuthFields extends React.Component {
       var signInEnabled = (emailErrors.isValid && passwordErrors.isValid);
 
       return (
-         <form role="form">
+         <div>
+            <PageHeader>Accord</PageHeader>
+            <form className="login-form" role="form">
 
-            <ValidatedInput field="email" type="email" label="Email" changeCallback={this.props.handleChange} errors={emailErrors} />
+               <ValidatedInput field="email" type="email" label="Email" changeCallback={this.props.handleChange} errors={emailErrors} />
 
-            <ValidatedInput field="password" type="password" label="Password" changeCallback={this.props.handleChange} errors={passwordErrors} />
+               <ValidatedInput field="password" type="password" label="Password" changeCallback={this.props.handleChange} errors={passwordErrors} />
 
-            { this.props.newUser && 
-               <ValidatedInput field="confirm" type="password" label="Confirm Password" changeCallback={this.props.handleChange} errors={confirmErrors} />
-            }
+               { this.props.newUser && 
+                  <ValidatedInput field="confirm" type="password" label="Confirm Password" changeCallback={this.props.handleChange} errors={confirmErrors} />
+               }
 
-            { this.props.newUser &&
-               <ValidatedInput field="handle" type="text" label="Handle" changeCallback={this.props.handleChange} errors={handleErrors} />
-            }
+               { this.props.newUser &&
+                  <ValidatedInput field="handle" type="text" label="Handle" changeCallback={this.props.handleChange} errors={handleErrors} />
+               }
 
-            <div className="form-group sign-up-buttons">
-               <button className="btn btn-primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
-                  {this.props.newUser ? "Sign up" : "Need an account?"}
-               </button>
-               <button className="btn btn-primary" disabled={!this.props.newUser && !signInEnabled} onClick={(e) => this.props.signIn(e)}>
-                  {this.props.newUser ? "Back to login" : "Sign in"}
-               </button>
-            </div>
-         </form>
+               <div className="form-group">
+                  <button className="btn btn-primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
+                     {this.props.newUser ? "Sign up" : "Need an account?"}
+                  </button>
+                  <button className="btn btn-primary" disabled={!this.props.newUser && !signInEnabled} onClick={(e) => this.props.signIn(e)}>
+                     {this.props.newUser ? "Back to login" : "Sign in"}
+                  </button>
+               </div>
+            </form>
+         </div>
       );
    }
 }

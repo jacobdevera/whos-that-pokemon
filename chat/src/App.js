@@ -38,15 +38,15 @@ class App extends React.Component {
             });
 
             // get channels and put them into the state for use in the nav
-            var channelsRef = firebase.database().ref('channels/');
+            var channelsRef = firebase.database().ref('channels/').orderByKey();
             channelsRef.on('value', (snapshot) => {
-               var channelsArray = []; //an array to put in the state
-               snapshot.forEach(function (childSnapshot) { //go through each item like an array
-                  var channelObj = childSnapshot.val(); //convert this snapshot into an object
-                  channelObj.key = childSnapshot.key; //save the child's unique id for later
-                  channelsArray.push(channelObj); //put into our new array
+               var channelsArray = [];
+               snapshot.forEach(function (childSnapshot) {
+                  var channelObj = childSnapshot.val();
+                  channelObj.key = childSnapshot.key;
+                  channelsArray.push(channelObj);
                });
-               this.setState({ channels: channelsArray }); //add to state
+               this.setState({ channels: channelsArray });
             });
             hashHistory.push('/channels');
          } else {
@@ -76,6 +76,7 @@ class App extends React.Component {
                      .then(() => {
                         console.log('channel successfully added');
                         hashHistory.push('channel/' + this.state.addChannel);
+                        this.setState({ currentChannel: this.state.addChannel });
                      })
                      .catch(function (response) {
                         console.log(response);
@@ -103,7 +104,7 @@ class App extends React.Component {
          <div>
          {  this.state.userId &&
             <div>
-               <Navbar fixedTop defaultExpanded collapseOnSelect>
+               <Navbar fixedTop collapseOnSelect>
                      <Navbar.Header>
                         <Navbar.Brand>
                            {"Accord #" + this.state.currentChannel}

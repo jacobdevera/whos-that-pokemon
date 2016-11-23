@@ -8,7 +8,7 @@ import noUserPic from './img/no-user-pic.png';
 class ChannelsList extends React.Component {
    constructor(props) {
       super(props);
-      this.state = {};
+      this.state = { channels: [] };
    }
 
    componentDidMount() {
@@ -18,12 +18,33 @@ class ChannelsList extends React.Component {
          hashHistory.push('/login');
       } else {
          console.log('showing channels list');
+         var channelsRef = firebase.database().ref('channels/').orderByKey();
+         channelsRef.on('value', (snapshot) => {
+            var channelsArray = [];
+            snapshot.forEach(function (childSnapshot) {
+               var channelObj = childSnapshot.val();
+               channelObj.key = childSnapshot.key;
+               channelsArray.push(channelObj);
+            });
+            this.setState({ channels: channelsArray });
+         });
       }
    }
 
+   handleSelect = (selectedKey) => {
+      hashHistory.push('channel/' + this.state.channels[selectedKey].name);
+      this.setState({currentChannel: this.state.channels[selectedKey].name});
+   }
+
    render() {
+      var channelItems = this.state.channels.map((channelObj, i) => {
+         return <NavItem key={channelObj.name} eventKey={i}>{"#" + channelObj.name}</NavItem>;
+      });
+
       return (
-         <div>
+         <div className="channel-list">
+            <p>Welcome! Please select a channel to enter.</p>
+            <Nav bsStyle="pills" stacked onSelect={this.handleSelect}>{channelItems}</Nav>
          </div>
       );
    }
@@ -140,7 +161,7 @@ export class MsgList extends React.Component {
             user={this.state.users[msgObj.userId]}
             key={msgObj.uid} 
             uid={msgObj.uid} />;
-      })
+      });
 
       return <div className="msg-list">{msgItems}</div>;
    }
