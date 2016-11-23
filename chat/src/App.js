@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link, hashHistory } from 'react-router';
-import { Button, FormControl, FormGroup, Nav, Navbar, NavItem } from 'react-bootstrap';
+import { hashHistory } from 'react-router';
+import { Alert, Button, FormControl, FormGroup, Nav, Navbar, NavItem } from 'react-bootstrap';
 import firebase from 'firebase';
 
 class App extends React.Component {
@@ -9,7 +9,8 @@ class App extends React.Component {
       this.state = {
          addChannel: '',
          channels: [],
-         currentChannel: ''
+         currentChannel: '',
+         addChannelFail: false
       };
    }
 
@@ -32,7 +33,7 @@ class App extends React.Component {
                         hashHistory.push('channel/general');
                      })
                      .catch(function (response) {
-                        console.log(response);
+                        this.setState({ addChannelFail: true });
                      })
                }
             });
@@ -95,6 +96,8 @@ class App extends React.Component {
       this.setState({currentChannel: this.state.channels[selectedKey].name});
    }
 
+   handleAlertDismiss = () => this.setState({ addChannelFail: false })
+
    render() {
       // map channel names to nav items
       var channelItems = this.state.channels.map((channelObj, i) => {
@@ -129,9 +132,17 @@ class App extends React.Component {
                </Navbar>
             </div>
          }
-            <div className="container-fluid">
+            <div className="container">
                {this.props.children}
             </div>
+            { this.state.addChannelFail && 
+               <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+                  <h4>Error</h4>
+                  <p>Please try adding the channel again.
+                     <Button onClick={this.handleAlertDismiss}>Close</Button>
+                  </p>
+               </Alert>
+            }
          </div>
       );
    }

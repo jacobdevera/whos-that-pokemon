@@ -82,8 +82,8 @@ class JoinPage extends React.Component {
    // handle signUp button
    signUp = (event) => {
       event.preventDefault();
-      this.setState({ avatar: 'https://www.gravatar.com/avatar/' + md5(this.state.email)});
-      this.signUpCallback(this.state.email, this.state.password, this.state.handle, this.state.avatar);
+      this.signUpCallback(this.state.email, this.state.password, this.state.handle, 
+         'https://www.gravatar.com/avatar/' + md5(this.state.email));
    }
 
    // back to login screen
@@ -107,17 +107,20 @@ class JoinPage extends React.Component {
             var profilePromise = firebaseUser.updateProfile(userData);
             var newUserRef = firebase.database().ref('users/' + firebaseUser.uid)
             newUserRef.set(userData);
+            firebaseUser.sendEmailVerification();
 
             return profilePromise;
          })
-         .catch(err => console.log(err));
-
-      firebase.auth().onAuthStateChanged(function(user) {
-         user.sendEmailVerification()
          .then((promise) => {
             hashHistory.push('/channels');
          })
-      })
+         .catch(err => console.log(err));
+   }
+
+   componentWillUnmount() {
+      if (this.unregister) {
+         this.unregister();
+      }
    }
 
    render() {

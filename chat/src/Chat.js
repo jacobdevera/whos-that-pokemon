@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import Time from 'react-time';
-import { Button, ControlLabel, Form, FormControl, FormGroup, Modal, Nav, NavItem } from 'react-bootstrap';
+import { Button, ButtonToolbar, FormGroup, FormControl, Modal } from 'react-bootstrap';
 import noUserPic from './img/no-user-pic.png';
 
 class ChannelsList extends React.Component {
@@ -22,9 +22,8 @@ class ChannelsList extends React.Component {
    }
 
    render() {
-
       return (
-         <div className="channel-list">
+         <div className="welcome">
             <p>Welcome! Please select a channel above to enter.</p>
          </div>
       );
@@ -52,7 +51,10 @@ class Channel extends React.Component {
 class MsgBox extends React.Component {
    constructor(props) {
       super(props);
-      this.state = { post: '' };
+      this.state = { 
+         post: '',
+         loading: false
+      };
    }
 
    // when the text in the form changes
@@ -62,35 +64,55 @@ class MsgBox extends React.Component {
    postMsg = (event) => {
       event.preventDefault(); // don't submit
 
-      var msgData = {
-         text: this.state.post,
-         userId: firebase.auth().currentUser.uid,
-         time: firebase.database.ServerValue.TIMESTAMP,
-         edit: false
+      this.unregister = firebase.auth().onAuthStateChanged((user) => {
+         if (user) {
+            if (user.emailVerified) {
+               this.setState({ loading: true });
+               console.log('Email is verified');
+               var msgData = {
+                  text: this.state.post,
+                  userId: firebase.auth().currentUser.uid,
+                  time: firebase.database.ServerValue.TIMESTAMP,
+                  edit: false
+               }
+
+               var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs');
+               msgsRef.push(msgData)
+                  .then((response) => {
+                     this.setState({ loading: false });
+                  })
+
+               this.setState({ post: '' }); // empty out post
+            }
+            else {
+               console.log('Email is not verified');
+            }
+         }
+      });
+   }
+
+   // unregister Firebase authentication listener
+   componentWillUnmount() {
+      if (this.unregister) {
+         this.unregister();
       }
-
-      var msgsRef = firebase.database().ref('channels/' + this.props.channel + '/msgs');
-      msgsRef.push(msgData);
-
-      this.setState({ post: '' }); // empty out post
    }
 
    render() {
       return (
-         <div className="msg-box write-msg">
-            <img className="image" src={firebase.auth().currentUser.photoURL} alt="user avatar" />
+         <div className="msg-input">
+            <FormGroup>
+               <FormControl placeholder="Send a message..." value={this.state.post} componentClass="textarea"
+                  onChange={(e) => this.updatePost(e)} />
 
-            <form className="msg-input" role="form">
-               <textarea placeholder="Send a message..." name="text" value={this.state.post} className="form-control" 
-                  onChange={(e) => this.updatePost(e)}></textarea>
-
-               <div className="form-group send-msg">
-                  <button className="btn btn-primary"
-                     onClick={(e) => this.postMsg(e)} >
-                     <i className="fa fa-pencil-square-o" aria-hidden="true"></i> Send
-                  </button>
-               </div>
-            </form>
+               <span className="form-group send-msg">
+                  <Button block disabled={this.state.loading} bsStyle="primary" 
+                        onClick={!this.state.loading ? (e) => this.postMsg(e) : null} >
+                     <i className="fa fa-pencil-square-o" aria-hidden="true"></i> 
+                     {this.state.loading ? 'Sending...' : 'Send'}
+                  </Button>
+               </span>
+            </FormGroup>
          </div>
       );
    }
@@ -104,7 +126,7 @@ export class MsgList extends React.Component {
 
    componentDidMount() {
       var usersRef = firebase.database().ref('users');
-      usersRef.on('value', (snapshot) => { 
+      usersRef.on('value', (snapshot) => {
          var newVal = snapshot.val();
          this.setState({ users: newVal });
       });
@@ -141,7 +163,7 @@ export class MsgList extends React.Component {
             channel={this.props.channel}
             msg={msgObj}
             user={this.state.users[msgObj.userId]}
-            key={msgObj.uid} 
+            key={msgObj.uid}
             uid={msgObj.uid} />;
       });
 
@@ -150,25 +172,27 @@ export class MsgList extends React.Component {
 }
 
 class MsgItem extends React.Component {
-   constructor(props){
+   constructor(props) {
       super(props);
       this.state = {
          showEdit: false,
          showDelete: false,
-         edit: this.props.msg.text
+         edit: this.props.msg.text,
+         loading: false
       }
    }
-   
-   showEdit = () => this.setState({showEdit: true});
-   closeEdit = () => this.setState({showEdit: false});
 
-   showDelete = () => this.setState({showDelete: true});
-   closeDelete = () => this.setState({showDelete: false});
+   showEdit = () => this.setState({ showEdit: true });
+   closeEdit = () => this.setState({ showEdit: false });
+
+   showDelete = () => this.setState({ showDelete: true });
+   closeDelete = () => this.setState({ showDelete: false });
 
    updateEdit = (event) => this.setState({ edit: event.target.value });
 
    editMsg = (event) => {
       event.preventDefault();
+      this.setState({ loading: true });
       var msgData = {
          text: this.state.edit,
          userId: this.props.user.userId,
@@ -176,8 +200,11 @@ class MsgItem extends React.Component {
          edit: true
       }
       var msgRef = firebase.database().ref('channels/' + this.props.channel + '/msgs/' + this.props.uid);
-      msgRef.set(msgData);
-      this.setState({showEdit: false});
+      msgRef.set(msgData)
+         .then((response) => {
+            this.setState({ loading: false });
+         })
+      this.setState({ showEdit: false });
    }
 
    // delete a message if the user is the author
@@ -190,20 +217,20 @@ class MsgItem extends React.Component {
       return (
          <div className="msg-item">
             <div>
-               <img className="image" src={this.props.user.photoURL} role="presentation" />
+               <img className="avatar" src={this.props.user.photoURL} alt="avatar" />
 
                <span className="handle">{this.props.user.displayName}</span>
                <span className="time"><Time value={this.props.msg.time} relative /></span>
-               
-               {this.props.user.userId == firebase.auth().currentUser.uid &&
-                  <Button href="#" className="action" onClick={this.showEdit}> 
-                     <i className="fa fa-pencil" aria-hidden="true"></i> 
+
+               {this.props.user.userId === firebase.auth().currentUser.uid &&
+                  <Button href="#" className="action" onClick={this.showEdit}>
+                     <i className="fa fa-pencil" aria-hidden="true"></i>
                   </Button>
                }
 
-               {this.props.user.userId == firebase.auth().currentUser.uid &&
-                  <Button href="#" className="action" onClick={this.showDelete}> 
-                     <i className="fa fa-trash-o" aria-hidden="true"></i> 
+               {this.props.user.userId === firebase.auth().currentUser.uid &&
+                  <Button href="#" className="action" onClick={this.showDelete}>
+                     <i className="fa fa-trash-o" aria-hidden="true"></i>
                   </Button>
                }
 
@@ -215,8 +242,8 @@ class MsgItem extends React.Component {
                   <Modal.Title>Edit message</Modal.Title>
                </Modal.Header>
                <Modal.Body>
-                  <textarea placeholder="edit your message..." name="text" value={this.state.edit} className="form-control" 
-                  onChange={(e) => this.updateEdit(e)}></textarea>
+                  <textarea placeholder="edit your message..." name="text" value={this.state.edit} className="form-control"
+                     onChange={(e) => this.updateEdit(e)}></textarea>
                </Modal.Body>
                <Modal.Footer>
                   <Button onClick={this.closeEdit}>Close</Button>
