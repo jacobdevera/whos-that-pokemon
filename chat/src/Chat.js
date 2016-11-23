@@ -2,8 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import Time from 'react-time';
-import { Button, ButtonToolbar, FormGroup, FormControl, Modal } from 'react-bootstrap';
-import noUserPic from './img/no-user-pic.png';
+import { Button, FormGroup, FormControl, Modal } from 'react-bootstrap';
 
 class ChannelsList extends React.Component {
    constructor(props) {

@@ -1,8 +1,7 @@
 import React from 'react';
-import noUserPic from './img/no-user-pic.png';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
-import { PageHeader } from 'react-bootstrap';
+import { Alert, Button, PageHeader } from 'react-bootstrap';
 import validate, { ValidatedInput } from './validate';
 import md5 from 'js-md5';
 
@@ -13,7 +12,10 @@ class LoginPage extends React.Component {
          'email': undefined,
          'password': undefined,
          'handle': undefined,
-         'avatar': ''
+         'avatar': '',
+         error: false,
+         errorMsg: '',
+         loading: false
       };
    }
 
@@ -41,18 +43,42 @@ class LoginPage extends React.Component {
 
    // log in existing users
    signInCallback(email, password) {
+      this.setState({ loading: true });
       firebase.auth().signInWithEmailAndPassword(email, password)
          .then((response) => {
+            this.setState({ loading: false });
             hashHistory.push('/channels');
          })
-         .catch(err => console.log(err));
+         .catch((err) => {
+            this.setState({ 
+               loading: false,
+               error: true,
+               errorMsg: err.message
+            })
+         });
+   }
+
+   handleAlertDismiss = () => {
+      this.setState({ error: false })
    }
 
    render() {
       return (
-         <AuthFields newUser={false} email={this.state.email} password={this.state.password} 
+         <div>
+            <AuthFields newUser={false} email={this.state.email} password={this.state.password} 
                      handle={this.state.handle} handleChange={this.handleChange} 
-                     signUp={this.signUp} signIn={this.signIn}/>
+                     signUp={this.signUp} signIn={this.signIn} loading={this.state.loading}/>
+
+            { this.state.error &&
+               <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+               <h4>Error</h4>
+               <p>{this.state.errorMsg}</p>
+               <p>
+                  <Button onClick={this.handleAlertDismiss}>Close</Button>
+               </p>
+            </Alert>
+            }
+         </div>
       );
    }
 }
@@ -65,7 +91,8 @@ class JoinPage extends React.Component {
          'password': undefined,
          'confirm': undefined,
          'handle': undefined,
-         'avatar': ''
+         'avatar': '',
+         loading: false
       };
    }
 
@@ -94,6 +121,7 @@ class JoinPage extends React.Component {
 
    // register new users
    signUpCallback = (email, password, handle, avatar) => {
+      this.setState({ loading: true })
       firebase.auth().createUserWithEmailAndPassword(email, password)
          .then((firebaseUser) => {
             console.log('user created: ' + firebaseUser.uid);
@@ -112,6 +140,7 @@ class JoinPage extends React.Component {
             return profilePromise;
          })
          .then((promise) => {
+            this.setState({ loading: false });
             hashHistory.push('/channels');
          })
          .catch(err => console.log(err));
@@ -166,12 +195,18 @@ class AuthFields extends React.Component {
                }
 
                <div className="form-group">
-                  <button className="btn btn-primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
-                     {this.props.newUser ? "Sign up" : "Need an account?"}
-                  </button>
-                  <button className="btn btn-primary" disabled={!this.props.newUser && !signInEnabled} onClick={(e) => this.props.signIn(e)}>
-                     {this.props.newUser ? "Back to login" : "Sign in"}
-                  </button>
+                  <Button bsStyle="primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
+                     {
+                        this.props.loading ? "Please wait..." :
+                        this.props.newUser ? "Sign up" : "Need an account?"
+                     }
+                  </Button>
+                  <Button bsStyle="primary" disabled={!this.props.newUser && !signInEnabled} onClick={(e) => this.props.signIn(e)}>
+                     {
+                        this.props.loading ? "Please wait..." :
+                        this.props.newUser ? "Back to login" : "Sign in"
+                     }
+                  </Button>
                </div>
             </form>
          </div>
