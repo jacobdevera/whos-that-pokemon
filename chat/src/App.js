@@ -17,7 +17,6 @@ class App extends React.Component {
    componentDidMount() {
       firebase.auth().onAuthStateChanged(firebaseUser => {
          if (firebaseUser) {
-            console.log('logged in');
             this.setState({
                userId: firebaseUser.uid,
             })
@@ -29,7 +28,6 @@ class App extends React.Component {
                if (!snapshot.exists()) {
                   generalRef.set({ name: 'general' })
                      .then(() => {
-                        console.log('general channel successfully added');
                         hashHistory.push('channel/general');
                      })
                      .catch(function (response) {
@@ -51,7 +49,6 @@ class App extends React.Component {
             });
             hashHistory.push('/channels');
          } else {
-            console.log('logged out');
             this.setState({ userId: null });
          }
       });
@@ -75,19 +72,11 @@ class App extends React.Component {
                if (!snapshot.exists()) {
                   newChannelRef.set(channelData)
                      .then(() => {
-                        console.log('channel successfully added');
                         hashHistory.push('channel/' + this.state.addChannel);
                         this.setState({ currentChannel: this.state.addChannel });
                      })
-                     .catch(function (response) {
-                        console.log(response);
-                     })
-               } else {
-                  console.log('channel already exists');
                }
             });
-      } else {
-         console.log('channel name required')
       }
    }
 
@@ -147,7 +136,5 @@ class App extends React.Component {
       );
    }
 }
-
-
 
 export default App; //make this class available to other files (e.g., index.js)

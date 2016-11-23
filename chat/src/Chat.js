@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase';
 import { hashHistory } from 'react-router';
 import Time from 'react-time';
-import { Button, FormGroup, FormControl, Modal } from 'react-bootstrap';
+import { Alert, Button, FormGroup, FormControl, Modal } from 'react-bootstrap';
 
 class ChannelsList extends React.Component {
    constructor(props) {
@@ -13,10 +13,7 @@ class ChannelsList extends React.Component {
    componentDidMount() {
       var user = firebase.auth().currentUser;
       if (!user) {
-         console.log('redirecting to login page');
          hashHistory.push('/login');
-      } else {
-         console.log('showing channels list');
       }
    }
 
@@ -30,14 +27,6 @@ class ChannelsList extends React.Component {
 }
 
 class Channel extends React.Component {
-   componentDidMount() {
-      console.log('(first load) welcome to ' + this.props.params.channelName);
-   }
-
-   componentWillReceiveProps() {
-      console.log('welcome to ' + this.props.params.channelName);
-   }
-
    render() {
       return (
          <div>
@@ -52,7 +41,8 @@ class MsgBox extends React.Component {
       super(props);
       this.state = { 
          post: '',
-         loading: false
+         loading: false,
+         verifyFail: false
       };
    }
 
@@ -64,10 +54,9 @@ class MsgBox extends React.Component {
       event.preventDefault(); // don't submit
 
       this.unregister = firebase.auth().onAuthStateChanged((user) => {
-         if (user) {
+         if (user && this.state.post.length > 0) {
             if (user.emailVerified) {
                this.setState({ loading: true });
-               console.log('Email is verified');
                var msgData = {
                   text: this.state.post,
                   userId: firebase.auth().currentUser.uid,
@@ -84,7 +73,7 @@ class MsgBox extends React.Component {
                this.setState({ post: '' }); // empty out post
             }
             else {
-               console.log('Email is not verified');
+               this.setState({ verifyFail: true });
             }
          }
       });
@@ -97,9 +86,22 @@ class MsgBox extends React.Component {
       }
    }
 
+   handleAlertDismiss = () => {
+      this.setState({ verifyFail: false });
+   }
    render() {
       return (
          <div className="msg-input">
+            { this.state.verifyFail && 
+               <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+                  <h4>Error</h4>
+                  <p>Your account must be verified to send messages. Check your email to verify your account.
+                     It may take some time after verification to fully verify your account.</p>
+                  <p>
+                     <Button onClick={this.handleAlertDismiss}>Close</Button>
+                  </p>
+               </Alert>
+            }
             <FormGroup>
                <FormControl placeholder="Send a message..." value={this.state.post} componentClass="textarea"
                   onChange={(e) => this.updatePost(e)} />
@@ -176,8 +178,7 @@ class MsgItem extends React.Component {
       this.state = {
          showEdit: false,
          showDelete: false,
-         edit: this.props.msg.text,
-         loading: false
+         edit: this.props.msg.text
       }
    }
 
@@ -191,7 +192,6 @@ class MsgItem extends React.Component {
 
    editMsg = (event) => {
       event.preventDefault();
-      this.setState({ loading: true });
       var msgData = {
          text: this.state.edit,
          userId: this.props.user.userId,
@@ -199,10 +199,7 @@ class MsgItem extends React.Component {
          edit: true
       }
       var msgRef = firebase.database().ref('channels/' + this.props.channel + '/msgs/' + this.props.uid);
-      msgRef.set(msgData)
-         .then((response) => {
-            this.setState({ loading: false });
-         })
+      msgRef.set(msgData);
       this.setState({ showEdit: false });
    }
 

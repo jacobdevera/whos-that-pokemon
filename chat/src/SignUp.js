@@ -92,6 +92,8 @@ class JoinPage extends React.Component {
          'confirm': undefined,
          'handle': undefined,
          'avatar': '',
+         error: false,
+         errorMsg: '',
          loading: false
       };
    }
@@ -124,8 +126,7 @@ class JoinPage extends React.Component {
       this.setState({ loading: true })
       firebase.auth().createUserWithEmailAndPassword(email, password)
          .then((firebaseUser) => {
-            console.log('user created: ' + firebaseUser.uid);
-
+            // add user to database
             var userData = {
                userId: firebaseUser.uid,
                displayName: handle,
@@ -140,10 +141,21 @@ class JoinPage extends React.Component {
             return profilePromise;
          })
          .then((promise) => {
+            // go to channels view
             this.setState({ loading: false });
             hashHistory.push('/channels');
          })
-         .catch(err => console.log(err));
+         .catch((err) => {
+            this.setState({ 
+               loading: false,
+               error: true,
+               errorMsg: err.message
+            })
+         });
+   }
+
+   handleAlertDismiss = () => {
+      this.setState({ error: false })
    }
 
    componentWillUnmount() {
@@ -154,9 +166,20 @@ class JoinPage extends React.Component {
 
    render() {
       return (
+         <div>
          <AuthFields newUser={true} email={this.state.email} password={this.state.password} 
                      confirm={this.state.confirm} handle={this.state.handle} 
                      handleChange={this.handleChange} signUp={this.signUp} signIn={this.signIn} />
+         { this.state.error &&
+            <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}>
+               <h4>Error</h4>
+               <p>{this.state.errorMsg}</p>
+               <p>
+                  <Button onClick={this.handleAlertDismiss}>Close</Button>
+               </p>
+            </Alert>
+         }
+         </div>
       );
    }
 }
@@ -195,13 +218,13 @@ class AuthFields extends React.Component {
                }
 
                <div className="form-group">
-                  <Button bsStyle="primary" disabled={!signUpEnabled} onClick={(e) => this.props.signUp(e)}>
+                  <Button bsStyle="primary" disabled={!signUpEnabled || this.props.loading } onClick={(e) => this.props.signUp(e)}>
                      {
                         this.props.loading ? "Please wait..." :
                         this.props.newUser ? "Sign up" : "Need an account?"
                      }
                   </Button>
-                  <Button bsStyle="primary" disabled={!this.props.newUser && !signInEnabled} onClick={(e) => this.props.signIn(e)}>
+                  <Button bsStyle="primary" disabled={(!this.props.newUser && !signInEnabled) || this.props.loading} onClick={(e) => this.props.signIn(e)}>
                      {
                         this.props.loading ? "Please wait..." :
                         this.props.newUser ? "Back to login" : "Sign in"
