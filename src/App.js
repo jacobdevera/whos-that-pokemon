@@ -1,29 +1,42 @@
 import React from 'react';
-import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
 import { 
-   AppBar, Button, Card, CardActions, CardHeader, CardContent, Dialog, 
-   DialogActions, DialogContent, DialogContentText, DialogTitle, 
-   IconButton, LinearProgress, Menu, MenuItem, 
-   List, ListItem, ListSubheader, TextField, Toolbar, Typography 
+   AppBar, Button, Card, CardActions, CardHeader, CardContent, CardMedia, Dialog, 
+   DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl,
+   FormControlLabel, FormGroup, FormHelperText, FormLabel,
+   IconButton, Input, InputLabel, LinearProgress, Menu, MenuItem, 
+   List, ListItem, ListItemText, ListSubheader, Radio, RadioGroup, Select, TextField, Toolbar, Typography 
 } from 'material-ui';
+
+import Collapse from 'material-ui/transitions/Collapse';
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
 import MoreVertIcon from 'material-ui-icons/MoreVert';
+import { withStyles } from 'material-ui/styles';
+
 import _ from 'lodash';
 
-injectTapEventPlugin(); // attaches an onClick() event to components
-
-const loadStyle = {
-   position: 'absolute',
-   top: '64px',
-   left: '0',
-   right: '0'
-};
-
-const containerStyle = {
-   maxWidth: '768px',
-   marginLeft: 'auto',
-   marginRight: 'auto',
-};
+const styles = theme => ({ 
+   button: {
+      margin: theme.spacing.unit
+   },
+   load: {
+      position: 'absolute',
+      top: '64px',
+      left: '0',
+      right: '0'
+   },
+   container: {
+      maxWidth: '768px',
+      padding: 16,
+      marginLeft: 'auto',
+      marginRight: 'auto',
+   },
+   media: {
+      height: 100,
+      width: 100
+   },
+});
 
 class App extends React.Component {
    constructor(props) {
@@ -92,7 +105,7 @@ class App extends React.Component {
                   </Dialog>
                </Toolbar>
             </AppBar>
-            <PlayArea />
+            <PlayArea classes={this.props.classes}/>
          </div>
       );
    }
@@ -105,9 +118,7 @@ class PlayArea extends React.Component {
          value: 0,
          pokedexes: [],
          pokedexData: {},
-         menuOpen: false,
          started: false,
-         anchorEl: null,
          loading: false
       };
    }
@@ -124,23 +135,8 @@ class PlayArea extends React.Component {
       });
    }
 
-   handleMenuOpen = event => {
-      this.setState({ 
-         started: false, 
-         menuOpen: true, 
-         anchorEl: event.currentTarget 
-      });
-   };
-
-   handleMenuItemClick = (event, index) => {
-      this.setState({ 
-         value: index, 
-         menuOpen: false 
-      });
-   };
-
-   handleRequestClose = () => {
-      this.setState({menuOpen: false});
+   handleChange = value => event => {
+      this.setState({[value]: event.target.value});
    };
 
    gameStart = () => {
@@ -165,28 +161,35 @@ class PlayArea extends React.Component {
 
    render() {
       return (
-         <div style={containerStyle}>
-            <ListSubheader>Choose a Pokedex</ListSubheader>
-            <Menu
-               id="pokedex-menu"
-               anchorEl={this.state.anchorEl}
-               open={this.state.menuOpen}
-               onRequestClose={this.handleRequestClose}
-            >
-               {this.state.pokedexes.map((pokedex, index) => (
-                  <MenuItem value={index} selected={index === this.state.value} key={pokedex}>
-                     {_.startCase(pokedex.name)}
-                  </MenuItem>
-               ))}
-            </Menu>
-
-            <Button raised label="Start" onClick={this.gameStart}>
+         <div className={this.props.classes.container}>
+            {this.state.pokedexes ?
+               <FormControl margin="normal" component="fieldset">
+                  <InputLabel htmlFor="pokedex">Pokedex</InputLabel>
+                  <Select
+                     value={this.state.value}
+                     onChange={this.handleChange('value')}
+                     input={<Input id="pokedex" />}
+                  >
+                     {this.state.pokedexes.map((pokedex, index) => (
+                        <MenuItem
+                           key={pokedex.name}
+                           value={index}
+                        >
+                           {_.startCase(pokedex.name)}
+                        </MenuItem>
+                     ))}
+                  </Select>
+               </FormControl> : <LinearProgress className={this.props.classes.load}/>
+            }
+            <Button className={this.props.classes.button} raised color="primary" label="Start" onClick={this.gameStart}>
                Start
             </Button>
-            {this.state.loading && <LinearProgress style={loadStyle}/>}
+            {this.state.loading && <LinearProgress className={this.props.classes.load}/>}
             {this.state.started && 
-                  <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} 
-                  handleRestart={this.handleRestart} />}
+                  <GuessBox classes={this.props.classes} 
+                     pokedex={this.state.value} 
+                     pokedexData={this.state.pokedexData} 
+                     handleRestart={this.handleRestart} />}
          </div>
       );
    }
@@ -257,7 +260,7 @@ class GuessBox extends React.Component {
       }
    }
 
-   // display the flavor text entry for the Pokmeon after each round
+   // display the flavor text entry for the Pokemon after each round
    result = () => {
       var flavorText = [];
       this.state.currentSpeciesData["flavor_text_entries"].forEach((entry) => {
@@ -285,19 +288,27 @@ class GuessBox extends React.Component {
          <Button onClick={this.props.handleRestart}>
             Choose new Pokedex
          </Button>
-      ]
-
+      ];
+      var wrong = (this.state.guessed) && (this.state.currentPokeData["species"]["name"].toUpperCase() !== this.state.guess.toUpperCase());
       return (
          <div>
          { 
             !_.isEmpty(this.state.currentPokeData) && // make sure Pokemon data is fetched before mounting
             <div>
                <Card>
-                  <CardHeader
-                     title={"Name: " + (this.state.hint.length > 0 ? ("_ ".repeat(this.state.currentPokeData["species"]["name"].length)) : "")}
-                     subtitle={"Type: " + this.state.hint}
+                  <CardMedia
+                     image={this.state.currentPokeData["sprites"]["front_default"]}
+                     title="Front of Pokemon"
+                     className={this.props.classes.media}
                   />
-                  <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
+                  <CardContent>
+                     <Typography type="headline">
+                        {"Name: " + (this.state.hint.length > 0 ? ("_ ".repeat(this.state.currentPokeData["species"]["name"].length)) : "")}
+                     </Typography>
+                     <Typography type="subheading" color="secondary">
+                        {"Type: " + this.state.hint}
+                     </Typography>
+                  </CardContent>
                   <CardActions>
                      <Button onClick={this.giveHint}>Hint</Button>
                      <Button color="primary" onClick={this.submitGuess}>Submit</Button>
@@ -305,13 +316,13 @@ class GuessBox extends React.Component {
                   </CardActions>
                   <CardContent>
                      {this.state.hint.length > 0 && <PokeTable currentPokeData={this.state.currentPokeData}/>}
-                     <TextField
-                        hintText="Enter your guess"
-                        floatingLabelText="Who's that Pokemon?"
-                        errorText={(this.state.guessed && (this.state.currentPokeData["species"]["name"].toUpperCase() !== this.state.guess.toUpperCase())) && 'wrong'}
-                        value={this.state.guess}
-                        onChange={this.handleChange}
-                     />
+                     <FormControl error={wrong}>
+                        <InputLabel htmlFor="name-error">Who's that Pokemon?</InputLabel>
+                        <Input id="name-error" value={this.state.guess} onChange={this.handleChange} />
+                        <FormHelperText>
+                           {wrong ? 'wrong' : 'enter your guess'}
+                        </FormHelperText>
+                     </FormControl>
                   </CardContent>
                </Card>
                <Dialog
@@ -327,40 +338,93 @@ class GuessBox extends React.Component {
                </Dialog>
             </div>
          }
-            {this.state.loading && <LinearProgress style={loadStyle}/>}
+            {this.state.loading && <LinearProgress className={this.props.classes.load}/>}
          </div>
       );
    }
 }
 
 class PokeTable extends React.Component {
+   constructor(props) {
+      super(props);
+      this.state = {
+         infoOpen1: false,
+         infoOpen2: false,
+         infoOpen3: false
+      };
+   };
+
+   handleClick1 = () => {
+      this.setState({ infoOpen1: !this.state.infoOpen1 })
+   };
+
+   handleClick2 = () => {
+      this.setState({ infoOpen2: !this.state.infoOpen2 })
+   }
+
+   handleClick3 = () => {
+      this.setState({ infoOpen3: !this.state.infoOpen3 })
+   }
+
    render() {
       // map pokemon data to list items
       var gameIndices = this.props.currentPokeData["game_indices"].map(function(index, i) {
-         return <ListItem key={i} primaryText={_.startCase(index["version"].name) + ": " + index.game_index} />;
+         return <ListItem>
+                  <ListItemText inset primary={_.startCase(index["version"].name) + ": " + index.game_index} />
+               </ListItem>
       });
       
       var height = this.props.currentPokeData["height"] / 10;
       var weight = this.props.currentPokeData["weight"] / 10;
 
       var abilities = this.props.currentPokeData["abilities"].map(function(ability, index) {
-         return <ListItem key={index} primaryText={_.startCase(ability["ability"].name)} />;
+         return <ListItem>
+                  <ListItemText inset primary={_.startCase(ability["ability"].name)} />
+               </ListItem>
       });
 
       var heldItems = this.props.currentPokeData["held_items"].map(function(item, index) {
-         return <ListItem key={index} primaryText={_.startCase(item["item"].name)} />;
+         return <ListItem>
+                  <ListItemText inset primary={_.startCase(item["item"].name)} />
+               </ListItem>
       });
 
       return (
-         <List>
-            <ListItem primaryText={"Pokedex Entry Numbers: "} nestedItems={gameIndices}/>
-            <ListItem primaryText={"Height: " + height + " m"}/>
-            <ListItem primaryText={"Weight: " + weight + " kg"}/>
-            <ListItem primaryText={"Abilities: "} nestedItems={abilities}/>
-            <ListItem primaryText={"Held items in the wild: " + (heldItems.length === 0 ? "None" : "")} nestedItems={heldItems}/>
+         <List subheader={<ListSubheader>Information</ListSubheader>}>
+            <ListItem button onClick={this.handleClick1}>
+               <ListItemText primary="Pokedex Entry Numbers: " />
+               {this.state.infoOpen1 ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={this.state.infoOpen1} transitionDuration="auto" unmountOnExit>
+               {gameIndices}
+            </Collapse>
+
+            <ListItem>
+               <ListItemText primary={"Height: " + height + " m"} />
+            </ListItem>
+
+            <ListItem>
+               <ListItemText primary={"Weight: " + weight + " kg"} />
+            </ListItem>
+
+            <ListItem button onClick={this.handleClick2}>
+               <ListItemText primary={"Abilities: "}/>
+               {this.state.infoOpen2 ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={this.state.infoOpen2} transitionDuration="auto" unmountOnExit>
+               {abilities}
+            </Collapse>
+
+            <ListItem button onClick={this.handleClick3}>
+               <ListItemText primary={"Held items in the wild: " + (heldItems.length === 0 ? "None" : "")}/>
+               {this.state.infoOpen3 ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+            <Collapse in={this.state.infoOpen3} transitionDuration="auto" unmountOnExit>
+               {heldItems}
+            </Collapse>
          </List>
       );
    }
 }
 
-export default App; //make this class available to other files (e.g., index.js)
+export default withStyles(styles)(App); //make this class available to other files (e.g., index.js)
