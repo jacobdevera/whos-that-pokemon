@@ -2,15 +2,15 @@ import React from 'react';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import PokeController from './PokeController';
 import { 
-   AppBar, Card, CardActions, CardHeader, CardText, Dialog, DropDownMenu, 
-   FlatButton, IconButton, IconMenu, LinearProgress, MenuItem, RaisedButton, 
-   List, ListItem, TextField, Subheader 
+   AppBar, Button, Card, CardActions, CardHeader, CardContent, Dialog, 
+   DialogActions, DialogContent, DialogContentText, DialogTitle, 
+   IconButton, LinearProgress, Menu, MenuItem, 
+   List, ListItem, ListSubheader, TextField, Toolbar, Typography 
 } from 'material-ui';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import QuestionMark from 'material-ui/svg-icons/action/help';
+import MoreVertIcon from 'material-ui-icons/MoreVert';
 import _ from 'lodash';
 
-injectTapEventPlugin(); // attaches an onTouchTap() event to components
+injectTapEventPlugin(); // attaches an onClick() event to components
 
 const loadStyle = {
    position: 'absolute',
@@ -29,55 +29,69 @@ class App extends React.Component {
    constructor(props) {
       super(props);
       this.state = {
+         anchorEl: null,
+         menuOpen: false,
          dialogOpen: false
       };
    }
 
-   handleOpen = () => {
-      this.setState({dialogOpen: true});
-   }
+   handleMenuOpen = (event) => {
+      this.setState({menuOpen: true, anchorEl: event.currentTarget});
+   };
 
-   handleClose = () => {
+   handleMenuClose = () => {
+      this.setState({menuOpen: false});
+   };
+
+   handleDialogOpen = () => {
+      this.setState({dialogOpen: true});
+   };
+
+   handleDialogClose = () => {
       this.setState({dialogOpen: false});
-   }
+   };
 
    render() {
-      // action for 'how to play' dialog
-      const actions = [
-         <FlatButton
-            label="Okay"
-            primary={true}
-            onTouchTap={this.handleClose}
-            keyboardFocused={true}
-         />
-      ];
-
       return (
          <div>
-            <AppBar 
-               title="Who's that Pokemon?" 
-               iconElementLeft={<IconButton><QuestionMark /></IconButton>}
-               iconElementRight={
-                  <IconMenu
-                     iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-                     targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                     anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+            <AppBar position="static">
+               <Toolbar>
+                  <Typography type="title" color="inherit">
+                     Who's that Pokemon?
+                  </Typography>
+                  <IconButton
+                     aria-label="More"
+                     aria-owns={this.state.menuOpen ? 'simple-menu' : null}
+                     aria-haspopup="true"
+                     onClick={this.handleMenuOpen}
                   >
-                     <MenuItem primaryText="Help" onTouchTap={this.handleOpen} />
-                  </IconMenu>
-               }
-            />
-            <Dialog
-               title="How to play"
-               actions={actions}
-               modal={false}
-               open={this.state.dialogOpen}
-               onRequestClose={this.handleClose}
-            >
-               Choose a Pokedex from one of the various games. The national Pokedex 
-               includes all 721 Pokemon up to generation VI. You will then be asked
-               to guess the Pokemon based on the given sprite.
-            </Dialog>
+                     <MoreVertIcon />
+                  </IconButton>
+                  <Menu
+                     id="simple-menu"
+                     anchorEl={this.state.anchorEl}
+                     open={this.state.menuOpen}
+                     onRequestClose={this.handleMenuClose}
+                  >
+                     <MenuItem onClick={this.handleDialogOpen}>Help</MenuItem>
+                  </Menu>
+                  <Dialog open={this.state.dialogOpen} onRequestClose={this.handleDialogClose}>
+                     <DialogTitle>{"How to Play"}</DialogTitle>
+                     <DialogContent>
+                        <DialogContentText>
+                           Choose a Pokedex from one of the various games. The national Pokedex 
+                           includes all 721 Pokemon up to generation VI. You will then be asked
+                           to guess the Pokemon based on the given sprite.
+                        </DialogContentText>
+                     </DialogContent>
+                     <DialogActions>
+                        <Button onClick={this.handleDialogClose} color="primary">
+                           Okay
+                        </Button>
+                     </DialogActions>
+                  </Dialog>
+               </Toolbar>
+            </AppBar>
             <PlayArea />
          </div>
       );
@@ -91,7 +105,9 @@ class PlayArea extends React.Component {
          value: 0,
          pokedexes: [],
          pokedexData: {},
+         menuOpen: false,
          started: false,
+         anchorEl: null,
          loading: false
       };
    }
@@ -108,12 +124,23 @@ class PlayArea extends React.Component {
       });
    }
 
-   // update selected pokedex upon picking a dropdown item
-   handleChange = (event, index, value) => {
-      this.setState({
-         value: value,
-         started: false
+   handleMenuOpen = event => {
+      this.setState({ 
+         started: false, 
+         menuOpen: true, 
+         anchorEl: event.currentTarget 
       });
+   };
+
+   handleMenuItemClick = (event, index) => {
+      this.setState({ 
+         value: index, 
+         menuOpen: false 
+      });
+   };
+
+   handleRequestClose = () => {
+      this.setState({menuOpen: false});
    };
 
    gameStart = () => {
@@ -137,17 +164,25 @@ class PlayArea extends React.Component {
    }
 
    render() {
-      // map list of pokedexes to menu items
-      var pokedexList = this.state.pokedexes.map(function(pokedex, index) {
-         return <MenuItem value={index} primaryText={_.startCase(pokedex.name)} key={index} />;
-      });
       return (
          <div style={containerStyle}>
-            <Subheader>Choose a Pokedex</Subheader>
-            <DropDownMenu value={this.state.value} onChange={this.handleChange}>
-               {pokedexList}
-            </DropDownMenu>
-            <RaisedButton label="Start" primary={true} onTouchTap={this.gameStart} />
+            <ListSubheader>Choose a Pokedex</ListSubheader>
+            <Menu
+               id="pokedex-menu"
+               anchorEl={this.state.anchorEl}
+               open={this.state.menuOpen}
+               onRequestClose={this.handleRequestClose}
+            >
+               {this.state.pokedexes.map((pokedex, index) => (
+                  <MenuItem value={index} selected={index === this.state.value} key={pokedex}>
+                     {_.startCase(pokedex.name)}
+                  </MenuItem>
+               ))}
+            </Menu>
+
+            <Button raised label="Start" onClick={this.gameStart}>
+               Start
+            </Button>
             {this.state.loading && <LinearProgress style={loadStyle}/>}
             {this.state.started && 
                   <GuessBox pokedex={this.state.value} pokedexData={this.state.pokedexData} 
@@ -244,17 +279,12 @@ class GuessBox extends React.Component {
    render() {
       // actions for the result dialog
       const dialogActions = [
-         <FlatButton
-            label="Continue"
-            primary={true}
-            onTouchTap={this.handleClose}
-            keyboardFocused={true}
-         />,
-         <FlatButton
-            label="Choose new Pokedex"
-            primary={true}
-            onTouchTap={this.props.handleRestart}
-         />
+         <Button onClick={this.handleClose}>
+            Continue
+         </Button>,
+         <Button onClick={this.props.handleRestart}>
+            Choose new Pokedex
+         </Button>
       ]
 
       return (
@@ -269,11 +299,11 @@ class GuessBox extends React.Component {
                   />
                   <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
                   <CardActions>
-                     <FlatButton label="Hint" onTouchTap={this.giveHint} />
-                     <FlatButton label="Submit" onTouchTap={this.submitGuess} primary={true} />
-                     <FlatButton label="Give up" onTouchTap={this.result} secondary={true} />
+                     <Button onClick={this.giveHint}>Hint</Button>
+                     <Button color="primary" onClick={this.submitGuess}>Submit</Button>
+                     <Button color="accent" onClick={this.result}>Give Up</Button>
                   </CardActions>
-                  <CardText>
+                  <CardContent>
                      {this.state.hint.length > 0 && <PokeTable currentPokeData={this.state.currentPokeData}/>}
                      <TextField
                         hintText="Enter your guess"
@@ -282,7 +312,7 @@ class GuessBox extends React.Component {
                         value={this.state.guess}
                         onChange={this.handleChange}
                      />
-                  </CardText>
+                  </CardContent>
                </Card>
                <Dialog
                   title={"It's " + _.capitalize(this.state.currentPokeData["species"]["name"])+ "!"}

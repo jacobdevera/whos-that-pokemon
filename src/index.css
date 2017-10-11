@@ -2,10 +2,6 @@
    font-family: 'Roboto', sans-serif;
 }
 
-/* workaround for normalize.css breaking material ui buttons */
-span[type=button] {
-   -webkit-appearance: none;
-}
-a[type=button] {
-   -webkit-appearance: none;
+body {
+    margin: 0;
 }
