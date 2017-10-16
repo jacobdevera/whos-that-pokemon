@@ -1,2 +1,4 @@
 # Who's that Pokémon?
-Fetch data from the Pokémon API to make a "Who's that Pokémon"-style game.
+A React-based "Who's that Pokémon?"-style game that fetches data from [Pokéapi](https://pokeapi.co/).
+
+[Demo](https://jacobdevera.github.io/whos-that-pokemon/)
