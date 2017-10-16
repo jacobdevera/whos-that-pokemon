@@ -1,11 +1,10 @@
 import React from 'react';
 import PokeController from './PokeController';
 import { 
-   AppBar, Button, Card, CardActions, CardHeader, CardContent, CardMedia, Dialog, 
-   DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl,
-   FormControlLabel, FormGroup, FormHelperText, FormLabel,
-   IconButton, Input, InputLabel, LinearProgress, Menu, MenuItem, 
-   List, ListItem, ListItemText, ListSubheader, Radio, RadioGroup, Select, TextField, Toolbar, Typography 
+   AppBar, Button, Card, CardActions, CardContent, CardMedia, Dialog, 
+   DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, 
+   FormHelperText, IconButton, Input, InputLabel, LinearProgress, Menu, MenuItem, 
+   List, ListItem, ListItemText, ListSubheader, Select, Toolbar, Typography 
 } from 'material-ui';
 
 import Collapse from 'material-ui/transitions/Collapse';
@@ -288,14 +287,6 @@ class GuessBox extends React.Component {
 
    render() {
       // actions for the result dialog
-      const dialogActions = [
-         <Button onClick={this.handleClose}>
-            Continue
-         </Button>,
-         <Button onClick={this.props.handleRestart}>
-            Choose new Pokedex
-         </Button>
-      ];
       var wrong = (this.state.guessed) && (this.state.currentPokeData["species"]["name"].toUpperCase() !== this.state.guess.toUpperCase());
       return (
          <div>

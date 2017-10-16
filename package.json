@@ -1,8 +1,8 @@
 {
-  "name": "data-browser",
+  "name": "whos-that-pokemon",
   "author": "Jacob Devera",
-  "homepage": "https://info343-au16.github.io/challenges-kefkiroth/data-browser/build",
-  "version": "0.1.0",
+  "homepage": "https://jacobdevera.github.io/whos-that-pokemon/build",
+  "version": "1.0.0",
   "private": true,
   "devDependencies": {
     "react-scripts": "1.0.14"
