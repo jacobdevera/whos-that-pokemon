@@ -20,6 +20,9 @@ const styles = theme => ({
    button: {
       margin: theme.spacing.unit
    },
+   flex: {
+      flex: 1
+   },
    load: {
       position: 'absolute',
       top: '64px',
@@ -33,8 +36,8 @@ const styles = theme => ({
       marginRight: 'auto',
    },
    media: {
-      height: 100,
-      width: 100
+      height: 96,
+      width: 96
    },
 });
 
@@ -69,7 +72,7 @@ class App extends React.Component {
          <div>
             <AppBar position="static">
                <Toolbar>
-                  <Typography type="title" color="inherit">
+                  <Typography type="title" color="inherit" className={this.props.classes.flex}>
                      Who's that Pokemon?
                   </Typography>
                   <IconButton
@@ -77,6 +80,7 @@ class App extends React.Component {
                      aria-owns={this.state.menuOpen ? 'simple-menu' : null}
                      aria-haspopup="true"
                      onClick={this.handleMenuOpen}
+                     color="contrast"
                   >
                      <MoreVertIcon />
                   </IconButton>
@@ -135,8 +139,12 @@ class PlayArea extends React.Component {
       });
    }
 
+   // choosing a new pokedex will also unmount the guessing box
    handleChange = value => event => {
-      this.setState({[value]: event.target.value});
+      this.setState({
+         [value]: event.target.value,
+         started: false
+      });
    };
 
    gameStart = () => {
@@ -154,7 +162,6 @@ class PlayArea extends React.Component {
       }
    }
 
-   // choosing a new pokedex will unmount the guessing box
    handleRestart = () => {
       this.setState({started: false});
    }
@@ -325,16 +332,22 @@ class GuessBox extends React.Component {
                      </FormControl>
                   </CardContent>
                </Card>
-               <Dialog
-                  title={"It's " + _.capitalize(this.state.currentPokeData["species"]["name"])+ "!"}
-                  actions={dialogActions}
-                  modal={false}
-                  open={this.state.dialogOpen}
-                  onRequestClose={this.handleClose}
-                  autoScrollBodyContent={true}
-               >
-                  <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" /><br />
-                  {this.state.flavorText[0]}
+               <Dialog open={this.state.dialogOpen} onRequestClose={this.handleClose}>
+                  <DialogTitle>{"It's " + _.capitalize(this.state.currentPokeData["species"]["name"])+ "!"}</DialogTitle>
+                  <DialogContent>
+                     <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
+                     <DialogContentText>
+                        {this.state.flavorText[0]}
+                     </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                     <Button onClick={this.handleClose}>
+                        Continue
+                     </Button>
+                     <Button onClick={this.props.handleRestart} color="primary">
+                        Choose new Pokedex
+                     </Button>
+                  </DialogActions>
                </Dialog>
             </div>
          }
