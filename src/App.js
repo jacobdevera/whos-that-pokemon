@@ -1,434 +1,404 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PokeController from './PokeController';
 import { 
    AppBar, Button, Card, CardActions, CardContent, CardMedia, Dialog, 
    DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, 
    FormHelperText, IconButton, Input, InputLabel, LinearProgress, Menu, MenuItem, 
-   List, ListItem, ListItemText, ListSubheader, Select, Toolbar, Typography 
-} from 'material-ui';
+   List, ListItem, ListItemText, ListSubheader, Select, Toolbar, Typography,
+   Box, ListItemButton, Collapse, ThemeProvider, createTheme, CssBaseline
+} from '@mui/material';
 
-import Collapse from 'material-ui/transitions/Collapse';
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import MoreVertIcon from 'material-ui-icons/MoreVert';
-import { withStyles } from 'material-ui/styles';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 import _ from 'lodash';
 
-const styles = theme => ({ 
-   button: {
-      margin: theme.spacing.unit
-   },
-   flex: {
-      flex: 1
-   },
-   load: {
-      position: 'absolute',
-      top: '64px',
-      left: '0',
-      right: '0'
-   },
-   container: {
-      maxWidth: '768px',
-      padding: 16,
-      marginLeft: 'auto',
-      marginRight: 'auto',
-   },
-   media: {
-      height: 96,
-      width: 96
-   },
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#00d4ff',
+    },
+    secondary: {
+      main: '#ffeb3b',
+    },
+    background: {
+      default: '#1a1a1a',
+      paper: '#2b2b2b',
+    },
+  },
+  typography: {
+    fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+  },
 });
 
-class App extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         anchorEl: null,
-         menuOpen: false,
-         dialogOpen: false
-      };
-   }
+const App = () => {
+   const [dialogOpen, setDialogOpen] = useState(false);
+   const [globalLoading, setGlobalLoading] = useState(false);
 
-   handleMenuOpen = (event) => {
-      this.setState({menuOpen: true, anchorEl: event.currentTarget});
-   };
+   const handleDialogOpen = () => setDialogOpen(true);
+   const handleDialogClose = () => setDialogOpen(false);
 
-   handleMenuClose = () => {
-      this.setState({menuOpen: false});
-   };
-
-   handleDialogOpen = () => {
-      this.setState({dialogOpen: true});
-   };
-
-   handleDialogClose = () => {
-      this.setState({dialogOpen: false});
-   };
-
-   render() {
-      return (
-         <div>
-            <AppBar position="static">
+   return (
+      <ThemeProvider theme={darkTheme}>
+         <CssBaseline />
+         <Box sx={{ flexGrow: 1 }}>
+            <AppBar position="static" className="pokedex-bg">
                <Toolbar>
-                  <Typography type="title" color="inherit" className={this.props.classes.flex}>
+                  <Typography variant="h6" component="div" sx={{ flexGrow: 1, fontWeight: 'bold', color: '#00d4ff' }}>
                      Who's that Pokemon?
                   </Typography>
-                  <IconButton
-                     aria-label="More"
-                     aria-owns={this.state.menuOpen ? 'simple-menu' : null}
-                     aria-haspopup="true"
-                     onClick={this.handleMenuOpen}
-                     color="contrast"
-                  >
-                     <MoreVertIcon />
-                  </IconButton>
-                  <Menu
-                     id="simple-menu"
-                     anchorEl={this.state.anchorEl}
-                     open={this.state.menuOpen}
-                     onRequestClose={this.handleMenuClose}
-                  >
-                     <MenuItem onClick={this.handleDialogOpen}>Help</MenuItem>
-                  </Menu>
-                  <Dialog open={this.state.dialogOpen} onRequestClose={this.handleDialogClose}>
+                  <Button variant="outlined" className="neon-button" onClick={handleDialogOpen}>
+                     Help
+                  </Button>
+                  <Dialog open={dialogOpen} onClose={handleDialogClose}>
                      <DialogTitle>{"How to Play"}</DialogTitle>
                      <DialogContent>
                         <DialogContentText>
                            Choose a Pokedex from one of the various games. The national Pokedex 
-                           includes all 721 Pokemon up to generation VI. You will then be asked
+                           includes all Pokemon up to generation VI. You will then be asked
                            to guess the Pokemon based on the given sprite.
                         </DialogContentText>
                      </DialogContent>
                      <DialogActions>
-                        <Button onClick={this.handleDialogClose} color="primary">
+                        <Button onClick={handleDialogClose} color="primary">
                            Okay
                         </Button>
                      </DialogActions>
                   </Dialog>
                </Toolbar>
             </AppBar>
-            <PlayArea classes={this.props.classes}/>
-         </div>
-      );
-   }
-}
+            <PlayArea setGlobalLoading={setGlobalLoading} globalLoading={globalLoading} />
+         </Box>
+      </ThemeProvider>
+   );
+};
 
-class PlayArea extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         value: 0,
-         pokedexes: [],
-         pokedexData: {},
-         started: false,
-         loading: false
-      };
-   }
+const PlayArea = ({ setGlobalLoading, globalLoading }) => {
+   const [value, setValue] = useState(0);
+   const [pokedexes, setPokedexes] = useState([]);
+   const [pokedexData, setPokedexData] = useState({});
+   const [started, setStarted] = useState(false);
 
-   componentDidMount() {
-      // fetch list of pokedexes
-      var pokedexArray = [];
+   useEffect(() => {
+      let pokedexArray = [];
+      setGlobalLoading(true);
       PokeController.fetchData('https://pokeapi.co/api/v2/pokedex/')
       .then ((data) => {
          data.results.forEach(function(pokedex) {
             pokedexArray.push(pokedex);
          })
-         this.setState({pokedexes: pokedexArray});
+         setPokedexes(pokedexArray);
+         setGlobalLoading(false);
       });
-   }
+   }, [setGlobalLoading]);
 
-   // choosing a new pokedex will also unmount the guessing box
-   handleChange = value => event => {
-      this.setState({
-         [value]: event.target.value,
-         started: false
-      });
+   const handleChange = (event) => {
+      setValue(event.target.value);
+      setStarted(false);
    };
 
-   gameStart = () => {
-      // get pokedex data from selected pokedex
-      if (!this.state.started) {
-         this.setState({loading: true});
-         PokeController.fetchData(this.state.pokedexes[this.state.value].url)
+   const gameStart = () => {
+      if (!started) {
+         setGlobalLoading(true);
+         PokeController.fetchData(pokedexes[value].url)
          .then ((data) => {
-            this.setState({
-               pokedexData: data,
-               started: true,
-               loading: false
-            });
+            setPokedexData(data);
+            setStarted(true);
+            setGlobalLoading(false);
          })
       }
    }
 
-   handleRestart = () => {
-      this.setState({started: false});
-   }
+   const handleRestart = () => setStarted(false);
 
-   render() {
-      return (
-         <div className={this.props.classes.container}>
-            {this.state.pokedexes ?
-               <FormControl margin="normal" component="fieldset">
-                  <InputLabel htmlFor="pokedex">Pokedex</InputLabel>
-                  <Select
-                     value={this.state.value}
-                     onChange={this.handleChange('value')}
-                     input={<Input id="pokedex" />}
-                  >
-                     {this.state.pokedexes.map((pokedex, index) => (
-                        <MenuItem
-                           key={pokedex.name}
-                           value={index}
-                        >
-                           {_.startCase(pokedex.name)}
-                        </MenuItem>
-                     ))}
-                  </Select>
-               </FormControl> : <LinearProgress className={this.props.classes.load}/>
-            }
-            <Button className={this.props.classes.button} raised color="primary" label="Start" onClick={this.gameStart}>
-               Start
-            </Button>
-            {this.state.loading && <LinearProgress className={this.props.classes.load}/>}
-            {this.state.started && 
-                  <GuessBox classes={this.props.classes} 
-                     pokedex={this.state.value} 
-                     pokedexData={this.state.pokedexData} 
-                     handleRestart={this.handleRestart} />}
-         </div>
-      );
-   }
-}
+   return (
+      <Box className="container" sx={{
+         maxWidth: '500px',
+         padding: '60px 20px 20px 20px', 
+         margin: '40px auto',
+         background: 'linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 100%)',
+         borderRadius: '30px',
+         boxShadow: '0 20px 40px rgba(0,0,0,0.4), inset -2px -2px 5px rgba(255,255,255,0.05)',
+         border: '4px solid #333',
+         position: 'relative',
+         overflow: 'hidden' // Ensure loading bar doesn't spill out
+      }}>
+         {/* Internal Loading Bar */}
+         {globalLoading && (
+            <LinearProgress 
+               sx={{ 
+                  position: 'absolute', 
+                  top: 0, 
+                  left: 0, 
+                  right: 0,
+                  height: '6px',
+                  bgcolor: 'rgba(0,0,0,0.3)',
+                  zIndex: 20,
+                  '& .MuiLinearProgress-bar': { bgcolor: '#00d4ff' }
+               }} 
+            />
+         )}
 
-class GuessBox extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         currentPoke: {},
-         currentPokeData: {},
-         currentSpeciesData: {},
-         loading: false,
-         guess: '',
-         hint: '',
-         guessed: false,
-         dialogOpen: false,
-         flavorText: [],
-         moreInfo: false
-      };
-   }
+         <Box className="pokedex-led-group">
+            <Box className={"pokedex-led " + (globalLoading ? "led-active" : "")}></Box>
+            <Box className="pokedex-led-small led-red"></Box>
+            <Box className="pokedex-led-small led-yellow"></Box>
+            <Box className="pokedex-led-small led-green"></Box>
+         </Box>
+         
+         {!started && (
+            <Card sx={{ bgcolor: '#333', p: 3, borderRadius: '15px', border: '1px solid #444' }}>
+               <Typography variant="h6" sx={{ color: '#00d4ff', textAlign: 'center', mb: 2, fontWeight: 'bold' }}>
+                  SELECT POKEDEX
+               </Typography>
+               {pokedexes.length > 0 && (
+                  <FormControl fullWidth sx={{ mb: 3 }}>
+                     <InputLabel id="pokedex-label">Region / Game</InputLabel>
+                     <Select
+                        labelId="pokedex-label"
+                        id="pokedex"
+                        value={value}
+                        label="Region / Game"
+                        onChange={handleChange}
+                     >
+                        {pokedexes.map((pokedex, index) => (
+                           <MenuItem key={pokedex.name} value={index}>
+                              {_.startCase(pokedex.name)}
+                           </MenuItem>
+                        ))}
+                     </Select>
+                  </FormControl>
+               )}
+               <Button 
+                  variant="contained" 
+                  fullWidth 
+                  onClick={gameStart}
+                  sx={{ 
+                     bgcolor: '#00d4ff', 
+                     color: '#000', 
+                     fontWeight: 'bold',
+                     '&:hover': { bgcolor: '#00acc1' }
+                  }}
+               >
+                  START ADVENTURE
+               </Button>
+            </Card>
+         )}
+         {started && 
+               <GuessBox 
+                  pokedexData={pokedexData} 
+                  handleRestart={handleRestart}
+                  setGlobalLoading={setGlobalLoading} />}
+      </Box>
+   );
+};
 
-   componentDidMount() {
-      this.chooseRandomPoke();
-   }
+const GuessBox = ({ pokedexData, handleRestart, setGlobalLoading }) => {
+   const [currentPokeData, setCurrentPokeData] = useState({});
+   const [currentSpeciesData, setCurrentSpeciesData] = useState({});
+   const [guess, setGuess] = useState('');
+   const [hint, setHint] = useState('');
+   const [guessed, setGuessed] = useState(false);
+   const [dialogOpen, setDialogOpen] = useState(false);
+   const [flavorText, setFlavorText] = useState([]);
 
-   chooseRandomPoke = () => {
-      this.setState({loading: true});
-      // select a random Pokemon for the player to guess
-      var pokeIndex = Math.floor(Math.random() * (this.props.pokedexData["pokemon_entries"].length));
-      // get data for current Pokemon
-      PokeController.fetchData(this.props.pokedexData["pokemon_entries"][pokeIndex]["pokemon_species"].url)
+   useEffect(() => {
+      chooseRandomPoke();
+   }, [pokedexData]);
+
+   const chooseRandomPoke = () => {
+      setGlobalLoading(true);
+      const pokeIndex = Math.floor(Math.random() * (pokedexData["pokemon_entries"].length));
+      PokeController.fetchData(pokedexData["pokemon_entries"][pokeIndex]["pokemon_species"].url)
       .then ((speciesData) => {
          PokeController.fetchData(speciesData["varieties"][0]["pokemon"].url)
          .then((pokeData) => {
-            this.setState({
-               currentSpeciesData: speciesData,
-               currentPokeData: pokeData,
-               loading: false,
-               guess: '' // empty text field from previous game
-            });
+            setCurrentSpeciesData(speciesData);
+            setCurrentPokeData(pokeData);
+            setGlobalLoading(false);
+            setGuess('');
          })
       })
    }
 
-   handleChange = (event) => {
-      this.setState({
-         guess: event.target.value,
-         guessed: false
-      });
+   const handleChange = (event) => {
+      setGuess(event.target.value);
+      setGuessed(false);
    };
 
-   giveHint = () => {
-      var types = [];
-      this.state.currentPokeData["types"].forEach((type) => {
-         types.push(_.capitalize(type["type"].name));
-      })
-      this.setState({hint: types.toString()})
+   const giveHint = () => {
+      const types = currentPokeData["types"].map(type => _.capitalize(type["type"].name));
+      setHint(types.join(', '));
    }
 
-   submitGuess = () => {
-      this.setState({ 
-         guessed: true
-      })
-
-      if (this.state.currentPokeData["species"]["name"].toUpperCase() === this.state.guess.toUpperCase()){
-         this.result();
+   const submitGuess = () => {
+      setGuessed(true);
+      if (currentPokeData["species"]["name"].toUpperCase() === guess.toUpperCase()){
+         result();
       }
    }
 
-   // display the flavor text entry for the Pokemon after each round
-   result = () => {
-      var flavorText = [];
-      this.state.currentSpeciesData["flavor_text_entries"].forEach((entry) => {
-         if (entry["language"].name === "en")
-            flavorText.push(entry.flavor_text);
-      })
-      this.setState({
-         dialogOpen: true,
-         flavorText: flavorText
-      })
+   const result = () => {
+      const texts = currentSpeciesData["flavor_text_entries"]
+         .filter(entry => entry["language"].name === "en")
+         .map(entry => entry.flavor_text);
+      setFlavorText(texts);
+      setDialogOpen(true);
    }
 
-   // clicking outside the dialog will continue with the current pokedex
-   handleClose = () => {
-      this.setState({hint: '', guessed: false, dialogOpen: false})
-      this.chooseRandomPoke();
+   const handleClose = () => {
+      setHint('');
+      setGuessed(false);
+      setDialogOpen(false);
+      chooseRandomPoke();
    }
 
-   render() {
-      // actions for the result dialog
-      var wrong = (this.state.guessed) && (this.state.currentPokeData["species"]["name"].toUpperCase() !== this.state.guess.toUpperCase());
-      return (
-         <div>
-         { 
-            !_.isEmpty(this.state.currentPokeData) && // make sure Pokemon data is fetched before mounting
-            <div>
-               <Card>
+   const wrong = guessed && currentPokeData["species"]["name"].toUpperCase() !== guess.toUpperCase();
+   const revealed = dialogOpen;
+
+   return (
+      <Box>
+      { 
+         !_.isEmpty(currentPokeData) && (
+         <Box>
+            <Box className="pokedex-screen-container">
+               <Box className="pokedex-screen">
                   <CardMedia
-                     image={this.state.currentPokeData["sprites"]["front_default"]}
-                     title="Front of Pokemon"
-                     className={this.props.classes.media}
+                     component="img"
+                     image={currentPokeData["sprites"]["front_default"]}
+                     alt="Front of Pokemon"
+                     className={"pokemon-sprite " + (revealed ? "" : "silhouette")}
                   />
-                  <CardContent>
-                     <Typography type="headline">
-                        {"Name: " + (this.state.hint.length > 0 ? ("_ ".repeat(this.state.currentPokeData["species"]["name"].length)) : "")}
-                     </Typography>
-                     <Typography type="subheading" color="secondary">
-                        {"Type: " + this.state.hint}
-                     </Typography>
-                  </CardContent>
-                  <CardActions>
-                     <Button onClick={this.giveHint}>Hint</Button>
-                     <Button color="primary" onClick={this.submitGuess}>Submit</Button>
-                     <Button color="accent" onClick={this.result}>Give Up</Button>
-                  </CardActions>
-                  <CardContent>
-                     {this.state.hint.length > 0 && <PokeTable currentPokeData={this.state.currentPokeData}/>}
-                     <FormControl error={wrong}>
-                        <InputLabel htmlFor="name-error">Who's that Pokemon?</InputLabel>
-                        <Input id="name-error" value={this.state.guess} onChange={this.handleChange} />
-                        <FormHelperText>
-                           {wrong ? 'wrong' : 'enter your guess'}
-                        </FormHelperText>
-                     </FormControl>
-                  </CardContent>
-               </Card>
-               <Dialog open={this.state.dialogOpen} onRequestClose={this.handleClose}>
-                  <DialogTitle>{"It's " + _.capitalize(this.state.currentPokeData["species"]["name"])+ "!"}</DialogTitle>
-                  <DialogContent>
-                     <img src={this.state.currentPokeData["sprites"]["front_default"]} alt="Front of Pokemon" />
-                     <DialogContentText>
-                        {this.state.flavorText[0]}
-                     </DialogContentText>
-                  </DialogContent>
-                  <DialogActions>
-                     <Button onClick={this.handleClose}>
-                        Continue
-                     </Button>
-                     <Button onClick={this.props.handleRestart} color="primary">
-                        Choose new Pokedex
-                     </Button>
-                  </DialogActions>
-               </Dialog>
-            </div>
-         }
-            {this.state.loading && <LinearProgress className={this.props.classes.load}/>}
-         </div>
-      );
-   }
-}
+               </Box>
+            </Box>
+            <Card sx={{ bgcolor: '#333', borderRadius: '0 0 15px 15px', border: '2px solid #444', borderTop: 'none' }}>
+               <CardContent>
+                  <Typography variant="h5" sx={{ color: '#fff', fontWeight: 'bold', textAlign: 'center', mb: 2 }}>
+                     {hint.length > 0 ? (currentPokeData["species"]["name"].split('').map(() => "_ ").join('')) : "???"}
+                  </Typography>
+                  {hint.length > 0 && (
+                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
+                        {currentPokeData["types"].map(t => (
+                           <Box key={t.type.name} sx={{
+                              px: 1.5, py: 0.5, borderRadius: '20px', bgcolor: '#00d4ff', color: '#000',
+                              fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase'
+                           }}>
+                              {t.type.name}
+                           </Box>
+                        ))}
+                     </Box>
+                  )}
+               </CardContent>
+               <CardActions sx={{ justifyContent: 'center', gap: 1 }}>
+                  <Button variant="outlined" className="neon-button" onClick={giveHint}>Hint</Button>
+                  <Button variant="contained" sx={{ bgcolor: '#00d4ff', color: '#000' }} onClick={submitGuess}>Submit</Button>
+                  <Button color="error" sx={{ fontWeight: 'bold' }} onClick={result}>Give Up</Button>
+               </CardActions>
+               <CardContent>
+                  {hint.length > 0 && <PokeTable currentPokeData={currentPokeData}/>}
+                  <FormControl error={wrong} fullWidth sx={{ mt: 2 }}>
+                     <InputLabel htmlFor="guess-input">Who's that Pokemon?</InputLabel>
+                     <Input 
+                        id="guess-input" 
+                        value={guess} 
+                        onChange={handleChange}
+                        sx={{ fontSize: '1.2rem', fontWeight: 'bold' }}
+                     />
+                     <FormHelperText>
+                        {wrong ? 'Try again!' : 'Type your guess above'}
+                     </FormHelperText>
+                  </FormControl>
+               </CardContent>
+            </Card>
+            <Dialog open={dialogOpen} onClose={handleClose}>
+               <DialogTitle sx={{ textAlign: 'center', fontWeight: 'bold' }}>
+                  {"It's " + _.capitalize(currentPokeData["species"]["name"])+ "!"}
+               </DialogTitle>
+               <DialogContent>
+                  <Box sx={{ textAlign: 'center', bgcolor: '#9db29d', p: 3, borderRadius: '8px', border: '3px solid #111', mb: 2 }}>
+                     <img src={currentPokeData["sprites"]["front_default"]} alt="Pokemon" style={{ width: 150, height: 150, imageRendering: 'pixelated' }} />
+                  </Box>
+                  <DialogContentText sx={{ fontStyle: 'italic', color: '#e0e0e0' }}>
+                     {flavorText[0]}
+                  </DialogContentText>
+               </DialogContent>
+               <DialogActions sx={{ justifyContent: 'space-between', px: 3, pb: 2 }}>
+                  <Button onClick={handleClose} sx={{ color: '#00d4ff' }}>Continue</Button>
+                  <Button onClick={handleRestart} variant="outlined" color="primary">New Pokedex</Button>
+               </DialogActions>
+            </Dialog>
+         </Box>
+      )}
+      </Box>
+   );
+};
 
-class PokeTable extends React.Component {
-   constructor(props) {
-      super(props);
-      this.state = {
-         infoOpen1: false,
-         infoOpen2: false,
-         infoOpen3: false
-      };
-   };
+const PokeTable = ({ currentPokeData }) => {
+   const [infoOpen, setInfoOpen] = useState({ 1: false, 2: false, 3: false });
 
-   handleClick1 = () => {
-      this.setState({ infoOpen1: !this.state.infoOpen1 })
-   };
+   const toggleInfo = (id) => setInfoOpen(prev => ({ ...prev, [id]: !prev[id] }));
 
-   handleClick2 = () => {
-      this.setState({ infoOpen2: !this.state.infoOpen2 })
-   }
+   const height = currentPokeData["height"] / 10;
+   const weight = currentPokeData["weight"] / 10;
 
-   handleClick3 = () => {
-      this.setState({ infoOpen3: !this.state.infoOpen3 })
-   }
+   return (
+      <List subheader={<ListSubheader sx={{ bgcolor: 'transparent', color: '#00d4ff' }}>Information</ListSubheader>}>
+         <ListItemButton onClick={() => toggleInfo(1)}>
+            <ListItemText primary="Pokedex Entry Numbers" />
+            {infoOpen[1] ? <ExpandLess /> : <ExpandMore />}
+         </ListItemButton>
+         <Collapse in={infoOpen[1]} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+               {currentPokeData["game_indices"].map((index, i) => (
+                  <ListItem key={i} sx={{ pl: 4 }}>
+                     <ListItemText primary={`${_.startCase(index["version"].name)}: ${index.game_index}`} />
+                  </ListItem>
+               ))}
+            </List>
+         </Collapse>
 
-   render() {
-      // map pokemon data to list items
-      var gameIndices = this.props.currentPokeData["game_indices"].map(function(index, i) {
-         return <ListItem>
-                  <ListItemText inset primary={_.startCase(index["version"].name) + ": " + index.game_index} />
-               </ListItem>
-      });
-      
-      var height = this.props.currentPokeData["height"] / 10;
-      var weight = this.props.currentPokeData["weight"] / 10;
+         <ListItem sx={{ py: 0.5 }}>
+            <ListItemText primary={`Height: ${height} m`} />
+         </ListItem>
+         <ListItem sx={{ py: 0.5 }}>
+            <ListItemText primary={`Weight: ${weight} kg`} />
+         </ListItem>
 
-      var abilities = this.props.currentPokeData["abilities"].map(function(ability, index) {
-         return <ListItem>
-                  <ListItemText inset primary={_.startCase(ability["ability"].name)} />
-               </ListItem>
-      });
+         <ListItemButton onClick={() => toggleInfo(2)}>
+            <ListItemText primary="Abilities" />
+            {infoOpen[2] ? <ExpandLess /> : <ExpandMore />}
+         </ListItemButton>
+         <Collapse in={infoOpen[2]} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+               {currentPokeData["abilities"].map((ability, i) => (
+                  <ListItem key={i} sx={{ pl: 4 }}>
+                     <ListItemText primary={_.startCase(ability["ability"].name)} />
+                  </ListItem>
+               ))}
+            </List>
+         </Collapse>
 
-      var heldItems = this.props.currentPokeData["held_items"].map(function(item, index) {
-         return <ListItem>
-                  <ListItemText inset primary={_.startCase(item["item"].name)} />
-               </ListItem>
-      });
+         <ListItemButton onClick={() => toggleInfo(3)}>
+            <ListItemText primary="Held Items" />
+            {infoOpen[3] ? <ExpandLess /> : <ExpandMore />}
+         </ListItemButton>
+         <Collapse in={infoOpen[3]} timeout="auto" unmountOnExit>
+            <List component="div" disablePadding>
+               {currentPokeData["held_items"].length === 0 ? (
+                  <ListItem sx={{ pl: 4 }}><ListItemText primary="None" /></ListItem>
+               ) : (
+                  currentPokeData["held_items"].map((item, i) => (
+                     <ListItem key={i} sx={{ pl: 4 }}>
+                        <ListItemText primary={_.startCase(item["item"].name)} />
+                     </ListItem>
+                  ))
+               )}
+            </List>
+         </Collapse>
+      </List>
+   );
+};
 
-      return (
-         <List subheader={<ListSubheader>Information</ListSubheader>}>
-            <ListItem button onClick={this.handleClick1}>
-               <ListItemText primary="Pokedex Entry Numbers: " />
-               {this.state.infoOpen1 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.infoOpen1} transitionDuration="auto" unmountOnExit>
-               {gameIndices}
-            </Collapse>
-
-            <ListItem>
-               <ListItemText primary={"Height: " + height + " m"} />
-            </ListItem>
-
-            <ListItem>
-               <ListItemText primary={"Weight: " + weight + " kg"} />
-            </ListItem>
-
-            <ListItem button onClick={this.handleClick2}>
-               <ListItemText primary={"Abilities: "}/>
-               {this.state.infoOpen2 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.infoOpen2} transitionDuration="auto" unmountOnExit>
-               {abilities}
-            </Collapse>
-
-            <ListItem button onClick={this.handleClick3}>
-               <ListItemText primary={"Held items in the wild: " + (heldItems.length === 0 ? "None" : "")}/>
-               {this.state.infoOpen3 ? <ExpandLess /> : <ExpandMore />}
-            </ListItem>
-            <Collapse in={this.state.infoOpen3} transitionDuration="auto" unmountOnExit>
-               {heldItems}
-            </Collapse>
-         </List>
-      );
-   }
-}
-
-export default withStyles(styles)(App); //make this class available to other files (e.g., index.js)
+export default App;
