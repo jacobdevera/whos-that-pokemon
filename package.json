@@ -1,7 +1,7 @@
 {
   "name": "whos-that-pokemon",
   "author": "Jacob Devera",
-  "homepage": "https://jacobdevera.github.io/whos-that-pokemon/build",
+  "homepage": "https://jacobdevera.github.io/whos-that-pokemon",
   "version": "1.0.0",
   "private": true,
   "devDependencies": {
